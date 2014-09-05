@@ -1,0 +1,146 @@
+---
+title: "Análisis caso ABB"
+author: "Jordi López Sintas"
+date: "3 de septiembre de 2014"
+output: pdf_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+require(ggplot2)
+require(dplyr)
+
+#la opción file.chose() en la función read.table nos permite escoger un fichero de datos guardado en el ordenador local)
+#leer el fichero de datos abb-R.txt, el cual contiene los datos de la elección de las empresas eléctricas y la descripción de su volumen de compras así cómo su distrito.
+abb<-read.table("abb-r.txt", header=T)
+#la función head() nos permite visualizar las primer seis líneas de un objeto de datos.
+#He traspuesto el resupado con la función t() con el objeto de facilitar la lectura. Así las líneas representan las variables y las columnas los valors para las 6 primeras observaciones.
+t(head(abb))   
+#la funcion names() muestra los nombres de las variables 
+
+names(abb) 
+
+#La función str() nos proporciona una descripción de la base de datos
+str(abb)
+#cambiar la clase de las variables según sea apropiado.
+#las variables choice y district deberían se factores.
+abb$district <- as.factor(abb$district)
+abb$choice <- as.factor(abb$choice)
+#Ahora con la ayuda de la función select() del packete dplyr y del operador tubería (pipeline) %>% calculamos el valor medio del precio y volumen
+A= select(abb, choice, volume, district, price) %>%
+  group_by(district, choice) %>%
+  summarize(AvgPrice = mean(price), AvgVolumen = mean(volume), N = length(price))
+A
+              
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+
+#dplyr makes it easier to produce goruped plots in ggplot
+
+ggplot(A, aes(x=district, y=AvgVolumen)) +
+  geom_point(aes(size = N)) +
+  geom_line(aes(by = choice, color = choice))  
+
+ggplot(A, aes(x=district, y=AvgPrice)) +
+  geom_point(aes(size = N)) +
+  geom_line(aes(by = choice, color = choice))  
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r, echo=FALSE}
+library(survival)
+abb$choice <- as.numeric(abb$choice)
+abb.clogit <- clogit(choice ~ price + energy_loss + maintenance + warranty + spare_parts + ease_install + problem_solving + quality + DA + DB + DC + strata(id), data = abb)
+
+summary(abb.clogit)
+```
+Ahora calculamos la utilidad de cada elección
+```{r}
+u <- predict(abb.clogit)
+head(u)
+```
+Después obtenemos exp(u)
+y sumamos exp(u) para cada individuo
+```{r}
+eu <- exp(u)
+sumaeu <- by(eu, abb$id, sum)
+head(sumaeu)
+```
+
+Ahora calculamos la probabilidad de elección de cada marca. Para ello definimos una función que llamaremos prob()
+
+```{r}
+prob<-function(suma, eutil, indiv){
+#suma, eutil, inviv son los argumentos de la función
+n<-0
+#Crea un vector con tantos elementos como el producto entre 
+#lis individuos y las marcas
+p<-1:indiv*4
+#Para cada individuo
+for (i in 1:indiv) {
+#para cada marca
+for (j in 1:4) {
+#construye un índice
+n<-n+1
+#calcula la probabilidad de que el individuo i compre la #marca j
+p[n]<-eutil[n]/suma[i]
+}
+}
+#Devuelve el vector de probabilidades
+return(p)
+}
+```
+Y después la utilizamos con los datos calculados previamente
+
+```{r}
+
+pchoice <- prob(sumaeu, eu, 88)
+head(pchoice)
+abb$pchoice <- pchoice
+t(head(abb))
+```
+
+Ahora creamos una función para clasificar a los clientes en función de su probabilidad de compra
+
+```{r}
+msegment<-function(p, indiv){
+# p es el vector de probabilidades
+# in es el número de individuos 
+s<-1:indiv*4
+j<-0
+for (i in 1:indiv) {
+#para cada individuo
+j=j+4
+#Leales
+if (p[j-3]>0.8) {s[j-3]<-"L"; s[j-2]<-"L"; s[j-1]<-"L"; s[j]<-"L"}
+#Competitivos
+if (p[j-3]<=0.8 & p[j-3]>0.5) {s[j-3]<-"C"; s[j-2]<-"C"; s[j-1]<-"C"; s[j]<-"C"}
+#Apropiables
+if (p[j-3]<=0.5 & p[j-3]>0.15) {s[j-3]<-"A"; s[j-2]<-"A"; s[j-1]<-"A"; s[j]<-"A"}
+#Perdidos
+if (p[j-3]<=0.15) {s[j-3]<-"P"; s[j-2]<-"P"; s[j-1]<-"P"; s[j]<-"P"}
+}
+#Devuelve el resultado de la función
+return(s)
+}
+```
+Ahora utilizamos la nueva función para clasificar  la base de datos
+```{r}
+seg <- msegment(pchoice, 88)
+abb$seg <- seg
+
+abb.select.ord <- select(abb, volume, pchoice, seg) %>%
+  arrange(-volume)
+head(abb.select.ord)
+
+
+```
+primero seleccionamos las variables que queremos ordenar, después 
