@@ -1,0 +1,163 @@
+---
+title: "Caso Hatco: Análisis y toma de decisiones en el entorno R"
+author: "Jordi López Sintas"
+date: "5 de septiembre de 2014"
+output: pdf_document
+---
+
+Para introducir en el entorno R los datos recolectados por la dirección de Hatco tenemos varias opciones que veremos a lo largo del curso. Hoy vamos a ver cómo leer ficheros de datos generados por el programa SPSS. En el entorno R de análisis de datos disponemos del paquete `foreign` con el que podemos cómodamente acceder a datos en el formato utilizado por SPSS. Para utilizar el paquete `foreign` tenemos que cargarlo la la función library(<nombre.del.paquete> como mostramos a continuación:
+
+```{r}
+library(foreign)
+```
+
+Una vez cargado el paquete podemos utilizar las funciones que los ofrece. Concretamente nos interesa la función `read.spss(<nombre.del.fichero.de.datos>`. Recuerda indicar el directorio en el que se encuentra el fichero. Si lo has grabado en una memoria usb, entonces en el argumento deberás especificar la dirección completa de la localización del fichero en tu sistema informático. En el ejemplo, el fichero está en el mismo directorio que este documento:
+
+```{r}
+hatco<-read.spss("hatconuevo.sav")
+#Después de leer los datos podemos listar los datos. En el ejemplo que sigue hemos 
+#transpuesto la salida ordinaria con el objeot de facilitar la lectura
+#con la función options() hemos limitado la anchura de las líneas de los
+#informes a 58 caracteres.
+options(width=58)
+t(head(hatco))
+#Aqúi mostramos cómo leer el fichero "hatco.completo.csv" en el formato de intercambio csv.
+hatco.completo <- read.csv("hatco.completo.csv", sep=";", dec=",")
+#Si sólo queremos comprobar que hemos leído los datos correctamente, podemos
+#utilizar la función head(<nombre.del.fichero>) que nos motrará las primeras 6
+#líneas del fichero. La función tail() meustra las últimas  6 líneas. 
+head(hatco)
+#Si queremos conocer únicamente el nombre de las variables que contiene el
+#fichdro de datos, podemos utilizar la función names(<nombre.del.fichero>)
+names(hatco)
+#La función str(<nombre.del.fichero>), en cambio, nos proporciona una breve
+#descripción de las variables contenidas en el fichero
+str(hatco)
+```
+En estas líneas de código mostramos también cómo leer los datos en el formato `csv` de intercambio de hojas electrónicas, donde las columnas están separadas por `;` y el símbolo de los decimales es la coma, `,` en lugar del punto decimal anglosajón.
+
+Ahora deberás seleccionar las bases de segmentación que utilizarás con los programas de aglomeración jerárquica y partición. En el ejemplo se han seleccionado las primeras 7. Puedes seleccionar éstas o cualesquiera otras, pero deberás, en cualquier caso, argumentar por qué razón escoges esas variables como bases de segmentación.
+```{r}
+require(dplyr)
+bases<-data.frame(hatco[1:7])
+names(bases)
+```
+Ahora deberás tomar otra decisión sobre las bases de segmentación. Se trata de decidir si es necesario hacer alguna transformación en ellas antes de utilizar los algoritmos de clasificación. Si no estás seguro o segura de si es necesario puedes hacer el proceso con las variables transformadas y las originales y observar el resultado de la clasificación. Si coincide, bien, si no entonces deberás tomar una decisión al respecto.
+
+Comprobar que las bases están medidas en la misma escala. Si no lo estuvieran, entonces normalizar las bases de segmentación utilizando la función scale() o bases.norm<-scale(bases)
+
+Si quieres conocer las correlaciones, sólo tienes que utilizar el siguiente comando:
+
+```{r}
+cor(bases)
+```
+
+Agrupamos a los clientes y mostramos el resultado de la agrupación
+```{r}
+bases.hclust<-hclust(dist(bases, method="euclidean"), method="ward")
+#Mostramos el resultado de la agrupación
+plot(bases.hclust)
+```
+
+Ahora calculamos los centros de los grupos formados durante el proceso de agrupación jerárquica y los mostramos.
+```{r}
+centros.bases<-tapply(as.matrix(bases), list(rep(cutree(bases.hclust, 2), ncol(as.matrix(bases))),col(as.matrix(bases))),mean)
+#Visualizamos el resultado
+centros.bases
+```
+
+Dividimos la muestra con kmeans
+```{r}
+bases.kmeans2<-kmeans(bases, centros.bases)
+```
+
+Para caracterizar a los segmentos utilizamos las medias de las variables originales en los segmentos formados.
+```{r}
+names(bases.kmeans2) 
+```
+
+El objeto centers contiene la información que buscamos si hemos segmentado con las variables originales
+```{r}
+bases.kmeans2$centers
+```
+
+Identificamos a los componentes de los grupos. Para ello utilizamos las variables descriptoras de los segmentos
+```{r}
+table(hatco$TAMEMP, bases.kmeans2$cluster)
+```
+
+Como USAGELEV es una variable metrica podemos calcular las medias con la función t.test() o con la función lm()
+```{r}
+t.test(hatco$USAGELEV ~ bases.kmeans2$cluster)
+summary(lm(hatco$USAGELEV ~ bases.kmeans2$cluster))
+```
+
+Y ver las medias en un gráfico como el siguiente
+```{r}
+boxplot(hatco$USAGELEV ~ bases.kmeans2$cluster)
+```
+
+Para las variables categóricas utilizamos la función table()
+```{r}
+table(hatco$ESPCOMPR, bases.kmeans2$cluster)
+table(hatco$ESTRCOMP, bases.kmeans2$cluster)
+table(hatco$INDUSTRI, bases.kmeans2$cluster)
+table(hatco$SITCOMP, bases.kmeans2$cluster)
+```
+
+Ahora comprobariamos si la segmentación obtenida con las bases originales varía cuando las sustituimos por sus componentes principales
+
+Comprobar que la correlación entre las bases de segmentación no suponga un problema para la segmentacion. Visualizamos las correlaciones entre las bases de segmentación
+```{r}
+cor(bases)
+```
+
+Si la correlación es elevada, transformamos las bases en unas nuevas variables llamadas componentes principales.
+Ahora vamos a calcular los componentes principales para comprobar si el resutlado cambia
+```{r}
+bases.acp<-princomp(bases, cor=T)
+```
+
+Podemos visualizar la varianza explicada por cada componente principal. Al utilizar las correlación (acotadas entre -1 y 1) la variacion explicada  por los componentes principales es igual al número de variables originales y la varianza explicada por cada componentes estará entre 0 y 7
+```{r}
+plot(bases.acp)
+summary(bases.acp)
+```
+
+Vemos que con cuatro cuatro componentes explicamos el 90% de la variación.
+Ahora para segmentar utilizamos la puntuación de los clientes en los nuevos componentes principales
+Esa puntuación está recogida en el objeto scores de la lista bases.acp
+La asignamos al objeto bases.puntos
+```{r}
+bases.puntos<-bases.acp$scores
+```
+
+Si queremos visualizar el resultado de la clasificacion que hemos realizado antes, podemos utilizar los componentes de esta forma:
+```{r}
+plot(bases.puntos[,1:2], col=bases.kmeans2$cluster)
+```
+Ahora volvemos a realizar el proceso de segmentación, pero con los componentes principales. Primero la agrupación jerárquica
+```{r}
+bases.puntos.hclust<-hclust(dist(bases.puntos), method="ward")
+#visualizamos la heterogeneidad y la comparamos con el la mostrada con los datos originales
+plot(bases.puntos.hclust)
+#Calculamos los centros de los grupos
+centros.bases.puntos<-tapply(bases.puntos, list(rep(cutree(bases.puntos.hclust, 2), ncol(bases.puntos)),col(bases.puntos)),mean)
+#isualizamos los centros
+centros.bases.puntos
+```
+
+De nuevo partimos la muestra con kmeans
+```{r}
+bases.puntos.kmeans2<-kmeans(bases.puntos, centros.bases.puntos)
+plot(bases.puntos[,1:2], col=bases.puntos.kmeans2$cluster)
+```
+Y Comparamos el resultado
+```{r}
+table(bases.kmeans2$cluster, bases.puntos.kmeans2$cluster)
+bases.puntos.kmeans2
+options(digits=3)
+#Mostramos el valor medio de las bases de segmentación en los grupos
+t(aggregate(bases, list(Segmento = bases.puntos.kmeans2$cluster), mean))
+```
+
