@@ -1,0 +1,17 @@
+{
+    "contents" : "\nrequire(ggplot2)\nrequire(dplyr)\ntrain <- read.csv(\"https://raw.githubusercontent.com/campbwa/R-videos/master/train.csv\")\nhead(train)\n#key function\n#select select columns from a dataframe\n#filter selec rows form a adata frame based upon criteria\n#group_by group by a afactor variable\n#summarize allos you to do summary stats based upon the grouped variable\n#arrange a better way to order the data set\n\ntrain.select <- select(train, Survived, Pclas, Sex, Age, Sibsp, Parch, Fare)\n#Everything but PassangerId\ntrain.select = select(train, -PassengerId)\n\n#From suvived to age\ntrain.select = select(train, Survived:Age)\n#Only first class passangers\nFirstClass <- filter(train, Pclass == 1)\n#Only frist class male pasagners\nFirstClass <- filter(train, Pclass == 1, Sex ==\"male\")\n#Ordering the rows\n\ntrain <- arrange(train, Fare, Pclass)\n\n#average fare by passenger\nselect(train, Pclass, Fare, Survived) %>%\n  group_by(Pclass) %>% #don't have to specify the data ser a second time\n  summarize(AvgFare= mean(Fare), Probsurvived = mean(Survived), N = length(Fare))\n\n#proabbility of survival by gender\nselect(train, Sex, Survived) %>%\n  group_by(Sex) %>%\n  summarize(ProbSurived = mean(Survived))\n\n#both categories at the same time!\n#group by two variables\nA= select(train, Pclass, Sex, Fare, Survived) %>%\n  group_by(Pclass, Sex) %>%\n  summarize(AvgFare = mean(Fare), ProbSurvived = man(Survived), N = length(Fare))\nA\n\n#dpllyr makes it easier to produce goruped plots in ggplot\n\nggplot(A, aes(x=Pclass, y=ProbSurvived)) +\n  geom_point(aes(size = N)) +\n  geom_line(aes(by = Sex, color = Sex))\n\n#use of the mutate function\n\ntrain = mutate(train\n               , AgeByFare = Age * Fare\n               , Age1 = Age^2)\n#alows you to create variables in one step\n#without specifying the data frame a bunch of times\n\n\n",
+    "created" : 1410878963611.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3743742446",
+    "id" : "5D27B3C2",
+    "lastKnownWriteTime" : 1409914928,
+    "path" : "~/Documents/github/mktg-models-projects/dplyr-notes.R",
+    "project_path" : "dplyr-notes.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
