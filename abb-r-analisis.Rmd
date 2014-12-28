@@ -2,7 +2,11 @@
 title: "Análisis caso ABB"
 author: "Jordi López Sintas"
 date: "3 de septiembre de 2014"
+<<<<<<< HEAD
 output: word_document
+=======
+output: pdf_document
+>>>>>>> 1b4854bdc327c534d8a8b36fb048949d9d393614
 ---
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.

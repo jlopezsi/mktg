@@ -1,25 +1,16 @@
 ---
-<<<<<<< HEAD
 title: "Caso Hatco: Análisis y toma de decisiones en el entorno R"
-=======
-title: "hatco-r-analysis"
->>>>>>> 1b4854bdc327c534d8a8b36fb048949d9d393614
 author: "Jordi López Sintas"
 date: "5 de septiembre de 2014"
 output: pdf_document
 ---
 
-<<<<<<< HEAD
 Para introducir en el entorno R los datos recolectados por la dirección de Hatco tenemos varias opciones que veremos a lo largo del curso. Hoy vamos a ver cómo leer ficheros de datos generados por el programa SPSS. En el entorno R de análisis de datos disponemos del paquete `foreign` con el que podemos cómodamente acceder a datos en el formato utilizado por SPSS. Para utilizar el paquete `foreign` tenemos que cargarlo la la función library(<nombre.del.paquete> como mostramos a continuación:
-=======
-Paquete estadístico en R para poder leer ficheros de datos en formato SPSS o de otros programas estadísticos:
->>>>>>> 1b4854bdc327c534d8a8b36fb048949d9d393614
 
 ```{r}
 library(foreign)
 ```
 
-<<<<<<< HEAD
 Una vez cargado el paquete podemos utilizar las funciones que los ofrece. Concretamente nos interesa la función `read.spss(<nombre.del.fichero.de.datos>`. Recuerda indicar el directorio en el que se encuentra el fichero. Si lo has grabado en una memoria usb, entonces en el argumento deberás especificar la dirección completa de la localización del fichero en tu sistema informático. En el ejemplo, el fichero está en el mismo directorio que este documento:
 
 ```{r}
@@ -44,21 +35,6 @@ names(hatco)
 str(hatco)
 ```
 En estas líneas de código mostramos también cómo leer los datos en el formato `csv` de intercambio de hojas electrónicas, donde las columnas están separadas por `;` y el símbolo de los decimales es la coma, `,` en lugar del punto decimal anglosajón.
-=======
-Lectura del fichero de datos en formato SPSS. Recuerda indicar el directorio en el que se encuentra el fichero. Si lo has grabado en el disquet, entonces debrás dar el argumento “a:hatconuevo.sav” en lugar del que tienes en el ejemplo siguiente:
-
-```{r}
-#hatco<-read.spss("hatconuevo.sav")
-#t(head(hatco))
-#leer hatco.completo.csv
-hatco <- read.csv("hatco.completo.csv", sep=";", dec=",")
-
-#Mostramos las 6 primeras líneas del fichero de datos
-head(hatco)
-names(hatco)
-str(hatco)
-```
->>>>>>> 1b4854bdc327c534d8a8b36fb048949d9d393614
 
 Ahora deberás seleccionar las bases de segmentación que utilizarás con los programas de aglomeración jerárquica y partición. En el ejemplo se han seleccionado las primeras 7. Puedes seleccionar éstas o cualesquiera otras, pero deberás, en cualquier caso, argumentar por qué razón escoges esas variables como bases de segmentación.
 ```{r}
