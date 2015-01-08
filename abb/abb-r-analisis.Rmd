@@ -2,22 +2,17 @@
 title: "Análisis caso ABB"
 author: "Jordi López Sintas"
 date: "3 de septiembre de 2014"
-<<<<<<< HEAD
-output: word_document
-=======
 output: pdf_document
->>>>>>> 1b4854bdc327c534d8a8b36fb048949d9d393614
 ---
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r}
 require(ggplot2)
 require(dplyr)
 
 #la opción file.chose() en la función read.table nos permite escoger un fichero de datos guardado en el ordenador local)
+#abb<-read.table(file.choose(), header=T)
 #leer el fichero de datos abb-R.txt, el cual contiene los datos de la elección de las empresas eléctricas y la descripción de su volumen de compras así cómo su distrito.
 abb<-read.table("abb-r.txt", header=T)
 #la función head() nos permite visualizar las primer seis líneas de un objeto de datos.
