@@ -1,0 +1,9 @@
+{
+    "path" : "~/mktg",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
