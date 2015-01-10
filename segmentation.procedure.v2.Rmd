@@ -288,4 +288,367 @@ points(peces[1:2])
 points(peces.kmeans$centers, col=1:2, pch=8,cex=2)
 ```
 
+#Procedimientos más robustos
+
+##PAM
+
+El algoritmo pam tiene por objetivo encontrar los k consumidores
+representativos de la heterogeneidad del mercado alrededor de los cuales
+se clasifican los *n* consumidores medidos en *p* variables (una matriz
+de datos de tamaño *n*x*p*). Estos *k* consumidores representativos
+formarán los *k* segmentos en los que se dividirá una muestra de un
+mercado. Los *k* consumidores representativos se obtienen de minimizar
+la disimilitud entre todos los consumidores y su consumidor
+representativo más cercano. Es decir, el procedimiento busca encontrar
+conjunto de *k* segmentos de individuos pertenecientes a la muestra que
+minimiza la siguiente función objetivo: peces
+
+$$\sum_{i = 1\ \ \ \ }^{n}{\min_{\forall k}d\left( i,m_{k} \right)}$$
+
+De tal manera que cada consumidor se asigna al segmento al que pertenece
+el consumidor representativo más cercano. Es decir, el consumidor *i* se
+asigna al segmento *k* cuando el consumidor representativo *m(k)* está
+más cerca de *i* que de cualquier otro consumidor representativo,
+$d\left( i,m_{k} \right) \leq d\left( i,m_{w} \right)$ , para todo
+consumidor representativo *w* diferente de *k*.
+
+Dado que el algoritmo pam sólo depende de las disimilitudes o distancias
+entre consumidores, la función sólo precisa como argumento una matriz de
+disimilitudes. Si el argumento que damos a la función es una matriz de
+datos *n*x*p*, entonces la función pam la convertirá en una matriz de
+disimilitudes.
+
+El algoritmo pam es parecido al conocido método *k-means* (MacQueen 1967)
+ampliamente conocido en marketing (REF), implementado en el entorno *R*
+por medio de la función `kmeans` que utiliza el algoritmo de Hartigan y
+Wong (1979). El algoritmo k-means tiene por objetivo minimizar la suma
+del cuadrado de las distancias euclidianas e implícitamente asume que
+los grupos se distribuyen de forma esférica. La función `pam`, según
+Kaufman y Rouseeuw (1990), es más robusta que *k-means* porque el
+algoritmo implementado en la función pam minimiza la suma de las
+distancias sin elevarlas al cuadrado. Incluso los centros provisinales de
+los segmentos no son necesarios para iniciar el proceso de división de la muestra.
+
+Adicionalmente la función pam del paquete `cluster` nos ofrece una
+gráfica denominada silueta (Rouseeuw 1987) y el correspondiente índice
+de calidad del proceso de segmentación con el objeto de ayudarnos a
+seleccionar el número de grupos que formaremos. La construcción del
+gráfico procede de la siguiente manera. Para cada consumidor *i*
+simbolizaremos con *A* el grupo de pertenencia y computaremos la
+disimilitud media del consumidor *i* frente al resto de consumidores del
+segmento *A*.
+
+$$a\left( i \right) = \frac{1}{\left| A \right| - 1}\sum_{j \in A}^{}{d\left( i,j \right)}$$
+
+Después consideraremos cualquier grupo *C* diferente del anterior, *A*,
+y calcularemos la similitud media de *i* frente a todos los elementos de
+*C*,
+$d\left( i,C \right) = \frac{1}{\left| C \right|}\sum_{j \in c}^{}{d\left( i,j \right)}$.
+Después realizaremos el mismo cálculo para el resto de los segmentos
+formados y tomaremos el valor
+menor,$b\left( i \right) = \operatorname{}{d\left( i,C \right)}$.
+Llamaremos *B* al segmento cuya disimilitud media sea menor frente al
+consumidor *i*, d(i,B)=b(i), que llamaremos el segmento vecino del
+consumidor *i*. Esta es la segunda mejor la clasificación del consumidor
+*i*. La longitud de la silueta se calculará de la siguiente manera:
+
+$s\left( i \right) = \frac{b\left( i \right) - a\left( i \right)}{\max\left\{ b\left( i \right),a\left( i \right) \right\}}$.
+El valor de *s*(*i*) está acotado entre -1 y 1. Si el valor está cerca
+de 1, nos indica que el consumidor i está bien clasificado; si está
+cerca de 0, está mal clasificado (está más cerca de *B* que de *A*).
+
+Para finalizar calcula un índice de calidad global que es la media de
+todos los índices de calidad de la clasificación de todos los
+consumidores, *s*(*i*), correspondientes a los *n* consumidores de la
+muestra de datos.
+
+  Índice de calidad   Interpretación
+  ------------------- -----------------------------------------------------------------
+  0,71-1,00           Hemos encontrado una estructura fuerte
+  0,51-0,70           Hemos encontrado una estructura razonable
+  0,26-0,50           Hemos encontrado una estructura débil que podría ser artificial
+  $\leq$ 0,25               No hemos encontrado una estructura en los datos
+
+##CLARA
+
+La función `pam` almacena en la memoria del ordenador toda la matriz de
+disimilitudes cuyo tamaño es $O(n^2)$. Este procedimiento es
+ineficiente con matrices datos que contienen más de 250 consumidores,
+pues tanto la memoria ocupada como el tiempo de cálculo crecen de manera
+cuadrática en función del tamaño de la muestra, $n^2$). Para resolver
+este problema Kaufman y Rouseeuw (1986) han propuesto la función clara.
+Esta función sólo guarda en la memoria del ordenador un subconjunto de
+la matriz de disimilitudes. El procedimiento de la función clara toma
+muestras de la matriz original de datos, para cada una de ellas realiza
+una segmentación y obtiene *k* segmentos que minimizan la función
+objetivo de `pam`. Después compara la suma de las distancias y
+se queda con la partición que la minimiza. Finalmente asigna los *n*
+consumidores a la partición anterior. De esta manera el almacenamiento en
+memoria y el tiempo de computación crece sólo de manera lineal con el
+tamaño de la muestra, *n*.
+```{r}
+sim<-rbind(cbind(rnorm(100,0,0.5),
+rnorm(100,2,1.5)),cbind(rnorm(150,3.5,0.5), rnorm(15,4,2.5)))
+head(sim)
+plot(sim)
+```
+
+```{r}
+library(MASS)
+sim.kmeans<-kmeans(sim, 2)
+#eqscplot(sim, type="n", xlab="x1", ylab="x2")
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.kmeans$cluster)
+```
+
+
+repetimos el proceso para 3 y 4 segmentos
+
+```{r}
+sim.kmeans3<-kmeans(sim, 3)
+sim.kmeans4<-kmeans(sim, 4)
+```
+
+Ahora calcularemos los centros iniciales para ver si mejoramos la clasificación
+
+```{r}
+sim.hclust<-hclust(dist(sim), method = "ward")
+plot(sim.hclust)
+centros.h<-tapply(sim, list(rep(cutree(sim.hclust, 2),ncol(sim)), col(sim)),mean)
+centros.h
+sim.kmeans.centros<-kmeans(sim, centros.h)
+```
+
+Repetimos la partición pero para 3 y 4 segmentos
+
+```{r}
+centros.h3<-tapply(sim, list(rep(cutree(sim.hclust, 3), ncol(sim)), col(sim)), mean)
+centros.h3 
+sim.kmeans.centros3<-kmeans(sim, centros.h3)
+centros.h4<-tapply(sim, list(rep(cutree(sim.hclust, 4), ncol(sim)), col(sim)), mean)
+centros.h4
+sim.kmeans.centros4<-kmeans(sim, centros.h4)
+table(sim.kmeans$cluster, sim.kmeans.centros$cluster)
+table(sim.kmeans3$cluster, sim.kmeans.centros3$cluster)
+table(sim.kmeans4$cluster, sim.kmeans.centros4$cluster)
+library(cluster)
+sim.clara<-clara(sim, 2)
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.clara$clustering)
+plot(sim.clara)
+```
+
+Repetimos el proceso para 3 clusters
+```{r}
+sim.clara3<-clara(sim, 3)
+plot(sim.clara3)
+```
+Repetimos el proceso para 4 clusters. Ahora comparamos los resultados con `kmeans`.
+```{r}
+sim.clara4<-clara(sim, 4)
+plot(sim.clara4)
+table(sim.clara$clustering, sim.kmeans.centros$cluster)
+table(sim.clara3$clustering, sim.kmeans.centros3$cluster)
+table(sim.clara4$clustering, sim.kmeans.centros4$cluster)
+```
+
+# Un ejemplo adicional
+
+First read-in data. Data preparation is required to remove variable scaling effects. To
+see this, consider a simple example. If you measure weight in Kgs and
+I do so in Grams - all other variables being the same - we'll get two
+very different clustering solutions from what is otherwise the same
+dataset. To get rid of this problem, just copy-paste the following code.
+
+```{r}
+mydata = USArrests
+mydata<- na.omit(mydata) # listwise deletion of missing
+mydata.orig = mydata #save original data copy
+mydata <- scale(mydata) # standardize variables
+```
+
+Ward Hierarchical Clustering
+```{r}
+d <- dist(mydata, method = "euclidean") # distance matrix
+fit<- hclust(d, method="ward")
+```
+Visualizar el gráfico
+```{r}
+plot(fit) # display dendogram
+k1 = 2 
+# eyeball the no. of clusters
+# cut tree into k1 clusters
+groups = cutree(fit, k=k1)
+```
+Mostrar el dendograma con bordes rojos alrededor de *k* clusters
+```{r}
+#rect.hclust(fit, k=2, border="red")
+```
+
+De nuevo la pregunta aparece, ¿cómo conocer el número óptimo de segmentos? Observando el  dendrograma en ciertas ocasiones puede ser de ayuda para tomar la decisión. Pero en otras ocasiones, ¿qué deberíamos hacer? La mayoría, si no todos, los programas esperan que conozcas el número correcto de segmentos a formar a la hora de utilizar la función  `kmaenas`. `R` lo hace mejor y te muestra un   one better **scree plot** de la familia de los gráficos que te muestran cómo la varianza dentro de los segmentos (un idicador de la calidad  de la solución) varía con el número de segmentos formados. Por ello, con **R** puedes tomar una decisión informada.
+
+```{r}
+# Determine number of clusters
+wss<- (nrow(mydata)-1)*sum(apply(mydata,2,var))
+for (i in 2:15) wss[i] <- sum(kmeans(mydata,centers=i) $withinss) 
+plot(1:15, wss, type="b", xlab="Number of Clusters", ylab="Within groups sum of squares")
+# Look for an "elbow" in the scree plot
+# Use optimal no. of clusters in k-means
+k1=2
+```
+
+
+K-Means Cluster Analysis
+```{r}
+fit <- kmeans(mydata, k1) # k1 cluster solution
+fit$centers 
+#Murder Assault UrbanPop Rape
+# get cluster means of original data
+aggregate(mydata.orig,by=list(fit$cluster),FUN=mean)
+# Group.1 Murder Assault UrbanPop Rape
+# append cluster assignment
+mydata0<- data.frame(mydata.orig, fit$cluster)
+# Cluster Plot against 1st 2 principal components
+# vary parameters for most readable graph
+```{r}
+library(cluster)
+clusplot(mydata0, fit$cluster, color=TRUE, shade=TRUE,labels=2,
+lines=0)
+```
+
+#Segmentación de muestras mixtas basada en un modelo estadístico
+
+Los modelos de clases latentes suponen que la muestra que estamos
+analizando es representativa de una población mixta compuesta por *k*
+segmentos de tamaño $n(k)$. Por ello la probabilidad de que las
+medidas obtenidas del individuos *i* en las *p* variables o propiedades,
+$y_{i}$, hayan sido generadas por un modelo M con parámetros $\theta$ es
+igual a la suma, para las *k* clases, de la probabilidad de que la
+observación del individuo *i* pertenezca a cada una de las clases
+$f_{k}(.)$ ponderada por la proporción en que se han mezclado, $\pi_{k}$.
+Concretamente,
+
+$$f\left( y_{i}|\theta \right) = \sum_{k = 1}^{k}\pi_{k}f_{k}\left( y_{i}|\theta_{k} \right)$$
+
+Para estimar los parámetros del modelo M,
+$\theta = \left( \theta_{k} \right)$, la media y la matrixz de varianzas
+de cada clase latente, $\theta_{k} = \left( \mu_{k},\sum_{k} \right)$,
+tenemos que formar la función de verosimilitud y maximizar su logaritmo
+mediante el procedimiento EM, para un determinado número de clases
+latentes, *k*:
+
+$$L\left( M,K \right) = \sum_{i = 1}^{n}{\log\left\lbrack f\left( y_{i}|\theta \right) = \sum_{k = 1}^{k}\pi_{k}f_{k}\left( y_{i}|\theta_{k} \right) \right\rbrack}\backslash n$$
+
+Clasificación a posteriori
+
+Los modelos de clases latentes utilizados en los problemas de
+segmentación no solamente están interesados en estima rlos parámetros
+del modelo que genera la muestra mixta sino también en la clasificación
+de los individuos a los *k* grupos. Para ello utiliza las probabilidades
+calculadas después de estimar el modelo. Así una observación **y**~i~ se
+asigna al grupo cuya probabilidad de pertenencia es mayor, es decir, la
+probabilidad de pertenecer al grupo *k* condicionada a las
+características medidas del sujeto *i*, **y***~i~*,
+
+$$\pi_{k|y_{i} =}\frac{{\acute{\pi}}_{k}f_{k}\left( \mathbf{y}_{i}|{\acute{\theta}}_{k} \right)}{\sum_{k = 1}^{k}{\acute{\pi}}_{k}f_{k}\left( \mathbf{y}_{i}|{\acute{\theta}}_{k} \right)}$$
+
+Selección del modelo
+
+Los modelos estimados con un número diferente de clases latentes o
+grupos no son modelos anidados, el modelo con k-1 segmentos o grupos no
+es un modelo reducido del modelo con k segmentos. Por ello tenemos que
+basarnos en criterios heurísticos nos aproximan la cantidad de
+información que incorpora y al mismo tiempo tienen en cuenta el número
+de parámetros que los definen. Concretamente el Bayesian Information
+Criteria, BIC, y el Consistent Akaike’s Information Criteria, CAIC.
+Estos criterios favorecen a los modelos que muestran un menor valor del
+estadístico.
+
+$$BIC(L(M), K)=-2logL(M)+log(N)npar$$
+
+$$CAIC(L(M), K)=-2logL(M)+(log(N)+1)npar$$
+
+
+# Model Based Clustering
+
+```{r}
+library(mclust)
+fit.Mclust<- Mclust(mydata)
+fit.Mclust 
+names(fit.Mclust)
+# view solution summary
+```
+
+El mejor modelo tiene varianzas iguales diagonales (VEI) con tres segmentos
+```{r}
+fit.Mclust$BIC 
+# lookup all the options attempted
+classif <- fit.Mclust$classification 
+# classifiation vector
+mydata1 <- cbind(mydata.orig, classif) 
+# append to dataset
+# draw dendrogram with red borders around the k1 clusters
+mydata1[1:10,] 
+#view top 10 rows
+table(fit$cluster, classif)
+```
+Si queremos guardar el resultado
+````{r}
+#write.table(mydata1,file.choose()) 
+#save output
+fit1=cbind(classif)
+rownames(fit1)=rownames(mydata)
+library(cluster)
+clusplot(mydata, fit1, color=TRUE, shade=TRUE,labels=2, lines=0)
+```
+Paara obtener las medias en los segmenotos
+```{r}
+cmeans=aggregate(mydata.orig,by=list(classif),FUN=mean); cmeans
+```
+#Preparación de los datos: Análisis componentes principals
+
+```{r}
+# Principal Components Analysis
+# entering raw data and extracting PCs
+# from the correlation matrix
+fit.princomp<- princomp(mydata, cor=TRUE)
+summary(fit.princomp) 
+# print variance accounted for
+loadings(fit.princomp) 
+# pc loadings
+plot(fit.princomp,type="lines") 
+# scree plot
+```
+Puntuación en los compopnentes principales
+```{r}
+head(fit.princomp$scores) 
+# the principal components
+biplot(fit.princomp)
+```
+
+```{r}
+#Use cor=FALSE to base the principal components on the covariance matrix.
+#Use the covmat= option to enter a correlation or covariance matrixdirectly.
+#If entering a covariance matrix, include the option n.obs=.
+#The principal( ) function in the psych package can be used to extract and rotate principal components.
+# Varimax Rotated Principal Components
+# retaining 5 components
+library(psych)
+library(GPArotation)
+fit.principal<- principal(mydata, nfactors=4, rotate="varimax")
+fit.principal 
+# print results
+plot(fit.principal)
+?principal
+```
+
+mydata can be a raw data matrix or a covariance matrix. Pairwise
+deletion of missing data is used. rotate can "none", "varimax",
+"quatimax", "promax", "oblimin", "simplimax", or "cluster" .
+
+#Identificación de los individuos que forman los segmentos
+
+
+
+
 
