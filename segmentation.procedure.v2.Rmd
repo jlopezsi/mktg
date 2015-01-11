@@ -2,7 +2,7 @@
 title: 'Segmentación de mercados: proceso'
 author: "Jordi López Sintas"
 date: "9 de enero de 2015"
-output: word_document
+output: pdf_document
 ---
 
 #Modelos de segmentación: proceso

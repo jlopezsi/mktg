@@ -1,0 +1,36 @@
+---
+title: 'Caso KcHospital: Analysis en r'
+output: pdf_document
+---
+
+#Lectura de los datos del caso
+
+
+```{r}
+getwd()
+#"/kchospital/kchospital.txt"
+kchospital <- read.table(file.choose(), header=T)
+#"../kchspital/kcprefs.txt"
+kcprefs <- read.table(file.choose(), header=T)
+names(kchospital)
+names(kcprefs)
+```
+
+Facilitar el acceso a las variables de la tabla de datos:
+
+```{r, echo=TRUE}
+attach(kchospital)
+```
+Construir una tabla de datos con los factores que los clientes consideran importantes a la hora de seleccionar los hospitales maternos:
+```{r}
+fi<-cbind(FIREP, FICCUID, FIDIST, FICDOC, FICAMIG, FIPUBLI, FIAMAB, FIIMOD, FIEMOD, FISEG)
+```
+Cargamos los paquetes de análisis que utilizaremos:
+```{r}
+library(cluster)
+```
+
+#Proceso de segmentación en dos etapas: aglomeración jerárquica y partición
+
+Vamos a utilizar, en primer lugar, los algoritmos clásicos implementados en los programas de análisis de datos más habituales: el jerárquico aglomerativo, hclust, y el de partición de una muestra, kmeans. Si queremos saber algo más sobre el algoritmo implementado podemos utilizar la ayuda, help, y como argumento en nombre de la función de la que queremos saber algo, hclust,como argumento. Por ejemplo, `help(hclust)`.  Con la función `scale(fi)`podemos normalizar los datos si es preciso.
+
