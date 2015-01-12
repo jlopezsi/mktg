@@ -435,18 +435,21 @@ library(cluster)
 sim.clara<-clara(sim, 2)
 plot(sim, type="n", xlab="x1", ylab="x2")
 text(sim, labels=sim.clara$clustering)
-plot(sim.clara)
+clusplot(sim.clara, color=TRUE, shade=TRUE, labels=2, lines=0)
+#plot(sim.clara)
 ```
 
 Repetimos el proceso para 3 clusters
 ```{r}
 sim.clara3<-clara(sim, 3)
-plot(sim.clara3)
+clusplot(sim.clara3, color=TRUE, shade=TRUE,labels=2, lines=0)
+#plot(sim.clara3)
 ```
 Repetimos el proceso para 4 clusters. Ahora comparamos los resultados con `kmeans`.
 ```{r}
 sim.clara4<-clara(sim, 4)
-plot(sim.clara4)
+clusplot(sim.clara4, color=TRUE, shade=TRUE,labels=2, lines=0)
+#plot(sim.clara4)
 table(sim.clara$clustering, sim.kmeans.centros$cluster)
 table(sim.clara3$clustering, sim.kmeans.centros3$cluster)
 table(sim.clara4$clustering, sim.kmeans.centros4$cluster)
@@ -472,18 +475,17 @@ Ward Hierarchical Clustering
 d <- dist(mydata, method = "euclidean") # distance matrix
 fit<- hclust(d, method="ward")
 ```
-Visualizar el gráfico
+Visualizar el gráfico y mostrar el dendrograma con bordes rojos alrededor de *k* clusters
 ```{r}
 plot(fit) # display dendogram
 k1 = 2 
 # eyeball the no. of clusters
 # cut tree into k1 clusters
 groups = cutree(fit, k=k1)
+groups
+rect.hclust(fit, k=2, border="red")
 ```
-Mostrar el dendograma con bordes rojos alrededor de *k* clusters
-```{r}
-#rect.hclust(fit, k=2, border="red")
-```
+
 
 De nuevo la pregunta aparece, ¿cómo conocer el número óptimo de segmentos? Observando el  dendrograma en ciertas ocasiones puede ser de ayuda para tomar la decisión. Pero en otras ocasiones, ¿qué deberíamos hacer? La mayoría, si no todos, los programas esperan que conozcas el número correcto de segmentos a formar a la hora de utilizar la función  `kmaenas`. `R` lo hace mejor y te muestra un   one better **scree plot** de la familia de los gráficos que te muestran cómo la varianza dentro de los segmentos (un idicador de la calidad  de la solución) varía con el número de segmentos formados. Por ello, con **R** puedes tomar una decisión informada.
 

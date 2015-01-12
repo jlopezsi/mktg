@@ -1,0 +1,803 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html class="aui ltr" dir="ltr" lang="en-GB"> <head> <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> <title>New Eurostat website - Eurostat</title> <meta content="initial-scale=1.0, width=device-width" name="viewport" /> <meta content="text/html; charset=UTF-8" http-equiv="content-type" /> <link href="http://ec.europa.eu/eurostat/estat-theme/images/favicon.ico" rel="Shortcut Icon" /> <link href="http&#x3a;&#x2f;&#x2f;ec&#x2e;europa&#x2e;eu&#x2f;eurostat&#x2f;help&#x2f;new-eurostat-website" rel="canonical" /> <link href="http://ec.europa.eu/eurostat/help/new-eurostat-website" hreflang="x-default" rel="alternate" /> <link href="http&#x3a;&#x2f;&#x2f;ec&#x2e;europa&#x2e;eu&#x2f;eurostat&#x2f;help&#x2f;new-eurostat-website" hreflang="en-GB" rel="alternate" /> <link href="http&#x3a;&#x2f;&#x2f;ec&#x2e;europa&#x2e;eu&#x2f;eurostat&#x2f;de&#x2f;help&#x2f;new-eurostat-website" hreflang="de-DE" rel="alternate" /> <link href="http&#x3a;&#x2f;&#x2f;ec&#x2e;europa&#x2e;eu&#x2f;eurostat&#x2f;fr&#x2f;help&#x2f;new-eurostat-website" hreflang="fr-FR" rel="alternate" /> <link class="lfr-css-file" href="http&#x3a;&#x2f;&#x2f;ec&#x2e;europa&#x2e;eu&#x2f;eurostat&#x2f;estat-theme&#x2f;css&#x2f;aui&#x2e;css&#x3f;browserId&#x3d;other&#x26;themeId&#x3d;ESTATtheme_WAR_estattheme&#x26;minifierType&#x3d;css&#x26;languageId&#x3d;en_GB&#x26;b&#x3d;6210&#x26;t&#x3d;1418644154000" rel="stylesheet" type="text/css" /> <link href="&#x2f;eurostat&#x2f;html&#x2f;css&#x2f;main&#x2e;css&#x3f;browserId&#x3d;other&#x26;themeId&#x3d;ESTATtheme_WAR_estattheme&#x26;minifierType&#x3d;css&#x26;languageId&#x3d;en_GB&#x26;b&#x3d;6210&#x26;t&#x3d;1418644154000" rel="stylesheet" type="text/css" /> <link href="http://ec.europa.eu/eurostat/html/portlet/journal_content/css/main.css?browserId=other&amp;themeId=ESTATtheme_WAR_estattheme&amp;minifierType=css&amp;languageId=en_GB&amp;b=6210&amp;t=1420817255000" rel="stylesheet" type="text/css" /> <link href="http://ec.europa.eu/eurostat/notifications-portlet/notifications/css/main.css?browserId=other&amp;themeId=ESTATtheme_WAR_estattheme&amp;minifierType=css&amp;languageId=en_GB&amp;b=6210&amp;t=1420817878000" rel="stylesheet" type="text/css" /> <script type="text/javascript">var Liferay={Browser:{acceptsGzip:function(){return false},getMajorVersion:function(){return 0},getRevision:function(){return""},getVersion:function(){return""},isAir:function(){return false},isChrome:function(){return false},isFirefox:function(){return false},isGecko:function(){return false},isIe:function(){return false},isIphone:function(){return false},isLinux:function(){return false},isMac:function(){return false},isMobile:function(){return false},isMozilla:function(){return false},isOpera:function(){return false},isRtf:function(){return false},isSafari:function(){return false},isSun:function(){return false},isWap:function(){return false},isWapXhtml:function(){return false},isWebKit:function(){return false},isWindows:function(){return false},isWml:function(){return false}},Data:{NAV_SELECTOR:"#navigation",isCustomizationView:function(){return false},notices:[null]},ThemeDisplay:{getLayoutId:function(){return"133"},getLayoutURL:function(){return"http://ec.europa.eu/eurostat/help/new-eurostat-website"},getParentLayoutId:function(){return"47"},isPrivateLayout:function(){return"false"},isVirtualLayout:function(){return false},getBCP47LanguageId:function(){return"en-GB"},getCDNBaseURL:function(){return"http://ec.europa.eu"},getCDNDynamicResourcesHost:function(){return""},getCDNHost:function(){return""},getCompanyId:function(){return"10159"},getCompanyGroupId:function(){return"10199"},getDefaultLanguageId:function(){return"en_GB"},getDoAsUserIdEncoded:function(){return""},getLanguageId:function(){return"en_GB"},getParentGroupId:function(){return"10186"},getPathContext:function(){return"/eurostat"},getPathImage:function(){return"/eurostat/image"},getPathJavaScript:function(){return"/eurostat/html/js"},getPathMain:function(){return"/eurostat/c"},getPathThemeImages:function(){return"http://ec.europa.eu/eurostat/estat-theme/images"},getPathThemeRoot:function(){return"/eurostat/estat-theme"},getPlid:function(){return"6205162"},getPortalURL:function(){return"http://ec.europa.eu"},getPortletSetupShowBordersDefault:function(){return true},getScopeGroupId:function(){return"10186"},getScopeGroupIdOrLiveGroupId:function(){return"10186"},getSessionId:function(){return""},getSiteGroupId:function(){return"10186"},getURLControlPanel:function(){return"/eurostat/group/control_panel?refererPlid=6205162"},getURLHome:function(){return"http\x3a\x2f\x2fec\x2eeuropa\x2eeu\x2feurostat\x2fweb\x2fmain\x2fhome"},getUserId:function(){return"10163"},getUserName:function(){return""},isAddSessionIdToURL:function(){return false},isFreeformLayout:function(){return false},isImpersonated:function(){return false},isSignedIn:function(){return false},isStateExclusive:function(){return false},isStateMaximized:function(){return false},isStatePopUp:function(){return false}},PropsValues:{NTLM_AUTH_ENABLED:false}};var themeDisplay=Liferay.ThemeDisplay;Liferay.AUI={getAvailableLangPath:function(){return"available_languages.jsp?browserId=other&themeId=ESTATtheme_WAR_estattheme&colorSchemeId=01&minifierType=js&languageId=en_GB&b=6210&t=1420817875000"},getCombine:function(){return true},getComboPath:function(){return"/eurostat/combo/?browserId=other&minifierType=&languageId=en_GB&b=6210&t=1420817875000&"},getFilter:function(){return"min"},getJavaScriptRootPath:function(){return"/eurostat/html/js"},getLangPath:function(){return"aui_lang.jsp?browserId=other&themeId=ESTATtheme_WAR_estattheme&colorSchemeId=01&minifierType=js&languageId=en_GB&b=6210&t=1420817875000"}};Liferay.authToken="N1Wu1RH2";Liferay.currentURL="\x2feurostat\x2fhelp\x2fnew-eurostat-website";Liferay.currentURLEncoded="%2Feurostat%2Fhelp%2Fnew-eurostat-website";</script> <script src="/eurostat/html/js/barebone.jsp?browserId=other&amp;themeId=ESTATtheme_WAR_estattheme&amp;colorSchemeId=01&amp;minifierType=js&amp;minifierBundleId=javascript.barebone.files&amp;languageId=en_GB&amp;b=6210&amp;t=1420817875000" type="text/javascript"></script> <script type="text/javascript">Liferay.Portlet.list=["85_INSTANCE_XXpXD5OUiwsr","56_INSTANCE_dO4tlV8IjZgE","2_WAR_notificationsportlet","estatsearchportlet_WAR_estatsearchportlet"];</script> <link class="lfr-css-file" href="http&#x3a;&#x2f;&#x2f;ec&#x2e;europa&#x2e;eu&#x2f;eurostat&#x2f;estat-theme&#x2f;css&#x2f;main&#x2e;css&#x3f;browserId&#x3d;other&#x26;themeId&#x3d;ESTATtheme_WAR_estattheme&#x26;minifierType&#x3d;css&#x26;languageId&#x3d;en_GB&#x26;b&#x3d;6210&#x26;t&#x3d;1418644154000" rel="stylesheet" type="text/css" /> <style type="text/css">#p_p_id_85_INSTANCE_XXpXD5OUiwsr_ .portlet{border-width:;border-style:}#p_p_id_56_INSTANCE_dO4tlV8IjZgE_ .portlet{border-width:;border-style:}</style> <script type="text/javascript" src="http://ec.europa.eu/eurostat/estat-theme/js/jquery/jquery-1.11.1.min.js"></script> <script type="text/javascript" src="http://ec.europa.eu/eurostat/estat-theme/js/jquery/jquery.jcarousel.min.js"></script> <script type="text/javascript" src="http://ec.europa.eu/eurostat/estat-theme/js/homepage.js"></script> <script type="text/javascript" src="http://ec.europa.eu/eurostat/estat-theme/js/tools.js"></script> <script src="http://ec.europa.eu/eurostat/estat-theme/js/cookie_config.js" type="text/javascript"></script> <script src="http://ec.europa.eu/eurostat/estat-theme/js/consent.js" type="text/javascript"></script> <!--[if (gte IE 6)&(lte IE 8)]> <script>$(document).ready(function(){$("body").addClass("ie6_8")});</script> <![endif]--> </head> <body class="default yui3-skin-sam controls-visible guest-site signed-out public-page site dockbar-split"> <a href="#main-content" id="skip-to-content">Skip to Content</a> <!-- only shows dockbar when user is signed in --> <div class="container-fluid" id="wrapper"> <header id="banner" role="banner"> <div id="heading"> <div id="signin"> <a href="http://ec.europa.eu/eurostat/c/portal/login?p_l_id=6205162" id="sign-in" rel="nofollow">Sign In</a> <strong>|</strong> <a href="https://webgate.ec.europa.eu/cas/eim/external/register.cgi">Register</a> <img src="http://ec.europa.eu/eurostat/estat-theme/images/header/login.png" alt="Sign In" title="Sign In" /> </div> <div id="links"> <ul> <li> <a href="http://ec.europa.eu/geninfo/legal_notices_en.htm" target="_blank">Legal notice</a> | <img alt="" src="/eurostat/documents/10199/19251/rss.png" style="width: 13px; height: 13px;" />&nbsp;<a href="/eurostat/web/rss/about-rss">RSS </a>|&nbsp;<a href="http://ec.europa.eu/cookies/index_en.htm" target="_blank">Cookies</a> |&nbsp;<a href="/eurostat/web/links">Links</a> | <a href="/eurostat/help/support">Contact</a> </li> <li id="language"> <form action="http://ec.europa.eu/eurostat/help/new-eurostat-website?p_p_id=82&amp;p_p_lifecycle=1&amp;p_p_state=normal&amp;p_p_mode=view&amp;_82_struts_action=%2Flanguage%2Fview&amp;_82_redirect=%2Feurostat%2Fhelp%2Fnew-eurostat-website" class="form " id="fm" method="post" name="fm" > <input name="formDate" type="hidden" value="1421068299018" /> <div class="control-group"> <select class="aui-field-select" id="_82_languageId" name="_82_languageId" onChange="submitForm(document.fm);" title="Language (Changing the value of this field will reload the page.)" > <option class="taglib-language-option" selected value="en_GB" lang="en-GB" > English </option> <option class="taglib-language-option" value="de_DE" lang="de-DE" > Deutsch </option> <option class="taglib-language-option" value="fr_FR" lang="fr-FR" > français </option> </select> </div> </form> </li> </ul> </div> <a href="http://ec.europa.eu/eurostat/web/main/home" title="Eurostat"> <div id="title"> <span id="env"> &nbsp; </span> <h1> Your key to European statistics </h1> </div> </a> <div id="searchbox"> <div class="portlet-boundary portlet-boundary_estatsearchportlet_WAR_estatsearchportlet_ portlet-static portlet-static-end portlet-borderless " id="p_p_id_estatsearchportlet_WAR_estatsearchportlet_" > <span id="p_estatsearchportlet_WAR_estatsearchportlet"></span> <div class="portlet-borderless-container" style=""> <div class="portlet-body"> <link rel="stylesheet" href="/eurostat/estat-search-portlet/resources/css/reset.css"> <!-- Template JS - Do not modify --> <script type="text/javascript" src="/eurostat/estat-search-portlet/resources/js/template.js"></script> <!-- Oldies CSS and scripts --> <!--[if lte IE 8]> <script type="text/javascript">activeHTML();</script> <![endif]--> <!--[if lte IE 7]> <script type="text/javascript" src="/eurostat/estat-search-portlet/resources/fonts/lte-ie7.js"</script> <![endif]--> <!-- Custom CSS HERE --> <link rel="stylesheet" href="/eurostat/estat-search-portlet/resources/css/eurostat-se.css"> <link rel="stylesheet" href="/eurostat/estat-search-portlet/resources/css/jquery-ui-1.11.1.css"> <script>window.jQuery||document.write('<script src="/eurostat/estat-search-portlet/resources/js/jquery-1.11.1.min.js"><\/script>');</script> <script type="text/javascript" src="/eurostat/estat-search-portlet/resources/js/jquery-ui-1.11.1.min.js"></script> <!-- START MOCK UP--> <form method="post" action="http://ec.europa.eu/eurostat/help/new-eurostat-website?p_auth=N1Wu1RH2&p_p_id=estatsearchportlet_WAR_estatsearchportlet&p_p_lifecycle=1&p_p_state=maximized&p_p_mode=view&_estatsearchportlet_WAR_estatsearchportlet_action=search" class="form-search-portlet" id="searchPortletForm" name="searchPortletForm"> <!-- copy paste from header --> <!-- start --> <!-- <input type="text" placeholder="Type a keyword, a code, a title..." value="" title="Type a keyword, a publication title, a dataset title..." name="text" id="keywords" class="main-search-field field lfr-search-keywords"> -->
+			<div class="input-append">
+				<input class="main-search-field search-query-home" type="text" placeholder="Type a keyword, a publication title, a dataset title..." name="text" value="">
+				<button type="submit" class="btn btn-primary search-query-button-home">&nbsp;<span class="icon-search"></span>&nbsp;</button>
+			</div>
+			<!-- end -->
+			
+			<script type="text/javascript">
+					$[ "ui" ][ "autocomplete" ].prototype["_renderItem"] = function( ul, item) {
+						return $("<li></li>") 
+							.data("item.autocomplete", item )
+							.append( $( "<a></a>" ).html( item.label ) )
+							.appendTo( ul );
+					};
+					$(".main-search-field").autocomplete({
+					  minLength: 3,
+					  source: function(request, response) {
+						$.getJSON("http://ec.europa.eu/eurostat/help/new-eurostat-website?p_p_id=estatsearchportlet_WAR_estatsearchportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_cacheability=cacheLevelPage&_estatsearchportlet_WAR_estatsearchportlet_action=autocomplete", { text: request.term }, response);
+					  },
+					  open: function() { 
+						  $(this).autocomplete("widget").css({
+				                "width": $(".main-search-field").width()
+				            });
+						},  
+					  focus: function(event, ui) {
+						  //$(".main-search-field").val(ui.item.label.replace(/(<([^>]+)>)/ig,""));
+						  event.preventDefault();
+						},
+					  select: function( event, ui ) {
+						  $(".main-search-field").val(ui.item.label.replace(/(<([^>]+)>)/ig,""));
+						  event.preventDefault();
+						  $(".form-search-portlet").submit();
+						},
+						change: function( event, ui ) {
+							  $(".main-search-field").val(ui.item.label.replace(/(<([^>]+)>)/ig,""));
+							  event.preventDefault();
+						}
+					});
+			</script>
+		</form>
+        
+
+
+	
+	
+
+					
+				
+			
+		
+	
+	
+
+
+
+	</div>
+
+				</div>
+
+				
+			
+		
+	
+
+				
+				
+			
+
+		
+
+	
+
+
+
+
+
+		
+	</div>
+
+
+
+
+
+		
+
+		
+	</div>
+</div>
+
+<nav id="breadcrumbs">
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul aria-label="Breadcrumb" class="breadcrumb">
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	
+
+	<li><a href="http://ec.europa.eu/index_en.htm">European Commission</a></li>
+<li><a href="/eurostat/web/main">Eurostat</a></li>
+
+	
+	<li><a href="http://ec.europa.eu/eurostat/help" >Help</a></li><li><a href="http://ec.europa.eu/eurostat/help/demo-tours" >Demo tours</a></li><li>New Eurostat website</li>
+</ul>
+
+
+
+</nav>
+
+	<nav class="sort-pages modify-pages navbar site-navigation" id="navigation" role="navigation">
+	<div class="navbar-inner">
+		<div class="collapse nav-collapse">
+			<ul aria-label="Site Pages" class="nav nav-collapse" role="menubar">
+																		
+							
+													
+						<li class="lfr-nav-item dropdown" id="layout_2"  role="presentation">
+							<a aria-labelledby="layout_2" aria-haspopup='true' class="dropdown-toggle disabled" href="http://ec.europa.eu/eurostat/news" data-toggle="dropdown"  role="menuitem">
+								<span>News <b class="icon-caret-down"></b></span>
+							</a>
+	
+															<ul class="dropdown-menu child-menu" id="child_2" role="menu">
+																														
+													
+											<li class="lfr-nav-item" id="layout_3"  role="presentation">
+												<a aria-labelledby="layout_3" href="http://ec.europa.eu/eurostat/news/news-releases"  role="menuitem">> News releases</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_100"  role="presentation">
+												<a aria-labelledby="layout_100" href="http://ec.europa.eu/eurostat/news/calendars"  role="menuitem">> Release calendars</a>
+											</li>
+																											</ul>
+																					</li>					
+														
+							
+													
+						<li class="lfr-nav-item dropdown" id="layout_4"  role="presentation">
+							<a aria-labelledby="layout_4" aria-haspopup='true' class="dropdown-toggle disabled" href="http://ec.europa.eu/eurostat/data" data-toggle="dropdown"  role="menuitem">
+								<span>Data <b class="icon-caret-down"></b></span>
+							</a>
+	
+															<ul class="dropdown-menu child-menu" id="child_4" role="menu">
+																														
+													
+											<li class="lfr-nav-item" id="layout_5"  role="presentation">
+												<a aria-labelledby="layout_5" href="http://ec.europa.eu/eurostat/data/database"  role="menuitem">> Database</a>
+											</li>
+																																																		
+													
+											<li class="lfr-nav-item" id="layout_16"  role="presentation">
+												<a aria-labelledby="layout_16" href="http://ec.europa.eu/eurostat/data/browse-statistics-by-theme"  role="menuitem">> Browse statistics by theme</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_54"  role="presentation">
+												<a aria-labelledby="layout_54" href="http://ec.europa.eu/eurostat/data/statistics-a-z"  role="menuitem">> Statistics A - Z</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_55"  role="presentation">
+												<a aria-labelledby="layout_55" href="http://ec.europa.eu/eurostat/data/bulkdownload"  role="menuitem">> Bulk download</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_56"  role="presentation">
+												<a aria-labelledby="layout_56" href="/eurostat/web/sdmx-web-services/about-eurostat-data"  role="menuitem">> SDMX Web Services</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_57"  role="presentation">
+												<a aria-labelledby="layout_57" href="/eurostat/web/microdata/overview"  role="menuitem">> Access to microdata</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_58"  role="presentation">
+												<a aria-labelledby="layout_58" href="/eurostat/web/gisco/overview"  role="menuitem">> GISCO:Geographical Information and maps</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_59"  role="presentation">
+												<a aria-labelledby="layout_59" href="http://ec.europa.eu/eurostat/data/metadata"  role="menuitem">> Metadata</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_67"  role="presentation">
+												<a aria-labelledby="layout_67" href="http://ec.europa.eu/eurostat/data/sdmx-data-metadata-exchange"  role="menuitem">> Statistical Data and Metadata eXchange (SDMX)</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_68"  role="presentation">
+												<a aria-labelledby="layout_68" href="http://ec.europa.eu/eurostat/data/data-validation"  role="menuitem">> Data validation</a>
+											</li>
+																											</ul>
+																					</li>					
+														
+							
+													
+						<li class="lfr-nav-item dropdown" id="layout_6"  role="presentation">
+							<a aria-labelledby="layout_6" aria-haspopup='true' class="dropdown-toggle disabled" href="http://ec.europa.eu/eurostat/publications" data-toggle="dropdown"  role="menuitem">
+								<span>Publications <b class="icon-caret-down"></b></span>
+							</a>
+	
+															<ul class="dropdown-menu child-menu" id="child_6" role="menu">
+																														
+													
+											<li class="lfr-nav-item" id="layout_69"  role="presentation">
+												<a aria-labelledby="layout_69" href="http://ec.europa.eu/eurostat/publications/recently-published"  role="menuitem">> Recently published</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_70"  role="presentation">
+												<a aria-labelledby="layout_70" href="/eurostat/statistics-explained/index.php/Main_Page" target="blank" role="menuitem">> Statistics Explained</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_90"  role="presentation">
+												<a aria-labelledby="layout_90" href="http://ec.europa.eu/eurostat/publications/yearbook"  role="menuitem">> Eurostat yearbook</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_72"  role="presentation">
+												<a aria-labelledby="layout_72" href="http://ec.europa.eu/eurostat/publications/regional-yearbook"  role="menuitem">> Regional yearbook 2014 / Statistical Atlas</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_75"  role="presentation">
+												<a aria-labelledby="layout_75" href="http://ec.europa.eu/eurostat/publications/collections"  role="menuitem">> Collections</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_77"  role="presentation">
+												<a aria-labelledby="layout_77" href="http://ec.europa.eu/eurostat/printed-publications"  role="menuitem">> Printed publications</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_78"  role="presentation">
+												<a aria-labelledby="layout_78" href="http://ec.europa.eu/eurostat/how-to-order"  role="menuitem">> How to order?</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_79"  role="presentation">
+												<a aria-labelledby="layout_79" href="http://ec.europa.eu/eurostat/collections/publications-guidelines"  role="menuitem">> Publications guidelines</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_80"  role="presentation">
+												<a aria-labelledby="layout_80" href="http://ec.europa.eu/eurostat/collections/data-code"  role="menuitem">> Data code</a>
+											</li>
+																											</ul>
+																					</li>					
+														
+							
+													
+						<li class="lfr-nav-item dropdown" id="layout_7"  role="presentation">
+							<a aria-labelledby="layout_7" aria-haspopup='true' class="dropdown-toggle disabled" href="http://ec.europa.eu/eurostat/about" data-toggle="dropdown"  role="menuitem">
+								<span>About Eurostat <b class="icon-caret-down"></b></span>
+							</a>
+	
+															<ul class="dropdown-menu child-menu" id="child_7" role="menu">
+																														
+													
+											<li class="lfr-nav-item" id="layout_23"  role="presentation">
+												<a aria-labelledby="layout_23" href="http://ec.europa.eu/eurostat/about/overview"  role="menuitem">> Overview</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_93"  role="presentation">
+												<a aria-labelledby="layout_93" href="http://ec.europa.eu/eurostat/about/news"  role="menuitem">> Eurostat news</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_28"  role="presentation">
+												<a aria-labelledby="layout_28" href="http://ec.europa.eu/eurostat/about/opportunities"  role="menuitem">> Opportunities</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_33"  role="presentation">
+												<a aria-labelledby="layout_33" href="http://ec.europa.eu/eurostat/about/our-partners"  role="menuitem">> Our partners</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_34"  role="presentation">
+												<a aria-labelledby="layout_34" href="http://ec.europa.eu/eurostat/about/policies"  role="menuitem">> Policies</a>
+											</li>
+																											</ul>
+																					</li>					
+														
+							
+													
+						<li class="lfr-nav-item dropdown" id="layout_8"  role="presentation">
+							<a aria-labelledby="layout_8" aria-haspopup='true' class="dropdown-toggle disabled" href="http://ec.europa.eu/eurostat/help" data-toggle="dropdown"  role="menuitem">
+								<span>Help <b class="icon-caret-down"></b></span>
+							</a>
+	
+															<ul class="dropdown-menu child-menu" id="child_8" role="menu">
+																														
+													
+											<li class="lfr-nav-item" id="layout_42"  role="presentation">
+												<a aria-labelledby="layout_42" href="http://ec.europa.eu/eurostat/help/support"  role="menuitem">> User support</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_43"  role="presentation">
+												<a aria-labelledby="layout_43" href="http://ec.europa.eu/eurostat/help/institutional-support"  role="menuitem">> Institutional support</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_45"  role="presentation">
+												<a aria-labelledby="layout_45" href="http://ec.europa.eu/eurostat/help/press-media-support"  role="menuitem">> Press, media support</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_44"  role="presentation">
+												<a aria-labelledby="layout_44" href="http://ec.europa.eu/eurostat/help/first-visit"  role="menuitem">> First Visit</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_46"  role="presentation">
+												<a aria-labelledby="layout_46" href="http://ec.europa.eu/eurostat/help/faq"  role="menuitem">> Frequently asked questions (FAQ)</a>
+											</li>
+																															
+													
+											<li class="lfr-nav-item" id="layout_47"  role="presentation">
+												<a aria-labelledby="layout_47" href="http://ec.europa.eu/eurostat/help/demo-tours"  role="menuitem">> Demo tours</a>
+											</li>
+																											</ul>
+																					</li>					
+																																																																																																																								</ul>
+		</div>
+	</div>
+</nav>
+
+<script>
+	Liferay.Data.NAV_LIST_SELECTOR = '.navbar-inner .nav-collapse > ul';
+</script>			</header>
+		
+			<div id="content">
+									
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="columns-2" id="main-content" role="main">
+	<div class="portlet-layout row-fluid">
+		<div class="portlet-column portlet-column-first span5" id="column-1">
+			<div class="portlet-dropzone portlet-column-content portlet-column-content-first" id="layout-column_column-1">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="portlet-boundary portlet-boundary_85_  portlet-static portlet-static-end portlet-site-map " id="p_p_id_85_INSTANCE_XXpXD5OUiwsr_" >
+		<span id="p_85_INSTANCE_XXpXD5OUiwsr"></span>
+
+
+
+	
+	
+	
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+
+		
+
+		
+			
+				
+
+<section class="portlet" id="portlet_85_INSTANCE_XXpXD5OUiwsr">
+	<header class="portlet-topper">
+		<h1 class="portlet-title">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+		<span class=""
+			
+				onmouseover="Liferay.Portal.ToolTip.show(this, 'Help')"
+			
+		>
+			
+				
+				
+					
+	
+		
+		
+			
+				
+					
+						
+							<img id="rjus_column1_0" src="/eurostat/html/icons/site_map.png"  alt="" /> <span class="taglib-text hide-accessible">Help</span> </span> <span class="portlet-title-text">Help</span> </h1> <menu class="portlet-topper-toolbar" id="portlet-topper-toolbar_85_INSTANCE_XXpXD5OUiwsr" type="toolbar"> </menu> </header> <div class="portlet-content"> <div class=" portlet-content-container" style=""> <div class="portlet-body"> <ul><li class=" expanded" data-menuitem="mi738527"><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/support" class=" expanded" > User support</a><ul><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/support/telephone" > Telephone help</a></li><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/support/privacy-statement" > Privacy statement</a></li></ul></li><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/institutional-support" > Institutional support</a></li><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/press-media-support" > Press, media support</a></li><li class=" expanded" data-menuitem="mi739513"><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/first-visit" class=" expanded" > First Visit</a><ul><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/first-visit/content" > Content</a></li><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://epp.eurostat.ec.europa.eu/statistics_explained/index.php/Statistics_Explained" target="blank"> Statistics Explained</a></li><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/first-visit/database" > Database</a></li><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/first-visit/tools" > Tools</a></li><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/first-visit/statistics-illustrated" > Statistics Illustrated</a></li><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/first-visit/services" > Services</a></li></ul></li><li class=""><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/faq" > Frequently asked questions (FAQ)</a></li><li class=" expanded" data-menuitem="mi739576"><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/demo-tours" class=" expanded" > Demo tours</a><ul><li class="current"><a class="switch" href="#">&nbsp;</a><a href="http://ec.europa.eu/eurostat/help/new-eurostat-website" class="current" > New Eurostat website</a></li></ul></li></ul> </div> </div> </div> </section> </div> </div> </div> <div class="portlet-column span15" id="column-2"> <div class="portlet-dropzone portlet-column-content" id="layout-column_column-2"> <div class="portlet-boundary portlet-boundary_56_ portlet-static portlet-static-end portlet-journal-content " id="p_p_id_56_INSTANCE_dO4tlV8IjZgE_" > <span id="p_56_INSTANCE_dO4tlV8IjZgE"></span> <section class="portlet" id="portlet_56_INSTANCE_dO4tlV8IjZgE"> <header class="portlet-topper"> <h1 class="portlet-title"> <span class="" onmouseover="Liferay.Portal.ToolTip.show(this, 'Eurostat\x26\x23039\x3bs\x20new\x20website')" > <img id="rjus_column2_0" src="/eurostat/html/icons/journal_content.png" alt="" /> <span class="taglib-text hide-accessible">Eurostat&#039;s new website</span> </span> <span class="portlet-title-text">Eurostat&#039;s new website</span> </h1> <menu class="portlet-topper-toolbar" id="portlet-topper-toolbar_56_INSTANCE_dO4tlV8IjZgE" type="toolbar"> </menu> </header> <div class="portlet-content"> <div class=" portlet-content-container" style=""> <div class="portlet-body"> <div class="journal-content-article"> 15 December 2014 <h1 style="text-align: center;"><a href="http://ec.europa.eu/eurostat">New Eurostat website!</a>&nbsp;</h1> <h1 style="text-align: center;"><strong><a class="blueblock" href="http://ec.europa.eu/eurostat">Click here to go to "Home"</a></strong></h1> <p style="text-align: justify;">The website has been subject to a complete design overhaul to make it more attractive and easier to use, although the overall structure of the website will remain the same. Furthermore, the technological infrastructure supporting the website has been replaced.</p> <p>The <strong>data extraction and visualization tools will not change</strong> and keep the same functionality.</p> <p><strong>What will change for you: </strong></p> <ol> <li class="xls"> <p>URL changes - please update your bookmarks accordingly<br /> <br /> - <strong>The root URL will change</strong> from<br /> <br /> http://epp.eurostat.ec.europa.eu<br /> <br /> to<br /> <br /> <a href="http://ec.europa.eu/eurostat">http://ec.europa.eu/eurostat</a><br /> <br /> - <strong>The bulk download URL will change</strong> from<br /> <br /> http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing<br /> <br /> to<br /> <br /> <strong><a href="http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing" target="_blank">http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing</a></strong></p> <p>In this&nbsp;<a href="/eurostat/documents/10186/763723/Final-Mapping-Links.xls"><img alt="" src="/eurostat/documents/10199/126046/excel16.png/8f29d220-e623-4613-9fcf-4813ac1b2da3?t=1417013527825" />Excel file</a> you can find&nbsp;a <strong>mapping of the links</strong> of the sections between&nbsp;the old and the new website.</p> </li> <li>If you were registered on the current website you will <strong>not be automatically registered</strong><sup>(*)</sup> on the new website which will be using the European Commission Authentication System (ECAS).<br /> &nbsp;</li> <li>A <strong>new search function</strong> can be found in the banner of every page of the new website.<br /> &nbsp;</li> <li>Short information videos on "<a href="/eurostat/documents/10186/6208294/registration-new-web.swf/022fcf15-8141-4f64-b7d0-76c4529d36c3" target="_blank">How to register on the new website</a>" and "<a href="/eurostat/documents/10186/6208294/Estat-new-web.swf/91b816f9-4d62-4986-8f94-dd102cd2eec9" target="_blank">A guide through the new website</a>" are available for you to consult.</li> </ol> <p>If you have any questions,&nbsp;please address them to our user support via the <a href="/eurostat/help/support">"Help" page</a>.</p> <p><strong>We hope that the new website will improve your experience when looking for European statistics.</strong></p> <p style="text-align: justify;"><sup>(*) </sup>Except for users who confirmed to the Eurostat User support network to migrate their accounts. Only these accounts will be registered automatically.</p> <h1 style="text-align: center;"><a class="blueblock" href="http://ec.europa.eu/eurostat">Click here to go to "Home"</a></h1> </div> <div class="entry-links"> </div> </div> </div> </div> </section> </div> </div> </div> </div> </div> <div class="portlet-boundary portlet-boundary_1_WAR_kaleodesignerportlet_ portlet-static portlet-static-end kaleo-designer-portlet " id="p_p_id_1_WAR_kaleodesignerportlet_" > <span id="p_1_WAR_kaleodesignerportlet"></span> </div> <form action="#" id="hrefFm" method="post" name="hrefFm"> <span></span> </form> </div> <footer id="footer" role="contentinfo"> <div> <ul> <li> <p>News</p> <a href="/eurostat/news/news-releases">News releases</a><br /> <a href="/eurostat/news/release-calendar">Release calendar</a></li> <li> <p>Data</p> <a href="/eurostat/data/database">Database</a><br /> <a href="/eurostat/data/browse-statistics-by-theme">Statistics by theme</a><br /> <a href="/eurostat/data/statistics-a-z">Statistics A to Z </a></li> <li> <p>Publications</p> <a href="/eurostat/statistics-explained" target="_blank">Statistics Explained</a><br /> <a href="/eurostat/publications/recently-published">Recent publications</a></li> <li> <p>About us</p> <ul> <li><a href="/eurostat/about/overview">Overview</a><br /> <a href="/eurostat/about/overview/how-to-find-us">How to find us</a><br /> <a href="/eurostat/help/support">Contact</a></li> <li><a href="/eurostat/web/calls-for-tenders/overview">Calls for tenders</a><br /> <a href="/eurostat/about/opportunities/grants">Grants</a><br /> <a href="/eurostat/web/rss/about-rss"><img alt="rss" src="/eurostat/documents/10199/19254/rss.png" style="width: 13px; height: 13px;" /></a>&nbsp;<a href="https://twitter.com/EU_Eurostat" target="_blank"><img alt="twitter" src="/eurostat/documents/10199/19254/twitter.png" style="width: 16px; height: 13px;" />​</a></li> </ul> </li> <li id="footer_logos"><img alt="Estat Logo" src="/eurostat/documents/10199/19254/footer_logos.png" />​</li> </ul> </div> </footer> </div> <script src="http://ec.europa.eu/eurostat/notifications-portlet/notifications/js/main.js?browserId=other&amp;minifierType=js&amp;languageId=en_GB&amp;b=6210&amp;t=1420817878000" type="text/javascript"></script> <script type="text/javascript">Liferay.Util.addInputFocus();</script> <script type="text/javascript">document.fm._82_languageId.options[0].style.backgroundImage="url(http://ec.europa.eu/eurostat/estat-theme/images/language/en_GB.png)";document.fm._82_languageId.options[1].style.backgroundImage="url(http://ec.europa.eu/eurostat/estat-theme/images/language/de_DE.png)";document.fm._82_languageId.options[2].style.backgroundImage="url(http://ec.europa.eu/eurostat/estat-theme/images/language/fr_FR.png)";Liferay.Portlet.onLoad({canEditTitle:false,columnPos:0,isStatic:"end",namespacedId:"p_p_id_56_INSTANCE_dO4tlV8IjZgE_",portletId:"56_INSTANCE_dO4tlV8IjZgE",refreshURL:"\x2feurostat\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d6205162\x26p_p_id\x3d56_INSTANCE_dO4tlV8IjZgE\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dcolumn-2\x26p_p_col_pos\x3d0\x26p_p_col_count\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252Feurostat\x252Fhelp\x252Fnew-eurostat-website"});Liferay.Portlet.onLoad({canEditTitle:false,columnPos:0,isStatic:"end",namespacedId:"p_p_id_85_INSTANCE_XXpXD5OUiwsr_",portletId:"85_INSTANCE_XXpXD5OUiwsr",refreshURL:"\x2feurostat\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d6205162\x26p_p_id\x3d85_INSTANCE_XXpXD5OUiwsr\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dcolumn-1\x26p_p_col_pos\x3d0\x26p_p_col_count\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252Feurostat\x252Fhelp\x252Fnew-eurostat-website"});Liferay.provide(Liferay.Util,"openKaleoDesignerPortlet",function(c){var b=AUI();var e=Liferay.PortletURL.createURL("http://ec.europa.eu/eurostat/help/new-eurostat-website?p_p_id=2_WAR_kaleodesignerportlet&p_p_lifecycle=0");e.setParameter("mvcPath","/designer/edit_kaleo_draft_definition.jsp");e.setParameter("availableFields",c.availableFields);e.setParameter("availablePropertyModels",c.availablePropertyModels);e.setParameter("ddmStructureId",c.ddmStructureId);e.setParameter("draftVersion",c.draftVersion);e.setParameter("kaleoProcessId",c.kaleoProcessId);e.setParameter("name",c.name);e.setParameter("openerWindowName",c.openerWindowName);e.setParameter("portletResourceNamespace",c.portletResourceNamespace);e.setParameter("propertiesSaveCallback",c.propertiesSaveCallback);e.setParameter("refreshOpenerOnClose",c.refreshOpenerOnClose);e.setParameter("saveCallback",c.saveCallback);e.setParameter("uiScope",c.uiScope);e.setParameter("version",c.version);e.setWindowState("pop_up");c.uri=e.toString();var d=c.dialog;if(!d){var f=b.one(Liferay.Util.getOpener()).get("region");d={destroyOnHide:true};c.dialog=d}if(!("align" in d)){d.align=Liferay.Util.Window.ALIGN_CENTER}var a=c.dialogIframe;if(!a){a={closeOnEscape:false};c.dialogIframe=a}Liferay.Util.openWindow(c)},["liferay-portlet-url"]);Liferay.Portlet.onLoad({canEditTitle:false,columnPos:0,isStatic:"end",namespacedId:"p_p_id_1_WAR_kaleodesignerportlet_",portletId:"1_WAR_kaleodesignerportlet",refreshURL:"\x2feurostat\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d6205162\x26p_p_id\x3d1_WAR_kaleodesignerportlet\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dnull\x26p_p_col_pos\x3dnull\x26p_p_col_count\x3dnull\x26p_p_static\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252Feurostat\x252Fhelp\x252Fnew-eurostat-website"});Liferay.Portlet.onLoad({canEditTitle:false,columnPos:0,isStatic:"end",namespacedId:"p_p_id_estatsearchportlet_WAR_estatsearchportlet_",portletId:"estatsearchportlet_WAR_estatsearchportlet",refreshURL:"\x2feurostat\x2fc\x2fportal\x2frender_portlet\x3fp_l_id\x3d6205162\x26p_p_id\x3destatsearchportlet_WAR_estatsearchportlet\x26p_p_lifecycle\x3d0\x26p_t_lifecycle\x3d0\x26p_p_state\x3dnormal\x26p_p_mode\x3dview\x26p_p_col_id\x3dnull\x26p_p_col_pos\x3dnull\x26p_p_col_count\x3dnull\x26p_p_static\x3d1\x26p_p_isolated\x3d1\x26currentURL\x3d\x252Feurostat\x252Fhelp\x252Fnew-eurostat-website"});AUI().use("aui-base","liferay-form","liferay-menu","liferay-notice","liferay-poller",function(a){(function(){Liferay.Form.register({id:"fm",fieldRules:[]})})();(function(){Liferay.Util.addInputType();Liferay.Portlet.ready(function(b,c){Liferay.Util.addInputType(c)});if(a.UA.mobile){Liferay.Util.addInputCancel()}})();(function(){new Liferay.Menu();var b=Liferay.Data.notices;for(var c=1;c<b.length;c++){new Liferay.Notice(b[c])}})()});</script> <script src="http://ec.europa.eu/eurostat/estat-theme/js/main.js?browserId=other&amp;minifierType=js&amp;languageId=en_GB&amp;b=6210&amp;t=1418644154000" type="text/javascript"></script> <script type="text/javascript"></script> </body> </html> 
