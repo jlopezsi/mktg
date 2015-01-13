@@ -1,0 +1,92 @@
+---
+title: "Modelos para crear mapas de posiconamiento"
+author: "Jordi López Sintas"
+date: "13 de enero de 2015"
+output: pdf_document
+---
+
+#Introducción
+Supongamos que una muestra de consumidores ha valorado su percepción acerca de p atributos o características de un conjunto de *n* marcas. Cuando el número de atributos o características es elevado, es difícil hacerse una idea de cuán parecidas o diferentes son las marcas según la percepción que de ellas tienen los consumidores. Por ello nos preguntamos, ¿es posible representar visualmente *n* marcas en un espacio de reducidas dimensiones, por ejemplo, *k* dimensiones, siendo $k<p$ ? ¿Y, además, que las marcas similares (según la percepción de los consumidores) se sitúen cerca unas de otras? Para ello disponemos de una familia de modelos conocida con el nombre de análisis o escalado multidimensional (MDS, muldimensional scaling). Esta familia de modelos, también, nos proporciona una medida de la discrepancia entre las percepciones observadas y las estimadas por el modelo, un índice de la medida en la que distancias observadas difieren de las estimadas. 
+
+Cuando las medidas acerca de las percepciones se han recogido en una escala métrica o intervalo el análisis multidimensional utiliza el análisis de los componentes principales para su representación visual (Gower y Hand, 1996). En general buscaremos una representación bidimensional, o tridimensional si la primera no reproduce las percepciones de una manera aceptable. Para ello partiremos de una matriz de percepciones, **X**, que contendrá tantas filas, *n*, como marcas y tntas columnas, *p*, como atributos o características describan a los productos. El subespacio de *k* dimensiones proporcionado por los componentes principales pasa por el centro de los datos, por esa razón tenemos que transformar la matriz de datos original, **X**,  sustrayéndole la media de cada una de las medidas. Es habitual, asimismo, dividir las observaciones por su desviación típica, resultando una matriz de datos estandarizados.
+
+La descomposición de la matriz de covarianzas, o correlaciones en la mayoría de los casos, *X’X*, nos proporciona los vectores y valores propios necesarios para construir e interpretar el espacio reducido, $X’X=A \Lambda A’$,  donde *A* es una matriz ortogonal que proporciona los vectores propios, $A’A=I$. Además, los valores de la diagonal de la matriz $\Lambda$ nos proporcionan la varianza explicada por cada uno de los componentes principales (Gower y Hand, 1996). Los vectores propios nos proporcionan un espacio de *k<p* dimensiones alternativo al espacio de las características o atributos en los que se midieron las marcas que estamos analizando. Pero, también, podemos describir el significado de los nuevos componentes  o beneficios que estructuran el mercado  (o, alternativamente, de los vectores propios) analizando la correlación de los atributos con los componentes o factores del nuevo espacio.
+
+El mejor espacio reducido para representar al conjunto de marcas viene dado por los ejes formados por los *k* primeros componentes principales estimados. 
+Buscamos una combinación lineal de las variables originales como la siguiente:
+
+$$ C_{1} = a_{11}x{1} + ... +a_{1p}x{p} $$ 
+$$ C_{2} = a_{21}x{2} + ... +a_{2p}x{p} $$ 
+.
+.
+.
+$$ C_{k} = a_{k1}x{k} + ... +a_{kp}x{p} $$ 
+
+Con ciertas propiedades: 
+
+1.  Que la varianza de $C_{i}$ sea tan grande como sea posible
+2.	Que los valores de $C_{1}, ..., C_{p}$ para todos los individuos de la muestra sean independientes, $S_{ij}=0$, para todos y cada uno de los componentes
+3.	Para cada componente la suma del cuadrado de los coeficientes de su combinación lineal sea igual a la unidad, $a_{11}^2 + a_{12}^2 + ... + a_{1p}^2 = 1$.
+
+De hecho la proyección de las marcas en el espacio reducido a *k* ejes principales, vendrá dada por predicción del conjunto inicial de medidas en el nuevo subespacio definido por los *k<p* primeros componentes principales $C=XA_{k}$, por ejemplo *k=2*.
+$$
+\begin{pmatrix}
+c_{11} & c_{12} \\
+c_{21} & c_{22}  \\
+\vdots & \vdots \\
+c_{n1} & c_{n2} \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+x_{11} & x_{12} & \cdots & x_{1p} \\
+x_{21} & x_{22} & \cdots & x_{2p} \\
+\vdots & \vdots & \ddots \vdots & \\
+x_{n1} & x_{n2} & \cdots & x_{np} \\
+\end{pmatrix} 
+\begin{pmatrix}
+a_{11} & a_{12} \\
+a_{21} & a_{22} \\
+\vdots & \vdots \\
+a_{n1} & a_{n2} \\
+\end{pmatrix}
+$$
+Así la predicción para la primera marca en el primer componente principal (primer elemento de la primera columna de la matriz *C*) vendrá dada por $$ C_{11} = a_{11}x{11} + a_{21}x{21} + ... +a_{p1}x{p1} $$  y así sucesivamente con el resto de los factores o beneficios que estructuran el mercado. 
+
+¿Cuál es la calidad de la representación visual? Nuestro propósito es encontrar un subespacio *k* que minimice la diferencia entre las percepciones medidas y las que visualizamos en el mapa de percepciones. Para conocer la calidad de la representación visual tendremos, primero, que estimar las percepciones que se derivan del modelo visual,  $\hat{X}=C_{k=2}A_{k=2}'$ , 
+
+$$
+\begin{pmatrix}
+\hat{x_{11}} & \hat{x_{12}} & \cdots & \hat{x_{1p}} \\
+\hat{x_{21}} & \hat{x_{22}} & \cdots & \hat{x_{2p}} \\
+\vdots & \vdots & \ddots \vdots & \\
+\hat{x_{n1}} & \hat{x_{n2}} & \cdots & \hat{x_{np}} \\
+\end{pmatrix} 
+=
+\begin{pmatrix}
+c_{11} & c_{12} \\
+c_{21} & c_{22}  \\
+\vdots & \vdots \\
+c_{n1} & c_{n2} \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+a_{11} & a_{21} & \cdots & a_{p1} \\
+a_{12} & a_{22} & \cdots & a_{p2}\\
+\end{pmatrix}
+$$
+
+y, después, verificar la diferencia con los datos originales, $X-\hat{X}$ . La suma cuadrado de las diferencias entre lo observado y lo predicho por el modelo, $traza(X-\hat{X})'(X-\hat{X})$  resulta que es idéntica a la varianza no explicada por los componentes principales utilizados para formar el mapa de percepciones, $traza(\Lambda - \Lambda_{k})$. Por ello, cuanto menor sea esa diferencia, mejor será la representación visual de las marcas en el espacio reducido mostrado en el mapa de percepciones. Si lo expresamos en relación a la variación total de la muestra, la  $traza(\Lambda)$, la calidad de la representación tomará valores entre cero y uno, de tal manera que cuanto más se acerque a cero, mejor será la representación.
+
+También es de interés conocer la calidad de la representación las variables originales en los componentes principales. Una medida de esa calidad nos la da la suma del cuadrado de los coeficientes de las funciones de los componentes principales, $A_{k}A_{k}'1$, cuyo resultado es un vector columna con tantas filas como variables originales –donde 1 es el vector identidad. Si una variable está perfectamente representada, su valor del producto anterior será la unidad. Otra medida ampliamente utilizada es el coeficiente de correlación entre las variables originales y los componentes principales, que cuando ambas variables están estandarizadas es igual al coeficiente de la función la función principal multiplicado por la desviación estándar del componente, $$ (en la literatura anglosajona recibe el nombre de loadings), y su cuadrado nos da la medida en la que el componente *k* contribuye a explicar la varianza de la variable *i*. La calidad de representación visual de una variable original, entonces, será proporcional a la varianza total explicada por los componentes utilizados en la formación del mapa de percepciones,  $$ . 
+
+```{r}
+
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
