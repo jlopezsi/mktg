@@ -198,6 +198,7 @@ g20.seg<-data.frame(t(g20seg))
 names(g20.seg)
 head(g20.seg)
 g20.seg.pca <- prcomp(g20.seg, cor=TRUE)
+options(mpar)
 plot(g20.seg.pca)
 biplot(g20.seg.pca , pc.biplot=T, cex=0.7, ex=0.8)
 biplot(g20.seg.pca , choices=c(1,3), pc.biplot=T, cex=0.7, ex=0.8)
@@ -206,8 +207,6 @@ biplot(g20.seg.pca , choices=c(2,3), pc.biplot=T, cex=0.7, ex=0.8)
 ```
 
 ##Análisis externo
-
-
 
 Breakfast rating for rectangular SMACOF
 As a metric unfolding example we use the breakfast dataset from Green and Rao (1972) which is also analyzed in Borg and Groenen (2005, Chapter 14). 42 individuals were asked to order 15 breakfast items due to their preference. These items are: toast = toast pop-up, butoast = buttered toast, engmuff = English muffin and margarine, jdonut = jelly donut, cintoast = cinnamon toast, bluemuff = blueberry muffin and margarine, hrolls = hard rolls and butter, toastmarm = toast and marmalade, butoastj = buttered toast and jelly, toastmarg = toast and margarine, cinbun = cinnamon bun, danpastry = Danish pastry, gdonut = glazed donut, cofcake = coffee cake, and cornmuff = corn muffin and butter. For this 42 × 15 matrix we compute a rectangular SMACOF solution.
