@@ -77,16 +77,132 @@ $$
 
 y, después, verificar la diferencia con los datos originales, $X-\hat{X}$ . La suma cuadrado de las diferencias entre lo observado y lo predicho por el modelo, $traza(X-\hat{X})'(X-\hat{X})$  resulta que es idéntica a la varianza no explicada por los componentes principales utilizados para formar el mapa de percepciones, $traza(\Lambda - \Lambda_{k})$. Por ello, cuanto menor sea esa diferencia, mejor será la representación visual de las marcas en el espacio reducido mostrado en el mapa de percepciones. Si lo expresamos en relación a la variación total de la muestra, la  $traza(\Lambda)$, la calidad de la representación tomará valores entre cero y uno, de tal manera que cuanto más se acerque a cero, mejor será la representación.
 
-También es de interés conocer la calidad de la representación las variables originales en los componentes principales. Una medida de esa calidad nos la da la suma del cuadrado de los coeficientes de las funciones de los componentes principales, $A_{k}A_{k}'1$, cuyo resultado es un vector columna con tantas filas como variables originales –donde 1 es el vector identidad. Si una variable está perfectamente representada, su valor del producto anterior será la unidad. Otra medida ampliamente utilizada es el coeficiente de correlación entre las variables originales y los componentes principales, que cuando ambas variables están estandarizadas es igual al coeficiente de la función la función principal multiplicado por la desviación estándar del componente, $$ (en la literatura anglosajona recibe el nombre de loadings), y su cuadrado nos da la medida en la que el componente *k* contribuye a explicar la varianza de la variable *i*. La calidad de representación visual de una variable original, entonces, será proporcional a la varianza total explicada por los componentes utilizados en la formación del mapa de percepciones,  $$ . 
+También es de interés conocer la calidad de la representación las variables originales en los componentes principales. Una medida de esa calidad nos la da la suma del cuadrado de los coeficientes de las funciones de los componentes principales, $A_{k}A_{k}'1$, cuyo resultado es un vector columna con tantas filas como variables originales –donde 1 es el vector identidad. Si una variable está perfectamente representada, su valor del producto anterior será la unidad. Otra medida ampliamente utilizada es el coeficiente de correlación entre las variables originales y los componentes principales, que cuando ambas variables están estandarizadas es igual al coeficiente de la función la función principal multiplicado por la desviación estándar del componente, $r_{ik}=a_{ik}\sqrt{\lambda_{k}}=l_{ik}$ (en la literatura anglosajona recibe el nombre de loadings), y su cuadrado nos da la medida en la que el componente *k* contribuye a explicar la varianza de la variable *i*. La calidad de representación visual de una variable original, entonces, será proporcional a la varianza total explicada por los componentes utilizados en la formación del mapa de percepciones,  $h_{i}^2=\sum_k^Kr_{ik}^2=\sum_k^Ka_{ik}^2\lambda_{k}$ . 
+
+En ocasiones es necesario rotar los componentes sobre su propio eje con el objeto de facilitar la interpretación del significado de los componentes o beneficios que estructuran el mercado. En tales casos procedemos, primero, a normalizar los componentes, que entonces reciben el nombre de factores principales, $\hat{X}=C_{k}\sum_k^^-1\sum_kA_{k}'=F_{k}L_{k}$, y $F_{j}=\frac{C_{j}}{\sqrt{Var(C_{j})}}$ . Así la relación entre las variables originales y los, ahora, factores principales, vendrá dada por $\hat{X}=F_{k}L_{k}$ (Afifi y Azen, 1979).
+
+$$
+\begin{pmatrix}
+\hat{x_{11}} & \hat{x_{12}} & \cdots & \hat{x_{1p}} \\
+\hat{x_{21}} & \hat{x_{22}} & \cdots & \hat{x_{2p}} \\
+\vdots & \vdots & \ddots \vdots & \\
+\hat{x_{n1}} & \hat{x_{n2}} & \cdots & \hat{x_{np}} \\
+\end{pmatrix} 
+=
+\begin{pmatrix}
+f_{11} & f_{12} \\
+f_{21} & f_{22}  \\
+\vdots & \vdots \\
+f_{n1} & f_{n2} \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+l_{11} & l_{21} & \cdots & l_{p1} \\
+l_{12} & l_{22} & \cdots & l_{p2}\\
+\end{pmatrix}
+$$
+
+Donde $l_{ik}=a_{ik}\sqrt{\lambda_{k}}$ y a la matriz $L_{k}$ se la conoce con el nombre de *matriz de correlaciones* (*pattern matrix*), a las cuales también se las denomina cargas (*loadings*). Ahora la rotación de factores principales (la puntuación de las marcas en ellos) no altera su propiedad de  indepencia entre los factores principales  y corresponden a rotaciones ortogonales de las correlaciones (Venables y Ripley, 2000: 47-48). Una vez realizada la rotación,  la nueva matriz de correlaciones , $L^0$, recibe el nombre de *matriz de la estructura* de los factores principales y trata de mostrar una estructura simple, fácilmente interpretable. Si la matriz de correlaciones no se ha rotado, coincide con la matriz de estructura de los factores.
+
+Veamos cómo representar visualmente las percepciones que una muestra de consumidores mostraron acerca de un conjunto de marcas de coches.
 
 ```{r}
-
+g20per<-read.table("g20per.txt", header=TRUE)
+names(g20per)
 ```
 
-You can also embed plots, for example:
+Para hacer el análisis tenemos que transponer la tabla de datos que acabamos de leer, de tal manera que las filas ahora serán las marcas, y las columnas, los atributos.
 
 ```{r, echo=FALSE}
+g20<-data.frame(t(g20per))
+names(g20)
+options(digits=1)
+cor(g20)
+```
+Podemos hacer la descomposición d ela matrix de correlaciones de la siguiente manera:
+
+```{r}
+#centrar y dividir por la desviación estándar
+X<-scale(g20)
+X
+##matriz de correlaciones, X'X
+cor=X%*%t(X)
+cor
+#Calcular los componentes principales P or t(P)
+E=eigen(cor,TRUE)
+E
+A<-E$vectors
+A
+I=A%*%t(A)
+I
+var<-E$values
+#La puntuación en los componentes o factors principales 
+C = A %*% X
+options(digits=6)
+C
+#La desviación estandar de cada atributo de la matriz rotada
+sdev = sqrt(diag((1/(dim(X)[2]-1)* A %*% cor %*% t(A))))
+sdev
+#######
+```
+No obstante podemos obtener los componentes principales utilizando las funciones `prcomp()` y `princomp()` de R. la equivalencia de resultados es la siguientes.
+
+prcomp() princomop() Manualmente Interpretación
+-------- ----------- ----------- --------------
+sdev     sdev        sdev        Desviaciones estandr de cada columna de la matriz rotada
+rotation loadings    A            Los coeficients de los componentes principales
+center   center      scale()      Dactos centrados en la media
+scale    scale       scale()      Datos centrados y dividos por la desviación standar
+X        scores      newdata      La puntuación en los componentes
+
+
+Calculamos los componentes principales de la matriz de datos g20 con la función `prcomp`. El resultado queda alamacenado en el objeto `g20.pca`. La información está estructurada en diferentes componentes, `sdev` (las desviaciones estándares de los componentes principales), `rotation` (loadings), `center`,  `scale` (la escala y centros utilizados), y `X` ($\hat{X}$).
+
+```{r}
+g20.pca<-prcomp(g20, cor=T)
+plot(g20.pca)
+summary(g20.pca)
+names(g20.pca)
+g20.pca$sdev
+g20.pca$rotation
+g20.pca$center
+g20.pca$scale
+g20.pca$X
+
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+La representación simultánea de la puntuación de las marcas en el nuevo espacio reducido formado por los componentes principales y las variables originales se realiza por medio de la función `biplot` del paquete `MASS`. Las variables originales se representan por medio de unos vectores cuya longitud viene dada por su correlación con los factores principales, mayor cuanto mayor es la correlación. Nótese, no obstante, que la correlación de cada una de los atributos de las marcas con los factores y la puntuación de las marcas en ellos forman dos grupos de datos medidos en diferentes escalas.  Esa es la razón por la que en los gráficos aparecen dos escalas, una para cada grupo de datos. No obstante es habitual multiplicar las correlaciones por algún factor de escala como la varianza de los factores principales [insertar referencia a MDPREF]. De esa manera la proyección perpendicular de las marcas sobre los vectores de los atributos nos ofrece una medida relativa de la cantidad de ese atributo que los consumidores han percibido en la marca.
+```{r}
+biplot(g20.pca, pc.biplot=T, cex=0.7, ex=0.8)
+biplot(g20.pca, choices=c(1,3),pc.biplot=T, cex=0.7, ex=0.8)
+biplot(g20.pca, choices=c(2,3),pc.biplot=T, cex=0.7, ex=0.8)
+g20.puntos <- predict(g20.pca)
+g20.puntos
+```
+
+#Mapas conjuntos: De perceptiones y preferencias
+
+##Análisis interno
+
+Si queremos introducir las preferencias en el mapa y construir un mapa conjunto, de percepciones y preferencias, entonces necesitamos añadir las preferencias de los consumidores. Para ello debemos definir el modelo de preferencias, vectoriales o ideales. En el primer caso pedimos a los consumidores que nos digan su preferencias por las marcas, segmentamos la matriz de preferencias y el resultado lo incorporamos a la matriz de de percepciones como nuevos atributos que muestran las preferencias por las marcas. En el caso de utilizar un modelo ideal de preferencias, pediríamos a los consumidores que nos mostraran sus preferencias por cada uno de los atributos de forman las marcas, segmentaríamos e introduciríamos el resultado en la matriz de percepciones como nuevas marcas.
+
+En el caso de las preferencias vectoriales
+
+```{r}
+##analysis interno
+#Leer fichero g20seg.txt
+g20seg<-read.table("g20seg.txt", header=T)
+head(g20seg)
+g20.seg<-data.frame(t(g20seg))
+names(g20.seg)
+head(g20.seg)
+g20.seg.pca <- prcomp(g20.seg, cor=TRUE)
+plot(g20.seg.pca)
+biplot(g20.seg.pca , pc.biplot=T, cex=0.7, ex=0.8)
+biplot(g20.seg.pca , choices=c(1,3), pc.biplot=T, cex=0.7, ex=0.8)
+biplot(g20.seg.pca , choices=c(2,3), pc.biplot=T, cex=0.7, ex=0.8)
+
+```
+
+
