@@ -23,12 +23,15 @@ var<-E$values
 newdata = P %*% X
 options(digits=6)
 newdata
-La dsviación estandar de cada atributo de la matriz rotada
+La desviación estandar de cada atributo de la matriz rotada
 sdev = sqrt(diag((1/(dim(X)[2]-1)* P %*% A %*% t(P))))
 sdev
 #######
 g20.pca<-prcomp(g20, cor=T)
 summary(g20.pca)
+g20.puntos<-predict(g20.pca)
+class(g20)
+cor(g20, g20.puntos)
 names(g20.pca)
 g20.pca$sdev
 g20.pca$rotation
@@ -41,12 +44,41 @@ scale(g20)
 g20.puntos
 ##########mapas conjuntos
 ##analysis interno
+
+
 #Leer fichero g20seg.txt
 g20seg<-read.table("g20seg.txt", header=T)
 g20.seg<-data.frame(t(g20seg))
 names(g20.seg)
 
 ##analysis interno
+##Data
+#g20_completo.xlsx
+require(XLConnect)
+#read g20_completo.xlsx
+g20 <- loadWorkbook("g20_completo.xlsx")
+g20.prefs <- readWorksheet(g20, rownames=1, sheet = "prefs", header = TRUE)
+?readWorksheet
+head(g20.prefs)
+g20.prefs.hclust<-hclust(dist(g20.prefs, method="euclidean"), method="ward")
+#Mostramos el resultado de la agrupación
+plot(g20.prefs.hclust)
+g20.prefs.hclust.centros<-tapply(as.matrix(g20.prefs), list(rep(cutree(g20.prefs.hclust, 3), ncol(as.matrix(g20.prefs))),col(as.matrix(g20.prefs))),mean)
+#Visualizamos el resultado
+g20.prefs.hclust.centros
+g20.prefs.kmeans3<-kmeans(g20.prefs, g20.prefs.hclust.centros)
+names(g20.prefs.kmeans3)
+g20.prefs.kmeans3$centers
+g20per
+g20.int.seg<-rbind(g20per, g20.prefs.kmeans3$centers)
+g20.int.seg
+g20.int.seg.t<-data.frame(t(g20.int.seg))
+g20.int.pca <- prcomp(g20.int.seg.t, cor=TRUE)
+plot(g20.int.pca)
+biplot(g20.int.pca , pc.biplot=T, cex=0.7, ex=0.8)
+biplot(g20.int.pca , choices=c(1,3), pc.biplot=T, cex=0.7, ex=0.8)
+biplot(g20.int.pca , choices=c(2,3), pc.biplot=T, cex=0.7, ex=0.8)
+
 #Leer fichero g20seg.txt
 g20seg<-read.table("g20seg.txt", header=T)
 head(g20seg)
@@ -135,11 +167,86 @@ pref[1:10,] #view first 10 rows
 #g20pref<-read.table(file.choose(), row.names=1, header=T)
 #head(g20pref)
 ## --- Build func to run simple perceptual maps --- ##
-
+pref0 = pref*0; rownames(pref0) = NULL
+source("JSM.R")
 JSM(mydata, pref0)
 JSM(mydata, pref)
 
+#####MDS datos hospital
+kcpref<-read.table("hospital.prefs.txt", header=T)
+summary(kcpref)
+head(kcpref)
+dist(t(kcpref))
+kcpref.dist<-dist(t(kcpref))
+kcpref.dist
+library(MASS)
+kcpref.mds<-isoMDS(kcpref.dist)
+names(kcpref.mds)
+summary(kcpref.mds)
+kcpref.mds$stress
+kcpref.mds$points
+##Plot
+plot(kcpref.mds$points, type="n")
+text(kcpref.mds$points, labels=names(kcpref))
+eqscplot(kcpref.mds$points, type="n")
+text(kcpref.mds$point, labels=names(kcpref))
+kcpref.sh <- Shepard(kcpref.dist, kcpref.mds$points)
+names(kcpref.sh)
+plot(kcpref.sh)
+lines(kcpref.sh$x, kcpref.sh$yf, type="S")
+install.packages("DiagrammeR")
+library(DiagrammeR)
+diagram <- "
+graph
+  A-->B
+  A-->C
+ 
+"
 
+DiagrammeR(diagram)
+DiagrammeR(diagram)
+
+boxes_and_rectangles <- "
+digraph boxes_and_rectangles {
+node [shape = box]
+A
+B
+C
+D
+E
+F
+node [shape = circle, fixedsize = true, width = 0.9]
+1
+2
+3
+4
+5
+6
+7
+8
+
+A->1
+B->2
+B->3
+B->4
+C->A
+1->D
+E->A
+2->4
+1->5
+1->F
+E->6
+4->6
+5->7
+6->7
+3->8
+
+overlap = true
+fontsize = 10;
+}
+"
+
+grViz(boxes_and_rectangles)
 ####
 library(smacof)
 data('breakfast')
