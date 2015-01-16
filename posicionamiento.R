@@ -44,8 +44,6 @@ scale(g20)
 g20.puntos
 ##########mapas conjuntos
 ##analysis interno
-
-
 #Leer fichero g20seg.txt
 g20seg<-read.table("g20seg.txt", header=T)
 g20.seg<-data.frame(t(g20seg))
@@ -267,7 +265,23 @@ plot(res.id, plot.type = "resplot", main = "Residuals Indentity", xlim = c(2, 14
 ######
 library(SensoMineR)
 data(chocolates)
+#There are three data frames: 
+#- sensochoc: a data frame with 348 rows and 19 columns: 
+# 5 qualitative variables (Panelist, Session, Form, Rank, Product) 
+#and 14 sensory descriptors;
+#- hedochoc: a data frame with 6 rows and 222 columns: 
+#each row corresponds to a chocolate 
+#and each column to the hedonic scores given by one of the 
+#222 consumers participating in the study;
+#- sensopanels: a data frame with 6 rows and 98 columns: 
+#each row corresponds to a chocolate and each column to the mean over 
+#the panelists of a given panel according to a sensory descriptor.
+
+names(sensochoc)
+head(sensochoc)
 class(chocolates)
+boxprod(sensochoc, col.p = 4, firstvar = 5, numr = 2, numc = 2)
+#averagetable Computes a (products,descriptors) matrix
 resaverage<-averagetable(sensochoc, formul = "~Product+Panelist",
                          firstvar = 5)
 resaverage
@@ -277,13 +291,34 @@ res.pca = PCA(resaverage, scale.unit = TRUE)
 res.pca
 resdecat<-decat(sensochoc, formul = "~Product+Panelist", firstvar = 5,
                 graph = FALSE)
+resdecat
 ## Not run:
 barrow(resdecat$tabT)
 barrow(resdecat$coeff, color = "orange")
 boxprod(sensochoc, col.p = 4, firstvar = 5, numr = 2, numc = 2)
+
 #Performs preference mapping techniques based on multidimensional exploratory data analysis.
 ## Example 1: carto for the sensory descriptors
 data(cocktail)
+#The data used here refer to 16 cocktails.
+#There are 3 files corresponding to the composition of the cocktails; 
+#the sensory description of the cocktails; the hedonic scores.
+#- For the composition of the cocktails: The mango, banana, 
+#orange and lemon concentration are known;
+#- For the sensory description: each cocktail was evaluated by 12 panelists 
+#according to 13 sensory descriptors (only the average of each cocktail are given). 
+#- For the hedonic data: each cocktail was evaluated on a structured scale 
+#from 0 to 10, by 100 consumers, according to their liking (0) or disliking (10).
+#format
+#There are three data frames: - compo.cocktail: a data frame with 16 rows and 4 columns: 
+#the composition of each cocktail is given for the 4 ingredients;
+#- senso.cocktail: a data frame with 16 rows and 13 columns: 
+#each cocktail was evaluated by 12 panelists according to 13 sensory descriptors;
+#hedo.cocktail: a data frame with 16 rows and 100 columns: each cocktail 
+#was evaluated on a structured scale from 0 to 10, by 100 consumers, 
+#according to their liking (0) or disliking (10).
+
+
 res.pca <- PCA(senso.cocktail)
 res.carto <- carto(res.pca$ind$coord[,1:2], hedo.cocktail)
 ## Example 2
@@ -311,6 +346,17 @@ res.mfa <- MFA(cbind.data.frame(senso.cocktail,compo.cocktail),
                group=c(ncol(senso.cocktail),ncol(compo.cocktail)),
                name.group=c("senso","compo"))
 results3 <- cartoconsumer(res.mfa, hedo.cocktail)
+
+#cpa Consumers’ Preferences Analysis
+
+## Not run:
+data(cocktail)
+res.cpa = cpa(cbind(compo.cocktail, senso.cocktail), hedo.cocktail)
+## If you prefer a graph in black and white and with 3 clusters
+res.cpa = cpa(cbind(compo.cocktail, senso.cocktail), hedo.cocktail,
+              name.panelist = TRUE, col = gray((50:1)/50), nb.clusters = 3)
+## End(Not run)
+
 ## End(Not run)
 #chocolates
 #The data used here refer to six varieties of chocolates sold in France.

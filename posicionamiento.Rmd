@@ -8,7 +8,15 @@ output: pdf_document
 #Introducción
 Supongamos que una muestra de consumidores ha valorado su percepción acerca de p atributos o características de un conjunto de *n* marcas. Cuando el número de atributos o características es elevado, es difícil hacerse una idea de cuán parecidas o diferentes son las marcas según la percepción que de ellas tienen los consumidores. Por ello nos preguntamos, ¿es posible representar visualmente *n* marcas en un espacio de reducidas dimensiones, por ejemplo, *k* dimensiones, siendo $k<p$ ? ¿Y, además, que las marcas similares (según la percepción de los consumidores) se sitúen cerca unas de otras? Para ello disponemos de una familia de modelos conocida con el nombre de análisis o escalado multidimensional (MDS, muldimensional scaling). Esta familia de modelos, también, nos proporciona una medida de la discrepancia entre las percepciones observadas y las estimadas por el modelo, un índice de la medida en la que distancias observadas difieren de las estimadas. 
 
-Cuando las medidas acerca de las percepciones se han recogido en una escala métrica o intervalo el análisis multidimensional utiliza el análisis de los componentes principales para su representación visual (Gower y Hand, 1996). En general buscaremos una representación bidimensional, o tridimensional si la primera no reproduce las percepciones de una manera aceptable. Para ello partiremos de una matriz de percepciones, **X**, que contendrá tantas filas, *n*, como marcas y tntas columnas, *p*, como atributos o características describan a los productos. El subespacio de *k* dimensiones proporcionado por los componentes principales pasa por el centro de los datos, por esa razón tenemos que transformar la matriz de datos original, **X**,  sustrayéndole la media de cada una de las medidas. Es habitual, asimismo, dividir las observaciones por su desviación típica, resultando una matriz de datos estandarizados.
+#Interpretar la estructura de los mercados
+
+Cuando las medidas acerca de las percepciones se han recogido en una escala métrica o intervalo el análisis multidimensional utiliza el análisis de los componentes principales para su representación visual (Gower y Hand, 1996). 
+
+El análisis de los componentes principales es una técnica para la reducción de datos multivariantes. Su propósito es encontrar un conjunto de nuevas variables, igual en número a las variables originales, aunque con ciertas propiedades: 1) las nuevas variables, llamadas componentes principales, están incorrelacionadas entre ellas (son independientes en el espacio formado por los componente principales), 2) los componentes principales están formados a partir de las variables originales, 3) los componentes principales explican la varianza de las variables originales, de manera que el primer componente explica la mayor parte posible de variación, el segundo la mayor parte de la varianza residual, y así sucesivamente.
+
+Durante el proceso de segmentación hemos utilizado los componentes principales para transformar las bases de segmentación en unas variables artificiales, componentes principales, incorrelacionadas entre ellas con el objeto de poder utilizar los modelos de segmentación tradicionales o para escoger un número reducido de bases de segmentación originales según su correlación con los componentes principales. En cambio cuando queremos estudiar la estructura de los mercados los componentes principales se utilzan para obtener una representación bidimensional, o tridimensional de la estructura de los mercados. 
+
+Para ello partiremos de una matriz de percepciones, **X**, que contendrá tantas filas, *n*, como marcas y tantas columnas, *p*, como atributos o características describan a los productos. El subespacio de *k* dimensiones proporcionado por los componentes principales normalmente se obtiene de los datos estandarizados con el objeto de eliminar las diferencias de escala en la medida de las percepciones y a ayudarnos en la interpretación del la estructura de los mercados y en la valoración de la calidad de la representación visual. Por esa razón transformaremos la matriz de datos original, **X**,  sustrayéndole la media de cada una de las medidas y dividiremos las observaciones centradaspor su desviación típica, resultando una matriz de datos estandarizados.
 
 La descomposición de la matriz de covarianzas, o correlaciones en la mayoría de los casos, *X’X*, nos proporciona los vectores y valores propios necesarios para construir e interpretar el espacio reducido, $X’X=A \Lambda A’$,  donde *A* es una matriz ortogonal que proporciona los vectores propios, $A’A=I$. Además, los valores de la diagonal de la matriz $\Lambda$ nos proporcionan la varianza explicada por cada uno de los componentes principales (Gower y Hand, 1996). Los vectores propios nos proporcionan un espacio de *k<p* dimensiones alternativo al espacio de las características o atributos en los que se midieron las marcas que estamos analizando. Pero, también, podemos describir el significado de los nuevos componentes  o beneficios que estructuran el mercado  (o, alternativamente, de los vectores propios) analizando la correlación de los atributos con los componentes o factores del nuevo espacio.
 
@@ -50,7 +58,7 @@ a_{21} & a_{22} \\
 a_{n1} & a_{n2} \\
 \end{pmatrix}
 $$
-Así la predicción para la primera marca en el primer componente principal (primer elemento de la primera columna de la matriz *C*) vendrá dada por $$ C_{11} = a_{11}x{11} + a_{21}x{21} + ... +a_{p1}x{p1} $$  y así sucesivamente con el resto de los factores o beneficios que estructuran el mercado. 
+Así la predicción de la primera marca en el primer componente principal (primer elemento de la primera columna de la matriz *C*) vendrá dada por $$ C_{11} = a_{11}x{11} + a_{21}x{21} + ... +a_{p1}x{p1} $$  y así sucesivamente con el resto de los factores o beneficios que estructuran el mercado. 
 
 ¿Cuál es la calidad de la representación visual? Nuestro propósito es encontrar un subespacio *k* que minimice la diferencia entre las percepciones medidas y las que visualizamos en el mapa de percepciones. Para conocer la calidad de la representación visual tendremos, primero, que estimar las percepciones que se derivan del modelo visual,  $\hat{X}=C_{k=2}A_{k=2}'$ , 
 
@@ -77,7 +85,7 @@ $$
 
 y, después, verificar la diferencia con los datos originales, $X-\hat{X}$ . La suma cuadrado de las diferencias entre lo observado y lo predicho por el modelo, $traza(X-\hat{X})'(X-\hat{X})$  resulta que es idéntica a la varianza no explicada por los componentes principales utilizados para formar el mapa de percepciones, $traza(\Lambda - \Lambda_{k})$. Por ello, cuanto menor sea esa diferencia, mejor será la representación visual de las marcas en el espacio reducido mostrado en el mapa de percepciones. Si lo expresamos en relación a la variación total de la muestra, la  $traza(\Lambda)$, la calidad de la representación tomará valores entre cero y uno, de tal manera que cuanto más se acerque a cero, mejor será la representación.
 
-También es de interés conocer la calidad de la representación las variables originales en los componentes principales. Una medida de esa calidad nos la da la suma del cuadrado de los coeficientes de las funciones de los componentes principales, $A_{k}A_{k}'1$, cuyo resultado es un vector columna con tantas filas como variables originales –donde 1 es el vector identidad. Si una variable está perfectamente representada, su valor del producto anterior será la unidad. Otra medida ampliamente utilizada es el coeficiente de correlación entre las variables originales y los componentes principales, que cuando ambas variables están estandarizadas es igual al coeficiente de la función la función principal multiplicado por la desviación estándar del componente, $r_{ik}=a_{ik}\sqrt{\lambda_{k}}=l_{ik}$ (en la literatura anglosajona recibe el nombre de loadings), y su cuadrado nos da la medida en la que el componente *k* contribuye a explicar la varianza de la variable *i*. La calidad de representación visual de una variable original, entonces, será proporcional a la varianza total explicada por los componentes utilizados en la formación del mapa de percepciones,  $h_{i}^2=\sum_k^Kr_{ik}^2=\sum_k^Ka_{ik}^2\lambda_{k}$ . 
+También es de interés conocer la calidad de la representación las variables originales en los componentes principales. Una medida de esa calidad nos la ofrece la suma del cuadrado de los coeficientes de las funciones de los componentes principales, $A_{k}A_{k}'1$, cuyo resultado es un vector columna con tantas filas como variables originales –donde 1 es el vector identidad. Si una variable está perfectamente representada, su valor del producto anterior será la unidad. Otra medida  utilizada es el coeficiente de correlación entre las variables originales y los componentes principales, que cuando ambas variables están estandarizadas es igual al coeficiente de la función la función principal multiplicado por la desviación estándar del componente, $r_{ik}=a_{ik}\sqrt{\lambda_{k}}=l_{ik}$ (en la literatura anglosajona recibe el nombre de loadings), y su cuadrado nos da la medida en la que el componente *k* contribuye a explicar la varianza de la variable *i*. La calidad de representación visual de una variable original, entonces, será proporcional a la varianza total explicada por los componentes utilizados en la formación del mapa de percepciones,  $h_{i}^2=\sum_k^Kr_{ik}^2=\sum_k^Ka_{ik}^2\lambda_{k}$ . 
 
 En ocasiones es necesario rotar los componentes sobre su propio eje con el objeto de facilitar la interpretación del significado de los componentes o beneficios que estructuran el mercado. En tales casos procedemos, primero, a normalizar los componentes, que entonces reciben el nombre de factores principales, $\hat{X}=C_{k}\sum_k^^-1\sum_kA_{k}'=F_{k}L_{k}$, y $F_{j}=\frac{C_{j}}{\sqrt{Var(C_{j})}}$ . Así la relación entre las variables originales y los, ahora, factores principales, vendrá dada por $\hat{X}=F_{k}L_{k}$ (Afifi y Azen, 1979).
 
@@ -118,6 +126,7 @@ g20<-data.frame(t(g20per))
 names(g20)
 options(digits=1)
 t(head(cor(g20)))
+cor(g20)
 ```
 Podemos hacer la descomposición de la matrix de correlaciones de la siguiente manera:
 
@@ -148,35 +157,49 @@ sdev     sdev        sdev        Desviaciones estandr de cada columna de la matr
 rotation loadings    A            Los coeficients de los componentes principales
 center   center      scale()      Dactos centrados en la media
 scale    scale       scale()      Datos centrados y dividos por la desviación standar
-X        scores      newdata      La puntuación en los componentes
+x        scores      newdata      La puntuación en los componentes
 
 
-Calculamos los componentes principales de la matriz de datos g20 con la función `prcomp`. El resultado queda alamacenado en el objeto `g20.pca`. La información está estructurada en diferentes componentes, `sdev` (las desviaciones estándares de los componentes principales), `rotation` (loadings), `center`,  `scale` (la escala y centros utilizados), y `X` ($\hat{X}$).
+Calculamos los componentes principales de la matriz de datos g20 con la función `prcomp`. El resultado queda alamacenado en el objeto `g20.pca`. La información está estructurada en diferentes componentes, `sdev` (las desviaciones estándares de los componentes principales), `rotation` (loadings), `center`,  `scale` (la escala y centros utilizados), y `x` ($\hat{X}$) si hemos pedido que calcule la puntuación de las marcas en los components principales (retx=TRUE).
 
 ```{r}
-g20.pca<-prcomp(g20, cor=T)
-g20.puntos<-predict(g20.pca)
-cor(g20, g20.puntos)
-plot(g20.pca)
+g20.pca<-prcomp(g20, cor=T, retx=TRUE)
+g20.puntos<-g20.pca$x
 summary(g20.pca)
-names(g20.pca)
-g20.pca$sdev
-#g20.pca$rotation
-#g20.pca$center
-#g20.pca$scale
-#g20.pca$X
-
-
+plot(g20.pca)
 ```
 
-La representación simultánea de la puntuación de las marcas en el nuevo espacio reducido formado por los componentes principales y las variables originales se realiza por medio de la función `biplot` del paquete `MASS`. Las variables originales se representan por medio de unos vectores cuya longitud viene dada por su correlación con los factores principales, mayor cuanto mayor es la correlación. Nótese, no obstante, que la correlación de cada una de los atributos de las marcas con los factores y la puntuación de las marcas en ellos forman dos grupos de datos medidos en diferentes escalas.  Esa es la razón por la que en los gráficos aparecen dos escalas, una para cada grupo de datos. No obstante es habitual multiplicar las correlaciones por algún factor de escala como la varianza de los factores principales [insertar referencia a MDPREF]. De esa manera la proyección perpendicular de las marcas sobre los vectores de los atributos nos ofrece una medida relativa de la cantidad de ese atributo que los consumidores han percibido en la marca.
+Como dijimos anteriormente, cada componente principal explica la mayor parte posible de la variación residual. Así vemos que el primer componentes explica un 63%, el segundo un 15%, el tercero un 10 %, el cuarto un 6% y los sucesivos componentes van reduciendo su contribución a la variación de la muestra.
+
+Podemos saber cómo se forman los componentes principales a partir de las variables originales examinando las cargas o rotaciones. Estos son los vectores singulares que multiplican las variables originales para producir los components principales.
+
 ```{r}
+# pc loadings
+head(g20.pca$rotation)
+tail(g20.pca$rotation)
+```
+
+Estos coeficientes que multiplican a las variables origianles para producir los components principales nos indica la contribución de cada variable original (estandarizada) a la construcción de los components principales. Así el primer componente es una combinación lineal de asesinatos, asaltos y violaciones (PC1=-0,29Atrac-0,39Silen+...+ 0,29Malacompra), mientras que para el resto sólo tenemos que leer la matriz de datos verticalmente. 
+
+Puntuación en las marcas en los componentes principales que estructuran el mercado (presentamos las seis primeras ciudades y las 6 últimas de la base de datos), la correlación entre los componentes principales contruidos (que debería ser cero) y la correlación de las variables originales con los factores
+```{r}
+head(g20.pca$x[, c(1,2)])
+tail(g20.pca$x[, c(1,2)])
+cor(g20.pca$x[, c(1,2)])
+cor(scale(g20), g20.pca$x[, c(1,2)])
+```
+
+Podemos observarlo si graficamos la contribución de los componentes a la variación de los datos originales estandarizados y situamos los datos originales en el plano de los componentes principales.
+
+```{r}
+# scree plot
+plot(g20.pca) 
 biplot(g20.pca, pc.biplot=T, cex=0.7, ex=0.8)
 biplot(g20.pca, choices=c(1,3),pc.biplot=T, cex=0.7, ex=0.8)
 biplot(g20.pca, choices=c(2,3),pc.biplot=T, cex=0.7, ex=0.8)
-g20.puntos <- predict(g20.pca)
-head(g20.puntos)
 ```
+
+La representación simultánea de la puntuación de las marcas en el nuevo espacio reducido formado por los componentes principales y las variables originales se realiza por medio de la función `biplot` del paquete `MASS`. Las variables originales se representan por medio de unos vectores cuya longitud viene dada por su correlación con los factores principales, mayor cuanto mayor es la correlación. Nótese, no obstante, que la correlación de cada una de los atributos de las marcas con los factores y la puntuación de las marcas en ellos forman dos grupos de datos medidos en diferentes escalas.  Esa es la razón por la que en los gráficos aparecen dos escalas, una para cada grupo de datos. No obstante es habitual multiplicar las correlaciones por algún factor de escala como la varianza de los factores principales [insertar referencia a MDPREF]. De esa manera la proyección perpendicular de las marcas sobre los vectores de los atributos nos ofrece una medida relativa de la cantidad de ese atributo que los consumidores han percibido en la marca.
 
 #Mapas conjuntos: De perceptiones y preferencias
 
@@ -186,13 +209,11 @@ Si queremos introducir las preferencias en el mapa y construir un mapa conjunto,
 
 En el caso de las preferencias vectoriales, primero accedemos a la matriz de preferencias y analizamos la heterogeneidad de las preferencias de los consumidores.
 
-```{r}
-##analysis interno
-#Leer fichero g20seg.txt
-##Data
-#g20_completo.xlsx
+```{r, echo=FALSE}
 require(XLConnect)
-#read g20_completo.xlsx
+```
+
+```{r, echo=TRUE}
 g20 <- loadWorkbook("g20_completo.xlsx")
 g20.prefs <- readWorksheet(g20, rownames=1, sheet = "prefs", header = TRUE)
 head(g20.prefs)
@@ -205,32 +226,35 @@ g20.prefs.hclust<-hclust(dist(g20.prefs, method="euclidean"), method="ward")
 plot(g20.prefs.hclust)
 g20.prefs.hclust.centros<-tapply(as.matrix(g20.prefs), list(rep(cutree(g20.prefs.hclust, 3), ncol(as.matrix(g20.prefs))),col(as.matrix(g20.prefs))),mean)
 #Visualizamos el resultado
-g20.prefs.hclust.centros
+t(g20.prefs.hclust.centros)
 g20.prefs.kmeans3<-kmeans(g20.prefs, g20.prefs.hclust.centros)
 names(g20.prefs.kmeans3)
-g20.prefs.kmeans3$centers
-g20per
+t(g20.prefs.kmeans3$centers)
 ```
+
 Después introducimos el resultado de la segmentación en la base de datos de las percepciones. Para ello añadir tres filas (correspondientes a los tres segmentos obtenidos) mediante la función `rbind`. 
+
 ```{r}
 g20.int.seg<-rbind(g20per, g20.prefs.kmeans3$centers)
-g20.int.seg
+tail(g20.int.seg)
 g20.int.seg.t<-data.frame(t(g20.int.seg))
 g20.int.pca <- prcomp(g20.int.seg.t, cor=TRUE)
+
 plot(g20.int.pca)
 biplot(g20.int.pca , pc.biplot=T, cex=0.7, ex=0.8)
 biplot(g20.int.pca , choices=c(1,3), pc.biplot=T, cex=0.7, ex=0.8)
 biplot(g20.int.pca , choices=c(2,3), pc.biplot=T, cex=0.7, ex=0.8)
+
 ```
+
 Alternativamente podemos leer el fichero de datos "g20seg" que ya incorpora el resultado de la segmentación de las preferencias.
 
 ```{r}
 g20seg<-read.table("g20seg.txt", header=T)
-head(g20seg)
+tail(g20seg)
 g20.seg<-data.frame(t(g20seg))
-names(g20.seg)
-head(g20.seg)
 g20.seg.pca <- prcomp(g20.seg, cor=TRUE)
+
 plot(g20.seg.pca)
 biplot(g20.seg.pca , pc.biplot=T, cex=0.7, ex=0.8)
 biplot(g20.seg.pca , choices=c(1,3), pc.biplot=T, cex=0.7, ex=0.8)
@@ -241,39 +265,41 @@ El resultado no debería diferir.
 
 ##Análisis externo
 
-Cuando hacemos un análisis externo de las preferencias, en lugar de construir simultáneamente un mapa de percepcines y preferencias, lo que hacemos es construir un mapa de de percepciones y sobre él superponer los datos sobre preferencias.
+Cuando hacemos un análisis externo de las preferencias, en lugar de construir simultáneamente un mapa de percepcines y preferencias, lo que hacemos es construir un mapa de de percepciones y sobre él superponer los datos sobre preferencias, correlacionando la nueva base de datos con la estructura del espacio formado por los componentes principales.
 
-```{r}
+```{r, echo=FALSE}
 ##Datos
 require(XLConnect)
 #read g20_completo.xlsx
+```
+
+```{r, echo=TRUE}
 g20 <- loadWorkbook("g20_completo.xlsx")
 #leemos la hoja correspondiente a las percepciones
 mydata <- readWorksheet(g20, rownames=1, sheet = "per", header = TRUE)
 head(mydata)
-mydata = t(mydata) #transponemos los datos para tener los atributos en las columnas.
-
-head(mydata) #Vemos las seis primeras observaciones
+g20.per = t(mydata) #transponemos los datos para tener los atributos en las columnas.
+head(g20.per) #Vemos las seis primeras observaciones
 
 # assignamos lo snombres de las marcas y atributos a un vector de marcas y atributos respectivamente  #
 
-brdnames = rownames(mydata);
+brdnames = rownames(g20.per);
 
-attribnames = colnames(mydata)
+attribnames = colnames(g20.per)
 
 #Leemos la hoja excel que contiene las preferencias 'prefs'.
 
-# -- Read in preferences table -- #
 pref <- readWorksheet(g20, rownames=1, sheet = "prefs", header = TRUE)
 head(pref)
 dim(pref) #comprobar la tabla de datos
 pref[1:10,] #ver las 10 primeras observaciones
 
-## --- Build func to run simple perceptual maps --- ##
+## --- Leer la función JSM que construirá los mapas conjuntos --- ##
 pref0 = pref*0; rownames(pref0) = NULL
 source("JSM.R")
-JSM(mydata, pref0)
-JSM(mydata, pref)
+#Contruimos la visualización de la estructura de los mercados, un mapa de percepciones y después un mapa conjunto, de percepciones y preferencias
+JSM(g20.per, pref0)
+JSM(g20.per, pref)
 ```
 
 #Análisis multidimensinal no métrico
@@ -319,17 +345,17 @@ Veamos un ejemplo
 #####MDS datos hospital
 kcpref<-read.table("hospital.prefs.txt", header=T)
 summary(kcpref)
-head(kcpref)
+str(kcpref)
 ```
 
 Ahora calculamos las distancias entre las preferencias por las marcas, para ello trasponemos la tabla de datos y después calculamos las distancias euclidianas (la función `dist` opera sobre las filas de la tabla de datos).
 
 ```{r}
-dist(t(kcpref))
 kcpref.dist<-dist(t(kcpref))
 kcpref.dist
 
 ```
+
 Cargamos el paquete `MASS` de la biblioteca de programas que tenemos instalados. La función `isoMDS` estima las coordenadas en un espacio reducido de dos dimensiones si no le indicamos lo contrario. El resultado lo asignamos a un objeto, `kcprefs.mds`, en este caso, y nos muestra el proceso iterativo para calcular las coordenadas de las marcas en el espacio reducido de dos dimensiones. Necesita cinco iteraciones para alcanzar la mejor configuración en el espacio reducido, $Z_{k=2}$. La medida de bondad de la representación visual en el espacio reducido es el cuadrado la fórmula del `stress-1` de Kruskal, expresada en porcentaje. Así, en el ejemplo que nos ocupa es de un 8,49%.
 
 ```{r}
@@ -337,34 +363,31 @@ Cargamos el paquete `MASS` de la biblioteca de programas que tenemos instalados.
 library(MASS)
 kcpref.mds<-isoMDS(kcpref.dist)
 names(kcpref.mds)
-summary(kcpref.mds)
 kcpref.mds$stress
 kcpref.mds$points
 ```
-Para la prepresentación gráfica del espacio reducido de dos dimensiones podemos utilizar las funciones gráficas primitivas de **R**, `plot` y `text`.
+Para la prepresentación gráfica del espacio reducido de dos dimensiones podemos utilizar las funciones gráficas primitivas de **R**, `plot` y `text`. O bien las funciones gráficas que ofrece el paquete `MASS`, concretamente en este caso `eqscplot`, donde las escalas de ambos ejes son iguales -`eqscplot` significa *equal scale plot*.
 ```{r}
+par(mfrow=c(2,2))
 ##Plot
 plot(kcpref.mds$points, type="n")
 text(kcpref.mds$points, labels=names(kcpref))
-```
-
-O bien las funciones gráficas que ofrece el paquete `MASS`, concretamente en este caso `eqscplot`, donde las escalas de ambos ejes son iguales -`eqscplot` significa *equal scale plot*.
-```{r}
 ##Plot
 eqscplot(kcpref.mds$points, type="n")
 text(kcpref.mds$point, labels=names(kcpref))
 kcpref.sh <- Shepard(kcpref.dist, kcpref.mds$points)
 names(kcpref.sh)
+#Plot
 plot(kcpref.sh)
 lines(kcpref.sh$x, kcpref.sh$yf, type="S")
+par(mfrow=c(1,1))
 ```
 El objeto `kcpref.sh` tiene tres atributos, las proximidades `iniciales`, $p_{ij}$, denominadas `x` en **R**, las distancias derivadas del espacio reducido, $d_{ij}(Z)$, y las estimadas, $\hat{d}_{ij}(Z)=f(p_{ij})$. El gráfico de Shepard nos muestra las proximidades originales, $p_{ij}$, en el eje de las *x* , y las distancias, tanto las derivadas del espacio reducido, $d_{ij}(Z)$, como las estimadas,  $\hat{d}_{ij}(Z)=f(p_{ij})$ en el de las *y*. Una línea en forma de escalera conecta las proximidades, $p_{ij}$, con las distancias derivadas, $\hat{d}_{ij}(Z)=f(p_{ij})$. Las distancias verticales nos miden la contribución de cada distancia a la medida de stress minimizada.
 
-```{r}
-
-```
-
 # Otros modelos
+
+##SMACOF
+El paquete `SMACOF` (de Leeuw & Mair, 2009) implementado en **R** ofrece es un conjunto de funciones que implementan diferentes algoritmos de la familia MDS (Borg & Groenen, 2005).  SMACOF minimiza un función de *stress* por medi de un algoritm de mayorización. El paquete smacof implemnta los siguientes procedimientos:  SMACOF simple en un matrices de disimilaritud simétricas, SMACOF con restriccines en las configuraciones, three-way SMACOF para diferencias individuales (INDSCAL, IDIOSCAL, etc.), matrices rectangulares (unfolding),  SMACOF esférico, tanto con datos métricos como no métricos. 
 
 Breakfast rating for rectangular SMACOF
 As a metric unfolding example we use the breakfast dataset from Green and Rao (1972) which is also analyzed in Borg and Groenen (2005, Chapter 14). 42 individuals were asked to order 15 breakfast items due to their preference. These items are: toast = toast pop-up, butoast = buttered toast, engmuff = English muffin and margarine, jdonut = jelly donut, cintoast = cinnamon toast, bluemuff = blueberry muffin and margarine, hrolls = hard rolls and butter, toastmarm = toast and marmalade, butoastj = buttered toast and jelly, toastmarg = toast and margarine, cinbun = cinnamon bun, danpastry = Danish pastry, gdonut = glazed donut, cofcake = coffee cake, and cornmuff = corn muffin and butter. For this 42 × 15 matrix we compute a rectangular SMACOF solution.
@@ -374,9 +397,20 @@ dist(t(kcpref))
 
 
 The data set we provide for three-way SMACOF is described in Bro (1998). The raw data consist of ratings of 10 breads on 11 different attributes carried out by 8 raters. Note that the bread samples are pairwise replications: Each of the 5 different breads, which have a different salt content, was presented twice for rating. The attributes are bread odor, yeast odor, off-flavor, color, moisture, dough, salt taste, sweet taste, yeast taste, other taste, and total. First we fit an unconstrained solution followed by a model with identity restriction.
+##SensoMineR
+El apquete SensoMineR ofrece un conjunto de funciones para realizar el trabajo de campo necesario para obtener datos de consumidores y marcas, manipularlos y analizarlos para construir mapas de percepciones y preferencias.
 
 ```{r}
-
+######
+library(SensoMineR)
+data(chocolates)
+names(sensochoc)
+head(sensochoc)
+resaverage<-averagetable(sensochoc, formul = "~Product+Panelist",
+                         firstvar = 5)
+resaverage
+res.pca = PCA(resaverage, scale.unit = TRUE)
+res.pca
 ```
 
 #Anexo: Modelo factorial exploratorio
@@ -469,6 +503,34 @@ $Cov(Xi,Xk)=r_{ik}= b_{i1}b_{k1}+b_{i2}b_{k2}$
 
 Jae-On Kim y Charles W. Mueller (1978) Introduction to Factor Analysis. Sage University Paper series on Quantitative Application in the Social Sciences, series no. 07-013. London-Berverly Hills: Sage.
 
+Cuando los componentes principales no se pueden interpretar bien, es posible utilizar otros paquetes que nos proporcionan la posibilidad de girar los componentes sobre su eje con el objeto de encontrar una matriz de correlaciones más interpretable. En el entorno **R** podemos utilizar los paquetes `psych` y `GPArotation`. El primer paquete realiza la extracción de los componentes principales y utitliza al segundo para encontrar una matriz de correlaciones más interpretable. Vamos a utilizar los mismos datos sobre arrestos para ilustrar su uso. En este ejemplo utilizamos una rotación habitual, `varimax`, pero también es posible utilizar otros procedimientos para rotar la matriz de estructura inicial: `quatimax`, `promax`, `oblimin`, `simplimax`, o `cluster`.
+
+
+```{r}
+#Lectura de datos
+g20per<-read.table("g20per.txt", header=TRUE)
+names(g20per)
+```
+
+Para hacer el análisis tenemos que transponer la tabla de datos que acabamos de leer, de tal manera que las filas ahora serán las marcas, y las columnas, los atributos.
+
+```{r}
+g20<-data.frame(t(g20per))
+names(g20)
+```
+Después cargamos los paquetes `psych` y `GPArotation`.
+```{r}
+library(psych)
+library(GPArotation)
+
+g20.principal<- principal(g20, nfactors=2, rotate="varimax")
+g20.principal 
+biplot(g20.principal )
+
+g20.principal<- principal(g20, nfactors=3, rotate="varimax")
+g20.principal 
+biplot(g20.principal )
+```
 
 
 

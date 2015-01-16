@@ -55,7 +55,7 @@ d(A, B)=22+52-(1/2)(2+5)2=29-24,5=4,5
   --- --- ----- ------ ----------- ------
   A   0   4,5   24,5   32          98
   B       0     8      12,5        60,5
-  C             0      **0,5**   24,5
+  C             0      **0,5**    24,5
   D                    0           18
   E                                0
 
@@ -63,7 +63,7 @@ La agrupación C y D es la que minimiza el SQD.
 
        A   B           CD   E
   ---- --- ----------- ---- -------
-  A    0   **4,5**   38   98
+  A    0   **4,5**      38   98
   B        0           14   60,5
   CD                   0    28,66
   E                         0
@@ -88,10 +88,12 @@ ejemplo.dist<-dist(ejemplo)
 ejemplo.dist
 ejemplo.hclust<-hclust(ejemplo.dist, method="ward")
 ejemplo.hclust
+par(mfrow=c(1,2))
 plot(ejemplo.hclust)
 labels<-c("A", "B", "C", "D", "E")
 ejemplo.hclust$labels<-labels
 plot(ejemplo.hclust)
+par(mfrow=c(1,1))
 ```
 
 Veamos cómo lo haríamos en el entorno R de análisis de datos.
@@ -218,23 +220,6 @@ Segmento 2: caballa, salmón y camarón
 
 Segmento 3: sardinas.
 
-Código (modificar)
-
-
-
-Energia Calorias Calcio
-
-Caballa 5 9 20
-
-Perca 6 11 2
-
-Salmon 4 5 20
-
-Sardina 6 9 46
-
-Atun 5 7 1
-
-Camarones 3 1 12
 ```{r}
 peces<-read.csv("peces.csv", row.names=1, header=T)
 peces
@@ -243,26 +228,15 @@ peces.dist<-dist(peces)
 peces.dist
 ```
 
-Caballa Perca Salmon Sardina Atun
-
-Perca 18.138357
-
-Salmon 4.123106 19.078784
-
-Sardina 26.019224 44.045431 26.381812
-
-Atun 19.104973 4.242641 19.131126 45.055521
-
-Camarones 11.489125 14.456832 9.000000 35.057096 12.688578
-
-
-You can also embed plots, for example:
+Después de calcular las distancias, podemos iniciar el proceso de aglomeración con el procedimiento de `ward`.
 
 ```{r, echo=FALSE}
 peces.hclust<-hclust(peces.dist, method="ward")
+par(mfrow=c(1,2))
 plot(peces.hclust)
+par(mfrow=c(1,1))
 ```
-Partimos la muestra en tres segmentos
+Después partimos la muestra en tres segmentos:
 ```{r, echo=FALSE}
 peces.kmeans<-kmeans(peces, 3, trace=T)
 ```
@@ -270,7 +244,7 @@ Si queremos saber las opciones de lal función k-means, podemos utilizar la func
 ```{r, echo=TRUE}
 ?kmeans
 ```
-Para saber los objetos incluidos en el resultado de clasificar la muestra, podemos uitlizar la función names()
+Para saber los objetos incluidos en el resultado de clasificar la muestra, podemos uitlizar la función `names()`.
 ```{r}
 names(peces.kmeans)
 ```
@@ -283,9 +257,15 @@ peces.kmeans$iter
 ```
 El resultado lo podemos visualizar en el espacio de las bases de segmentación
 ```{r}
+
 plot(peces[1:2], col=peces.kmeans$cluster)
 points(peces[1:2])
 points(peces.kmeans$centers, col=1:2, pch=8,cex=2)
+
+plot(peces[1:3], col=peces.kmeans$cluster)
+points(peces[1:3])
+points(peces.kmeans$centers, col=1:3, pch=8,cex=2)
+
 ```
 
 #Procedimientos más robustos
@@ -386,27 +366,37 @@ se queda con la partición que la minimiza. Finalmente asigna los *n*
 consumidores a la partición anterior. De esta manera el almacenamiento en
 memoria y el tiempo de computación crece sólo de manera lineal con el
 tamaño de la muestra, *n*.
+
+Vamos a generar una base de datos artificial y a realiar una partición con `kmeans`, después visuallizaremos los datos generados y la identificación que a realizado el procedimiento de partición.
+
 ```{r}
+#datos simulados
 sim<-rbind(cbind(rnorm(100,0,0.5),
 rnorm(100,2,1.5)),cbind(rnorm(150,3.5,0.5), rnorm(15,4,2.5)))
 head(sim)
+par(mfrow=c(1,2))
 plot(sim)
-```
-
-```{r}
-library(MASS)
+#Partición de lal muestra con kmeans
+#library(MASS)
 sim.kmeans<-kmeans(sim, 2)
 #eqscplot(sim, type="n", xlab="x1", ylab="x2")
 plot(sim, type="n", xlab="x1", ylab="x2")
 text(sim, labels=sim.kmeans$cluster)
+par(mfrow=c(1,1))
 ```
 
-
-repetimos el proceso para 3 y 4 segmentos
+repetimos el proceso para 3 y 4 segmentos.
 
 ```{r}
+par(mfrow=c(1,2))
 sim.kmeans3<-kmeans(sim, 3)
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.kmeans3$cluster)
+
 sim.kmeans4<-kmeans(sim, 4)
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.kmeans4$cluster)
+par(mfrow=c(1,1))
 ```
 
 Ahora calcularemos los centros iniciales para ver si mejoramos la clasificación
@@ -431,38 +421,38 @@ sim.kmeans.centros4<-kmeans(sim, centros.h4)
 table(sim.kmeans$cluster, sim.kmeans.centros$cluster)
 table(sim.kmeans3$cluster, sim.kmeans.centros3$cluster)
 table(sim.kmeans4$cluster, sim.kmeans.centros4$cluster)
+```
+Ahora vamos a utilizar el paquete `cluster` y concretamente la función `clara`. Estimaremos una partición con 2, 3 y 4 segmentos y visualizaremos el resultado en el espacio de las bases de segmentación.
+
+```{r}
 library(cluster)
 sim.clara<-clara(sim, 2)
+par(mfrow=c(2,2))
 plot(sim, type="n", xlab="x1", ylab="x2")
 text(sim, labels=sim.clara$clustering)
 clusplot(sim.clara, color=TRUE, shade=TRUE, labels=2, lines=0)
 #plot(sim.clara)
-```
-
-Repetimos el proceso para 3 clusters
-```{r}
 sim.clara3<-clara(sim, 3)
 clusplot(sim.clara3, color=TRUE, shade=TRUE,labels=2, lines=0)
 #plot(sim.clara3)
-```
-Repetimos el proceso para 4 clusters. Ahora comparamos los resultados con `kmeans`.
-```{r}
 sim.clara4<-clara(sim, 4)
 clusplot(sim.clara4, color=TRUE, shade=TRUE,labels=2, lines=0)
+par(mfrow=c(1,1))
 #plot(sim.clara4)
-table(sim.clara$clustering, sim.kmeans.centros$cluster)
-table(sim.clara3$clustering, sim.kmeans.centros3$cluster)
-table(sim.clara4$clustering, sim.kmeans.centros4$cluster)
+```
+
+Ahora comparamos los resultados con `kmeans` utilizando la función `table`. Y podemos ver que los resultados difieren aunque ligeramente.
+```{r}
+table(clara=sim.clara$clustering, kmeans=sim.kmeans.centros$cluster)
+table(clara=sim.clara3$clustering, kmeans=sim.kmeans.centros3$cluster)
+table(clara=sim.clara4$clustering, Kmeans=sim.kmeans.centros4$cluster)
 ```
 
 # Un ejemplo adicional
 
-First read-in data. Data preparation is required to remove variable scaling effects. To
-see this, consider a simple example. If you measure weight in Kgs and
-I do so in Grams - all other variables being the same - we'll get two
-very different clustering solutions from what is otherwise the same
-dataset. To get rid of this problem, just copy-paste the following code.
+Vamos a clasificar a las ciudades de los EEUU en función de los críemens violentos perpetrados según los arrestos efectudos por la policía en 1973. La base de datos se componen de 50 observaciones (estados) y 4 variables (tipos de arrestos--Murder, Assault y Rape, número de casos por cada 100.000 habitantes-- y población urbana--UrbanPop--en porcentaje).  
 
+Como las variables no están medidas en la misma escala, procederemos a estandarizarlas.
 ```{r}
 mydata = USArrests
 mydata<- na.omit(mydata) # listwise deletion of missing
@@ -470,11 +460,13 @@ mydata.orig = mydata #save original data copy
 mydata <- scale(mydata) # standardize variables
 ```
 
-Ward Hierarchical Clustering
+Después exploraremos los datos utilizando el procedimienot de `Ward` para realizar una agrupación jerárquica. Utilizaremos la distancia `euclidiana` para medir la similitud entre los estados.
+
 ```{r}
 d <- dist(mydata, method = "euclidean") # distance matrix
 fit<- hclust(d, method="ward")
 ```
+
 Visualizar el gráfico y mostrar el dendrograma con bordes rojos alrededor de *k* clusters
 ```{r}
 plot(fit) # display dendogram
@@ -482,43 +474,108 @@ k1 = 2
 # eyeball the no. of clusters
 # cut tree into k1 clusters
 groups = cutree(fit, k=k1)
-groups
 rect.hclust(fit, k=2, border="red")
 ```
 
-
-De nuevo la pregunta aparece, ¿cómo conocer el número óptimo de segmentos? Observando el  dendrograma en ciertas ocasiones puede ser de ayuda para tomar la decisión. Pero en otras ocasiones, ¿qué deberíamos hacer? La mayoría, si no todos, los programas esperan que conozcas el número correcto de segmentos a formar a la hora de utilizar la función  `kmaenas`. `R` lo hace mejor y te muestra un   one better **scree plot** de la familia de los gráficos que te muestran cómo la varianza dentro de los segmentos (un idicador de la calidad  de la solución) varía con el número de segmentos formados. Por ello, con **R** puedes tomar una decisión informada.
+De nuevo la pregunta aparece, ¿cómo conocer el número óptimo de segmentos? Observando el  dendrograma en ciertas ocasiones puede ser de ayuda para tomar la decisión. Pero en otras ocasiones, ¿qué deberíamos hacer? La mayoría de los paquetes de partición de muestras, si no todos,  esperan que conozcas el número correcto de segmentos a formar, como es el caso  de la función  `kmeans`. Con `R` podemos obtener un *scree plot* de la familia de los gráficos que te muestran cómo la varianza dentro de los segmentos (un idicador de la calidad  de la solución) se reduce con el número de segmentos formados. Por ello, con **R** puedes tomar una decisión informada. Aquí mostramos un ejemplo de cómo obtener un *scree plot*.
 
 ```{r}
-# Determine number of clusters
+# Determina el número de segmentos
+#Calcula la variación dentro de los segmentos
 wss<- (nrow(mydata)-1)*sum(apply(mydata,2,var))
+#Calcula la variación dentro de los segmentos para 14 particiones, 
+#de 2 hasta 15
 for (i in 2:15) wss[i] <- sum(kmeans(mydata,centers=i) $withinss) 
-plot(1:15, wss, type="b", xlab="Number of Clusters", ylab="Within groups sum of squares")
-# Look for an "elbow" in the scree plot
-# Use optimal no. of clusters in k-means
+plot(1:15, wss, type="b", xlab="Número de segmentos", ylab="wss")
+# Busca un 'codo' en la distribución de la wss
+# Ese 'codo' nos indicará el número adecuado de segmentos a formar, en este caso
 k1=2
 ```
 
+Después vamos arealizar la partición (`kmeans`) como hemos visto anteriormente.
 
-K-Means Cluster Analysis
+
 ```{r}
-fit <- kmeans(mydata, k1) # k1 cluster solution
+fit <- kmeans(mydata, k1) # k1 es el número de segmentos a formar
 fit$centers 
-#Murder Assault UrbanPop Rape
-# get cluster means of original data
+#Obtenemos los centros
 aggregate(mydata.orig,by=list(fit$cluster),FUN=mean)
-# Group.1 Murder Assault UrbanPop Rape
-# append cluster assignment
+# Añadimos el resultado de la partición a la base de datos
 mydata0<- data.frame(mydata.orig, fit$cluster)
-# Cluster Plot against 1st 2 principal components
-# vary parameters for most readable graph
-```{r}
+# Mostramso el resultado
 library(cluster)
 clusplot(mydata0, fit$cluster, color=TRUE, shade=TRUE,labels=2,
 lines=0)
 ```
 
+#Preparación de los datos: Análisis componentes principals
+
+El análisis de los componentes principales es una técnica para la reducción de datos multivariantes. Su propósito es encontrar un conjunto de nuevas variables, igual en número a las variables originales, aunque con ciertas propiedades: 1) las nuevas variables, llamadas componentes principales, están incorrelacionadas entre ellas (son independientes en el espacio formado por los componente principales), 2) los componentes principales están formados a partir de las variables originales, 3) los componentes principales explican la varianza de las variables originales, de manera que el primer componente explica la mayor parte posible de variación, el segundo la mayor parte de la varianza residual, y así sucesivamente.
+
+Vamos a ver un ejemplo. Tomemos los datos, `USAarrests` correspondientes a los delitos cometidos en las ciudades de los EEUU en 1973 que proporciona uno de los paquetes de **R**. Los datos corresponden a arrestos por cada 100.000 residentes. Si los delitos están correlacionados entonces es posible construir una nueva base de datos a partir  los datos originales sobre los delitos en los que las nuevas variables no estén correlacionadas. Estas propiedades de los componentes principales es de utilidad cuando utilizamos los medos de segmentación de mercados.
+
+
+```{r}
+# Examinando la correlación entre los delitos cometidos en las ciudades de los EEUU
+cor(mydata)
+```
+
+Podemos ver que las variables `Murder`, `Assault`  y `Rape` están muy correlacionadas. En cambio `UrbanPop`, porcentaje de población urbana, no está correlacionada con los asesinatos, asaltos o violaciones. Vamos a ver qué nos dicen los componentes principales de estos datos
+
+```{r}
+# Principal Components Analysis
+# from the correlation matrix
+#fit.princomp<- princomp(mydata, cor=TRUE)
+fit.prcomp <-prcomp(mydata, scale=T, retx=T)
+summary(fit.prcomp)
+```
+
+Como dijimos anteriormente, cada componente principal explica la mayor parte posible de la variación residual. Así vemos que el primer componentes explica un 62%, el segundo un 25%, el tercero un 9 % y el cuarto un 4%.
+
+Podemos saber cómo se forman los componentes principales a partir de las variables originales examinando las cargas o rotaciones. Estos son los vectores singulares que multiplican las variables originales para producir los components principales.
+
+```{r}
+# print variance accounted for
+# pc loadings
+#loadings(fit.princomp) 
+fit.prcomp$rotation
+```
+
+Estos coeficientes que multiplican a las variables origianles para producir los components principales nos indica la contribución de cada variable original (estandarizada) a la construcción de los components principales. Así el primer componente es una combinación lineal de asesinatos, asaltos y violaciones (PC1=-0,536Murder-0,583Assault-0,278UrbanPop-0,543Rape), mientras que el segundo es una construcción de la población urbana principalmente. Podríamos decir que la estructura de los delitos cometidos en las poblaciones se pueden ordenar en dos característias, los delitos y la población urbana.
+
+Podemos observarlo si graficamos la contribución de los componentes a la variación de los datos originales estandarizados y situamos los datos originales en el plano de los componentes principales.
+
+```{r}
+# scree plot
+par(mfrow=c(1,2))
+plot(fit.prcomp,type="lines") 
+biplot(fit.prcomp)
+par(mfrow=c(1,1))
+```
+Puntuación en las ciudades en los componentes principales (presentamos las seis primeras ciudades y las 6 últimas de la base de datos), la correlación entre los componentes principales contruidos (que debería ser cero) y la correlación de las variables originales con los factores
+```{r}
+head(fit.prcomp$x[, c(1,2)])
+tail(fit.prcomp$x[, c(1,2)])
+cor(fit.prcomp$x[, c(1,2)])
+cor(scale(mydata), fit.prcomp$x[, c(1,2)])
+
+```
+
+Un proceso de segmentación ahora tendríamos que decidir si utilizar los componentes principales o bien reducir las bases de segmentación con la información proporcionada con los components principales. En el segundo caso podríamos decidir utilizar únicamente dos variables, los asantos y la población urbana.
+
+Cuando los componentes principales no se pueden interpretar bien, es posible utilizar otros paquetes que nos proporcionan la posibilidad de girar los componentes sobre su eje con el objeto de encontrar una matriz de correlaciones más interpretable. En el entorno **R** podemos utilizar los paquetes `psych` y `GPArotation`. El primer paquete realiza la extracción de los componentes principales y utitliza al segundo para encontrar una matriz de correlaciones más interpretable. Vamos a utilizar los mismos datos sobre arrestos para ilustrar su uso. En este ejemplo utilizamos una rotación habitual, `varimax`, pero también es posible utilizar otros procedimientos para rotar la matriz de estructura inicial: `quatimax`, `promax`, `oblimin`, `simplimax`, o `cluster`.
+
+```{r}
+library(psych)
+library(GPArotation)
+fit.principal<- principal(mydata, nfactors=2, rotate="varimax")
+fit.principal 
+```
+
+#Identificación de los individuos que forman los segmentos
+
 #Segmentación de muestras mixtas basada en un modelo estadístico
+
 
 Los modelos de clases latentes suponen que la muestra que estamos
 analizando es representativa de una población mixta compuesta por *k*
@@ -570,9 +627,6 @@ $$BIC(L(M), K)=-2logL(M)+log(N)npar$$
 
 $$CAIC(L(M), K)=-2logL(M)+(log(N)+1)npar$$
 
-
-# Model Based Clustering
-
 ```{r}
 library(mclust)
 fit.Mclust<- Mclust(mydata)
@@ -607,49 +661,6 @@ Paara obtener las medias en los segmenotos
 ```{r}
 cmeans=aggregate(mydata.orig,by=list(classif),FUN=mean); cmeans
 ```
-#Preparación de los datos: Análisis componentes principals
-
-```{r}
-# Principal Components Analysis
-# entering raw data and extracting PCs
-# from the correlation matrix
-fit.princomp<- princomp(mydata, cor=TRUE)
-summary(fit.princomp) 
-# print variance accounted for
-loadings(fit.princomp) 
-# pc loadings
-plot(fit.princomp,type="lines") 
-# scree plot
-```
-Puntuación en los compopnentes principales
-```{r}
-head(fit.princomp$scores) 
-# the principal components
-biplot(fit.princomp)
-```
-
-```{r}
-#Use cor=FALSE to base the principal components on the covariance matrix.
-#Use the covmat= option to enter a correlation or covariance matrixdirectly.
-#If entering a covariance matrix, include the option n.obs=.
-#The principal( ) function in the psych package can be used to extract and rotate principal components.
-# Varimax Rotated Principal Components
-# retaining 5 components
-library(psych)
-library(GPArotation)
-fit.principal<- principal(mydata, nfactors=4, rotate="varimax")
-fit.principal 
-# print results
-plot(fit.principal)
-?principal
-```
-
-mydata can be a raw data matrix or a covariance matrix. Pairwise
-deletion of missing data is used. rotate can "none", "varimax",
-"quatimax", "promax", "oblimin", "simplimax", or "cluster" .
-
-#Identificación de los individuos que forman los segmentos
-
 
 
 
