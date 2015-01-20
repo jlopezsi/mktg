@@ -8,8 +8,8 @@ output: pdf_document
 
 ```{r}
 getwd()
-#"/kchospital/kchospital.txt"
-kchospital <- read.table(file.choose(), header=T)
+#"hospital/hospital.txt"
+kchospital <- read.table("hospital/hospital.txt", header=T)
 #"../kchspital/kcprefs.txt"
 kcprefs <- read.table(file.choose(), header=T)
 names(kchospital)

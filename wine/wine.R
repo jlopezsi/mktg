@@ -1,7 +1,7 @@
 library(gdata)
 getwd()
-offers <- read.xls("clustering-vanilla.xls", sheet=1, header=TRUE)
-transactions <- read.xls("clustering-vanilla.xls", sheet=2, header=TRUE)
+offers <- read.xls("wine/clustering-vanilla.xls", sheet=1, header=TRUE)
+transactions <- read.xls("wine/clustering-vanilla.xls", sheet=2, header=TRUE)
 head(offers)
 head(transactions)
 #Load Library
@@ -14,8 +14,9 @@ pivot<-(cast(pivot,value~Customer.Last.Name,fill=0,fun.aggregate=function(x) len
 # Bind to offers, we remove the first column of our new pivot because it's redundant. 
 pivot<-cbind(offers,pivot[-1])
 #We can output the pivot table into a new CSV file called pivot.
-write.csv(file="pivot.csv",pivot)
+#write.csv(file="pivot.csv",pivot)
 # Load library
+install.packages('fpc')
 library(fpc)
 
 # Only use customer transaction data and we will rotate the matrix
@@ -38,15 +39,15 @@ cluster.pivot<-cast(cluster.pivot,Offer~Cluster,fun.aggregate=length)
 cluster.topDeals<-cbind(offers,cluster.pivot[-1])
 
 #We can then reproduce the excel version by writing to a csv file:
-write.csv(file="topdeals.csv",cluster.topDeals,row.names=F)
+#write.csv(file="topdeals.csv",cluster.topDeals,row.names=F)
 
 ##Data Smart
 
 library(gdata)
 getwd()
-input.file <- "clustering-vanilla.xls"
+input.file <- "wine/clustering-vanilla.xls"
 deals <- read.xls(input.file, sheet=1, header=TRUE)
-offers <- read.xls("clustering-vanilla.xls", sheet=2, header=TRUE)
+offers <- read.xls("wine/clustering-vanilla.xls", sheet=2, header=TRUE)
 head(offers)
 str(offers)
 head(deals)
@@ -78,7 +79,7 @@ temp[order(temp$"2",decreasing = TRUE),1:6][1:10,]
 temp[order(temp$"3",decreasing = TRUE),1:6][1:10,]
 
 #The fourth cluster seems to like August Champaign
-￼temp[order(temp$"4",decreasing = TRUE),1:6][1:10,]
+temp[order(temp$"4", decreasing = TRUE), 1:6][1:10,]
 
 #One can try K means for varying K and pick one of the k values. 
 #The chapter suggests another way to compare the K means across various k values,
@@ -86,12 +87,9 @@ temp[order(temp$"3",decreasing = TRUE),1:6][1:10,]
 #The following R code gives the metric. 
 #You can also use the silhouette function from the cluster package.
 
-silhouette.rk
-clusters
-silh
-<- function(cluster,dist.euclidean){
-  <- sort(unique(cluster$cluster))
-  <- numeric()
+silhouette.rk <- function(cluster,dist.euclidean){
+clusters <- sort(unique(cluster$cluster))
+silh  <- numeric()
   for(i in cluster$id){
     temp              <- subset(cluster, id!=i)
     temp.cluster      <- subset(cluster, id==i)$cluster
@@ -119,9 +117,10 @@ n                 <- attr(dist.euclidean, "Size")
 km.out            <- kmeans(offers.data,4,nstart=25)
 cluster           <-  data.frame(name = (rownames(offers.data)),
                                  cluster = km.out$cluster, id = 1:nrow(cluster) )
-print(silhouette.rk(cluster,dist.euclidean))
+print(silhouette.rk(cluster, dist.euclidean))
 ## [1] 0.1243 
-print((summary(silhouette(km.out$cluster,dist.euclidean)))$avg.width) 
+library(cluster)
+print((summary(silhouette(km.out$cluster, dist.euclidean)))$avg.width) 
 ## [1] 0.1243
 #For K = 5 clusters, one can calculate silhouette as follows:
 set.seed(1)
