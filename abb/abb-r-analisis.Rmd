@@ -5,30 +5,44 @@ date: "3 de septiembre de 2014"
 output: pdf_document
 ---
 
+#Lectura de datos
+
+La base de datos completa con los datos de las valoraciones, elecciones de las empresas así como datos descriptivos de la empresa se encuentra en el fichero "abb-r.txt". Para leerlo utilizamos la función `read.table` con los parámetros adecuados como vemos en el código que se muestra. También cargamos los paquetes `ggplot` y `dplyr`. El primero si queremos visualizar los datos (es opcional, pues podemos utilizar las funciones gráficas del paquete base) y el segundo para realizar tablas de datos.
 
 
 ```{r}
 require(ggplot2)
 require(dplyr)
 
-#la opción file.chose() en la función read.table nos permite escoger un fichero de datos guardado en el ordenador local)
-#abb<-read.table(file.choose(), header=T)
 #leer el fichero de datos abb-R.txt, el cual contiene los datos de la elección de las empresas eléctricas y la descripción de su volumen de compras así cómo su distrito.
 abb<-read.table("abb-r.txt", header=T)
+
+#También podemos utilizar la opción file.chose() como argumento de la función read.table. #Este argumentos nos permite escoger un fichero de datos guardado en el ordenador local)
+#abb<-read.table(file.choose(), header=T)
+
 #la función head() nos permite visualizar las primer seis líneas de un objeto de datos.
 #He traspuesto el resupado con la función t() con el objeto de facilitar la lectura. Así las líneas representan las variables y las columnas los valors para las 6 primeras observaciones.
 t(head(abb))   
-#la funcion names() muestra los nombres de las variables 
 
+#la funcion names() muestra los nombres de las variables 
 names(abb) 
 
 #La función str() nos proporciona una descripción de la base de datos
 str(abb)
+
 #cambiar la clase de las variables según sea apropiado.
 #las variables choice y district deberían se factores.
 abb$district <- as.factor(abb$district)
 abb$choice <- as.factor(abb$choice)
-#Ahora con la ayuda de la función select() del packete dplyr y del operador tubería (pipeline) %>% calculamos el valor medio del precio y volumen
+```
+
+#Exploración de los datos
+
+Con el pauete `dplyr` podemos rápidamente realizar informes con la base de datos.
+
+```{r}
+#Ahora con la ayuda de la función select() del paquete dplyr 
+#y del operador tubería (pipeline) %>% calculamos el valor medio del precio y volumen
 A= select(abb, choice, volume, district, price) %>%
   group_by(district, choice) %>%
   summarize(AvgPrice = mean(price), AvgVolumen = mean(volume), N = length(price))
@@ -52,22 +66,25 @@ ggplot(A, aes(x=district, y=AvgPrice)) +
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#Análisis
+
+Ahora cargamos el paquete `survival` para poder utilizar la función `clogit` para estimar los parámetros del modelo de elección discreta.
+
 
 ```{r, echo=FALSE}
 library(survival)
 abb$choice <- as.numeric(abb$choice)
 abb.clogit <- clogit(choice ~ price + energy_loss + maintenance + warranty + spare_parts + ease_install + problem_solving + quality + DA + DB + DC + strata(id), data = abb)
-
 summary(abb.clogit)
 ```
-Ahora calculamos la utilidad de cada elección
+
+Ahora calculamos la predicción de la utilidad de cada elección según el modelo estimado
+
 ```{r}
 u <- predict(abb.clogit)
 head(u)
 ```
-Después obtenemos exp(u)
-y sumamos exp(u) para cada individuo
+Después obtenemos exp(u) y lo asignamos al objeto *eu*,  y sumamos exp(u) para cada individuo
 ```{r}
 eu <- exp(u)
 sumaeu <- by(eu, abb$id, sum)
@@ -138,8 +155,11 @@ abb$seg <- seg
 
 abb.select.ord <- select(abb, volume, pchoice, seg) %>%
   arrange(-volume)
+options(digits=7)
 head(abb.select.ord)
-
-
+###con las funciones básicas
+#o<-order(abb$VOLUME, decreasing=TRUE) 
+#abbor<-cbind(abb$VOLUME[o], abb$pchoice[o], abb$seg[o]) 
+#abbor
 ```
 primero seleccionamos las variables que queremos ordenar, después 
