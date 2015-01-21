@@ -5,27 +5,38 @@ output: pdf_document
 
 #Lectura de los datos del caso
 
+La lectura de datos en el lenguage **R** es muy flexible. Aunque existen funciones para la lectura de dtos procedentes d eotros programas de análisi estadístico, una formaestándar es la lectura de dtos en formato ASCII separados con tabulador. Si tenemos los datos en otro programa de análisis de datos o en una hoja electrónica Excel, sólo tendremos que grabarlos en formato texto con separción de tabulaciones El fichero se grabará con la extensión .dat o .txt, como es el caso del ficheor de datos del hopsital KC ("hospital/hospital.txt") y las preferencias de los consumidores entrevistados ("hospital/hospital.prefs.txt"). Para su lectura en el entorno **R** utilizamos la función `read.table`. Como argumentos utilizamos el nombre y ubicación del fichero de datos, entrcomillado, y la indicación de que la primera fila del ficheor contiene los nombres de las varaibles (`header=T`).
 
 ```{r}
-getwd()
-#"hospital/hospital.txt"
-kchospital <- read.table("hospital/hospital.txt", header=T)
-#"../kchspital/kcprefs.txt"
-kcprefs <- read.table(file.choose(), header=T)
+setwd("/Users/jlopezsi/Documents/github/mktg-models-projects")
+kchospital <- read.table("hospital/hospital.txt", header = TRUE)
+kcprefs <- read.table("hospital/hospital.prefs.txt", header = TRUE)
+```
+Ahora que ya los tenemos en le espacio de trabajo podemos consultar nombre de las variables contenidas en la tabla de datos kchospital que acabamos de crear. Para ello utilizamos la función `names` y como argumento el nombre de la tabal de datos, kchospital o kcprefs, sin comillas. Aquí tenemos el nombre de las variables contenidas en ambos ficheros.
+
+```{r}
 names(kchospital)
 names(kcprefs)
 ```
+Si queremos ver el contenido de cualquier variables debemos hacer referencia a la tabla de datos que lo contiene. Por ejemplo, `kchospital$FIREP` nos permite acceder al contenido de la variable `reputación` que está en la tabla de datos `kchospital`. Cuidado, en **R** se diferencia entre las mayúsculas y las minúsculas. Por ello deberemos introducir los nombre de los ficheros y variables en minúsculas o mayúsculas según sea el caso. Aquí el nombre de la tabla de datos está en minúsculas y las variables en mayúsculas; así debemos hacer referencia a ellas.
 
-Facilitar el acceso a las variables de la tabla de datos:
+Para facilitar el trabajo con la hoja de datos podemos adjuntarla al espacio de trabajo mediante la función `attach()`. De esa manera no tendremos que hacer referencia a la tabla de datos `kchospital`para acceder al contenido de las variables.
 
 ```{r, echo=TRUE}
 attach(kchospital)
 ```
-Construir una tabla de datos con los factores que los clientes consideran importantes a la hora de seleccionar los hospitales maternos:
+
+#Bases de segmentación
+
+para facilitar el análisis de segmentación primero vamos a seleccionar las bases de segmentación, las variables que los consumidores consideran importantes a la hora de seleccionar un hospital materno-infantil. Concretamente,
+
 ```{r}
-fi<-cbind(FIREP, FICCUID, FIDIST, FICDOC, FICAMIG, FIPUBLI, FIAMAB, FIIMOD, FIEMOD, FISEG)
+bases <- kchospital[,c(10:20)]
+names(bases)
 ```
-Cargamos los paquetes de análisis que utilizaremos:
+
+Ahora debemos cargar en la memoria del ordenador la bibliteca de los paquetes que necesitamos para realizar el análisis de segmentación. Concretamente, necesitamos la bilbioteca `cluster`. Las otras funciones utilizadas en la segmentación están disponibles en el programa base de **R**. Para cargar los paquetes utilizamos la función `library()` y como argumento el nombre del paquete. El paque `cluster` contiene un conjunto de algoritmos de clasificación robustos propuestos pro Kauffman y Rouseeuw (1990). Los podemos agrupar en tres tipos: algoritmos para partir un conjunto de observaciones (`pam`, `clara`, y `fanny`), algoritmos de aglomeración jerárquica (`agnes`) y, finalmente, alforitmos para la división jerárquica de un conjunto de aobseraciones (`diana` y `mona`).  
+
 ```{r}
 library(cluster)
 ```
@@ -33,4 +44,204 @@ library(cluster)
 #Proceso de segmentación en dos etapas: aglomeración jerárquica y partición
 
 Vamos a utilizar, en primer lugar, los algoritmos clásicos implementados en los programas de análisis de datos más habituales: el jerárquico aglomerativo, hclust, y el de partición de una muestra, kmeans. Si queremos saber algo más sobre el algoritmo implementado podemos utilizar la ayuda, help, y como argumento en nombre de la función de la que queremos saber algo, hclust,como argumento. Por ejemplo, `help(hclust)`.  Con la función `scale(fi)`podemos normalizar los datos si es preciso.
+
+##clasificación con los datos originales
+
+Para ello seguimos el proceso usual. Primero, analizamos visualmente la heterogeneidad que existe en la muestra de clientes o posibles clientes –para ello utilizamos un procedimiento jerárquico de aglomeración, `hclust`–, segundo, decidimos cuántos segmentos formar y aplicamos en procedimiento de partición del mercado, `kmeans`. 
+
+###Exploración de la heterogeneidad en los datos
+
+Veamos el resultado de la clasificación jerárquica.
+
+```{r}
+bases.hclust<-hclust(dist(bases), method="ward")
+plot(bases.hclust)
+plot(bases.hclust, main="Dendrograma",ylab="distancia",xlab="objetos clasificados",frame.plot=TRUE)
+```
+
+Aunque el dendrograma (que es como se denomina al gráfico en forma de árbol invertido que muestra el proceso de clasificación) ya es lo suficientemente elegante, podemos añadirle un título y modificar el nombre de los ejes del gráfico. Si queremos resaltar el número de grupos que formaríamos, podemos utilizar la siguiente función. Si fueran tres los segmentos a formar, obtendríamos:
+
+
+```{r}
+plot(bases.hclust, main="Dendrograma",ylab="distancia",xlab="objetos clasificados",frame.plot=TRUE)
+rect.hclust(bases.hclust, k=3, border=2)
+```
+
+Si formaramos cuatro segmentos, entonces utilizaríamos:
+
+```{r}
+plot(bases.hclust, main="Dendrograma",ylab="distancia",xlab="objetos clasificados",frame.plot=TRUE)
+rect.hclust(bases.hclust, k=4, border=2)
+```
+
+###Partición con kmeans
+
+Durante la segunda fase, después de decidir cuántos grupos formaremos, utilizaremos un procedimiento de partición, concretamente `Kmeans`.
+
+```{r}
+bases.kmeans3<-kmeans(bases, 3)
+```
+
+Ayudas visuales para analizar la estructura de los datos. Sólo si las bases de segmentación están muy correlacionadas. En caso contrario tendremos que basarnos en el dendograma que ya hemos obtenido.
+
+Si, además, hemos obtenido los componentes principales, podemos visualizar el resultado de la clasificación. Primero obtenemos los componentes principales y después utilizamos éstos para visualizar la segmentación realizada
+
+```{r}
+library(MASS)
+bases.pca<-princomp(bases, cor=T)
+bases.puntos<-predict(bases.pca)
+plot(bases.puntos[,1:2], col=bases.kmeans3$cluster)
+```
+
+Repetimos el proceso con cuatro grupos:
+
+```{r}
+bases.kmeans4<-kmeans(bases, 4)
+plot(bases.puntos[,1:2], col=bases.kmeans4$cluster)
+```
+
+Visualmente podemos ver que el algoritmo nos ha dividido un grupo que parece homogéneo, mientras que el grupo que parece formado por dos segmentos lo ha dejado igual. Esto es debido a que el algoritmo `kmeans` forma grupos esféricos.
+
+###¿Podemos mejorar la clasificación realizada?
+
+En ciertas ocasiones podemos mejorar la clasificación facilitando al algoritmo `kmeans` los centros iniciales a partir de los cuales iniciar la partición. Para ello tendremos que calcular la media de cada variable en cada uno de los grupos formados con el procedimiento jerárquico de aglomeración. Veamos cómo obtener las medias:
+
+```{r}
+centros4<-tapply(as.matrix(bases), list(rep(cutree(bases.hclust, 4), ncol(as.matrix(bases))),col(as.matrix(bases))),mean)
+options(digits=3)
+centros4
+```
+
+Ahora repetimos el proceso y visualizamos el resultado.
+
+```{r}
+bases.kmeans4<-kmeans(bases, centros4)
+plot(bases.puntos[,1:2], col=bases.kmeans4$cluster)
+```
+
+##¿Existe correlación entre las variables? Cambio de variables o construcción de las nuevas bases de segmentación
+
+La existencia de correlación entre las variables podría ser uno de los motivos por los cuales el procedimiento no funcione correctamente. Averigüemos si las correlaciones son elevadas.
+
+```{r}
+cor(bases)
+```
+
+Si existe correlación entre las variables que los consumidores consideran importantes a la hora de escoger un hospital, puede que la clasificación obtenida no sea la correcta. En este caso debemos eliminar la correlación existente entre las variables utilizadas. Para ello podemos utilizar una técnica ampliamente utilizada para la reducción de datos, el análisis de los componentes principales. Esta técnica crea unas nuevas variables a partir de una combinación lineal de las originales. Estas nuevas variables, componentes principales, poseen dos características muy útiles en el análisis de datos multivariantes: no están correlacionadas entre sí y nos explican la correlación que se observa entre las variables originales. 
+
+Para la extracción de los componentes principales que existen en la matriz de datos de factores importantes, bases, utilizaremos la biblioteca de programas de Venables y Ripley (1999), MASS.
+
+```{r}
+library(MASS)
+bases.pca<-princomp(bases, cor=T)
+summary(bases.pca)
+bases.puntos<-predict(bases.pca)
+
+```
+
+Para continuar con el análisis primero decidiremos con cuántos componentes principales trabajaremos. Para ello pediremos que nos muestre gráficamente la cantidad de varianza que las nuevas variables son capaces de explicar (función `screepot(fipca)` con el objeto creado como argumento). Podemos ser que con tres es suficiente pues a partir de cuarto componente la varianza explicada es inferior a la unidad (varianza de una variable original estandarizada) y se observa una inflexión en el gráfico.
+
+```{r}
+screeplot(bases.pca)
+```
+
+Ahora vamos a crear una nueva variable (una matriz de datos) con los puntos asignados a los clientes de la muestra en las nuevas variables o componentes principales (podemos utilizar predict(fipca) o bien fipca$scores, en ambos casos obtenemos el mismo resultado).
+
+```{r}
+bases.puntos<-predict(bases.pca)
+```
+
+Una ventaja de trabajar con un espacio reducido de variables es poder visualizar cómo se distribuyen los clientes que queremos clasificar. Si formamos un gráfico con los dos primeros componentes (representan casi el 78% de la variabilidad de la muestra) podremos visualmente ver la formación de los grupos. La función `eqscplot` nos los permite hacer fácilmente. El gráfico nos muestra que existen 4 grupos, dos de ellos grandes con un valor reducido en el segundo componente, y dos, reducidos ambos, con un valor elevador en el segundo componente y medio en el primero.
+
+```{r}
+eqscplot(bases.puntos, xlab="primer componente", ylab="segundo componente")
+```
+
+Si queremos guardar estos tres componentes para futuros análisis, podemos asignarlos a tres nuevas variables de la hoja de datos.
+
+```{r}
+eqscplot(bases.puntos, xlab="primer componente", ylab="segundo componente")
+```
+
+Si queremos guardar estos tres componentes para futuros análisis, podemos asignarlos a tres nuevas variables de la hoja de datos.
+
+##Repetimos el proceso de clasificación con las nuevas bases de segmentacion
+
+De nuevo vamos a utilizar los algoritmos clásicos implementados en los programas de análisis de datos más habituales: el jerárquico, `hclust`, y el de partición `kmeans`. 
+
+Obtendremos un nuevo objeto de la clase ``hclust`, bases.puntos.hclust, cuyo proceso de aglomeración podemos observar gráficamente gracias a la función `plot` que precisa como argumento el nombre  del objeto que acabamos de crear, bases.puntos.hclust. Las distancias verticales nos dan una medida visual de la heterogeneneidad que existe en los grupos. Un examen visual nos indica que pueden haber 3 o 4 grupos, dos grandes y dos pequeños que podrían agruparse en uno solo, aunque la varianza dentro de los grupos sería bastante mayor que la correspondiente a una agrupación con 4.
+
+```{r}
+bases.puntos.hclust<-hclust(dist(bases.puntos[,1:3]), method="ward")
+plot(bases.puntos.hclust)
+```
+
+Si queremos saber a qué grupos pertenecen cada uno de los clientes podemos utilizar la función cutree, nos asigna cada caso a un grupo.
+
+```{r}
+cutree(bases.puntos.hclust, 4)
+```
+
+Para tener que escribir menos podemos almacenar los tres componentes en una nueva tabla de datos, bases.puntos3:
+
+```{r}
+bases.puntos3<-bases.puntos[,1:3]
+head(bases.puntos3)
+
+plot(bases.puntos.hclust, main="Dendrograma PCA",labels=FALSE,ylab="distancia",xlab="objetos clasificados",frame.plot=TRUE)
+rect.hclust(bases.puntos.hclust, k=4, border=2)
+```
+
+¿Cuántos grupos formar? Vemos que al utilizar los componentes principales el dendograma nos sugiere que es mayor la heterogeneidad entre los dos segmentos más pequeños (la longitud de la línea que los une es mayor). Por ello tentativamente formaremos 4 grupos.
+
+Ahora realizaremos la clasificación con el algoritmo `kmeans`. El resultado de este algoritmo es muy sensible a los centros iniciales a partir de los cuales inicia la partición. Veámoslo, en este caso es así. 
+
+Primero realizaremos la clasificación con unos centros obtenidos aleatoriamente y el resultado lo asignaremos al objeto `bases.puntos.kmeans`. La asignación de cada individuo a las particiones obtenidas se encuentra almacenado en el atributo `cluster` del objeto `bases.puntos.kmeans`, y podemos acceder a ella de la forma habitual, `bases.puntos.kmeans$cluster`. 
+
+```{r}
+bases.puntos.kmeans<-kmeans(bases.puntos3, 4)
+bases.puntos.kmeans$cluster
+```
+
+Representación gráfica del resultado con el algoritmo kmeans con centros aleatorios, incluidos los centros finales de los 4 grupos o particiones realizadas. Utilizaremos al función plot y como argumento el nombre del objeto
+
+```{r}
+plot(bases.puntos[,1:2], col=bases.puntos.kmeans$cluster)
+```
+
+Además, podemos añadir al gráfico los centros de cada segmento
+
+```{r}
+#points(bases.puntos.kmeans$centers, col=bases.puntos.kmeans$cluster, pch=8)
+```
+
+##¿Podemos mejorar la partición utilizando los centros iniciales proporcionados por el algoritmo de aglomeración jerárquica?
+
+Veamos, ahora, el resultado de la partición si les damos como centros los obtenidos en la clasificación con el método de Ward. Para su cálculo utilizamos el procedimiento propuesto por Venables y Ripley (1999: 338). 
+
+```{r}
+centros.puntos4<-tapply(bases.puntos3, list(rep(cutree(bases.puntos.hclust, 4),ncol(bases.puntos3)),col(bases.puntos3)),mean)
+centros.puntos4
+```
+
+Volvemos a clasificar los individuos con el procedimiento kmeans y asignamos el resultado al objeto fikmeanspca2. Fíjate, ahora, que no es necesario el argumento correspondiente al número de grupos a formar, pues este dato lo obtiene del número de filas de la matriz de medias, el objeto identificado con el nombre de centros.
+
+```{r}
+bases.puntos.kmeans4.c<-kmeans(bases.puntos3, centros.puntos4)
+
+
+```
+
+Volvamos a representar gráficamente el resultado de la clasificación contenida en el objeto fikmeanspca3. 
+
+```{r}
+
+plot(bases.puntos[,1:2], col=bases.puntos.kmeans4.c$cluster)
+points(bases.puntos.kmeans4.c$centers,col=1:2, pch=8)
+
+```
+
+#Procedimientos más robustos: el paquete `cluster`
+
+
 

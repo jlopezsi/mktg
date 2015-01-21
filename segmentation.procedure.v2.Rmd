@@ -1,19 +1,39 @@
 ---
-title: 'Segmentación de mercados: proceso'
+title: 'Segmentación de mercados'
 author: "Jordi López Sintas"
 date: "9 de enero de 2015"
 output: pdf_document
 ---
+# Fundamentos de la segmentación de mercados
 
-#Modelos de segmentación: proceso
+La segmentación de los mercados (*market segmentation analysis*) se refiere al análisis de la estructura de la demanda de un mercado (los beneficios buscados por los consumidores, sus preferencias, etc.) y a la estimación de la intensidad de la demanda para un potencial producto que aspira a una determinada posición en la estructura estimada del mercado (Johnson 1971). La segmentación de los mercados es una decisión estratégica puesto que  que la elección de las bases para realizarla determinará las características que suponemos importan a los consumidores.
 
-1\. El procedimiento estándar
+Una selección incorrecta de las bases de segmentación supondrá partir de unas hipótesis erróneas acerca del comportamiento de los consumidors. Por ello, su reacción frente a nuestra decisines comerciales será inferir, o contraria, a la prevista, con el consiguiente incremento en costes debido a la ineficacia de las decisines comerciales realizadas. Los costes de manufactura y financieros asociados a la estrategia comercial también se resentirán como ocurrió en 1984 cuando Apple comercializó su primer Macintosh (REF). También debemos tener prsente que los problemas de consumo de los individuos cambian a lo largo del tiempo, por lo que las bases de segmentación también deberán cambiar para poder describir y entender adecuadamente la estructura de las preferencias de los consumidores.
 
-Fase exploratoria: la clasificación jerárquica
+Suponiendo que las características que hemos medidos de los consumidores, $C_{i}=x_{i1},...,x_{ip}$ desciben adecuadamente la estructura de las preferencias de los consumidores en un determiando mercado, el proceso de segmentación está interesado en proporcionar respuestas a dos tipos de problemas de la dirección comercial: 1) cómo debería segmentarse un mercado en función de las propiedades estructurales de las preferencias de los consumidores, y 2) cómo debería asignarse los recursos comerciales entre los segmentos (Mahajan & Jain 1978).
+
+Supongamos que una estrategia comercial está compuesta de los elementos trdicionales del mix comercial, calidad del producto ofrecido, precio, distribución y promoción, E0(q,p,d,c). El problema de segmentación del mercado reside en entender su estructura: identificar qué es lo que los consumidores consideran importante, y medir cómo difieren en sus valoraciones de lo que es importante. Si conocemos esos dos grupos de datos podremos inferir la preferencia de los consumidors hacia los productos que la empresa ofrecerá a mercado (y hacia los de la competencia).
+
+Nuestro problema de segmentación, entonces, empieza identificando los beneficios importantes para los consumidores, midiendo cómo difieren en la importancia asignada a esos beneficios y finaliza seleccionandoun número *s* de segmentos, $S=S_{1}, ..., S_{s}$, y definiendo las estrategias diseñadas para cada segmento, $E=E_{1}, ..., E_{s}$ y, simultáneamente, asginando los recursos comerciales a las estrategias (Winter 1979). Encontrar *s* segmentos de consumidores y analziar las correspondientes estrategias comercial que proporcionan el másico valor a la empresa. El número óptimo de estrategias, $e \* <s$, y se obtendrà de la resolución del problema de maximización de benficios
+
+$$Max B(E)=I(E_{l})-C(Q(E_{l}), E_{l}) $$
+E_{l}
+sujeto a que los recursos aplicados no excedan a los dispones, $R(E_{l}) < R$.
+
+Muchos investigadores han levantado dudas acerca de la valide de los resultados obtenidos en los análisis de segmentación de mercados. Concretamente han señalado: 
+1. diferentes algoritmos de clasificación producen diferentes resultados e incluso el mismo algoritmo con diferntes condcioens iniciales o distintos niveles de precisión pueden llegar a producir diferentes rsultados (Hoek, Gendall and Esslemont 1996); Funkhouser 1983),
+2. los criteris para seleccionar el número de segmentos difierente en sus conclusiones (Hoek, Gendall and Esslemont 1996; Wedel & Kamakura 1998; Helsen and Green 1991; Weingessel, Dimitriadou, & Dolnical 1999).
+
+Afortunadamente en la actualidad disponemos, además del tradicinal algoritmo de partición convexa, *kmeans* ()(Hartigan & Wong 1978), de algoritmos robustos frente a la violación de la hipótesis de convexidad en la que se basa la solución proporcinada por *kmeans*, como son los aloritmos propuestos por Kauffman & Rouseeuw (1990), y de los procedmientos de clasificación basados en clases latentes, o clasificación basada en modelos estádisticos para segmentar poblaciones mixtas (Wedel & Kamakura 1998; Bartholomew & Knott 1999: Vermunt & Magidson 2000). 
+
+En la actualidad la tarea de seleccionar le número adecuado de segmentos que muestran la estructura de la demanda de los consumidores es una tarea más fácil gracias a la difusión que han tenido los algoritmos robustos de Kauffman y Rouseeuw (1990) y los basados en clases latentes, junto con las facilidades gráficas que ofrecen los computadores. Los procedimientos propuestos por Kauffman y Rouseeuw (1990) ya nos ofrecen un indicador de la calidad de la partición realizada del mercado, como veremos más adelante, pero también los métodos basados en clases latentes nos ofrecen diferentes estadísticos en los cuales basar nuestra decisión.
+#Segmentación en dos etapas: El procedimiento estándar
+
+##Fase exploratoria: la clasificación jerárquica
 
 La clasificación jerárquica con el procedimiento de Ward minimiza la suma de las distancias euclidianas al cuadrado entre el individuo i y el centro del segmento al que se asigna,$\sum_{\substack{k}}\sum_{\substack{i \in k}}\sum_{\substack{j}}=(x(i,j)-x(j',j))^2$. El primer sumatorio calcula el error de la observación *i* en el segmento *k* para todas las variables, el segundo realiza el cálculo para todos los individuos en el segmento *k* y, finalmente, el último sumatorio calcula la suma del error para todos los segmentos (Wishart 1998).
 
-Funciona de la siguiente manera
+**Funciona de la siguiente manera**
 
 1.  Computa la matriz de las distancias euclidianas al cuadrado para
     todo par de observaciones, *i*, *i’*, $d^2$(*i*,*i’*)=$\sum_{\substack{k}}(x(i,j)-x(j',j))^2$.
@@ -49,7 +69,7 @@ realizan las agrupaciones.
 
 Suponogamos que tenemos cinco individuos medidos en una única variable $\left\{A=2,B=5,C=9,D=10,E=15\right\}$.
 
-d(A, B)=22+52-(1/2)(2+5)2=29-24,5=4,5
+Esto es:  d(A, B)=22+52-(1/2)(2+5)2=29-24,5=4,5
 
       A   B     C      D           E
   --- --- ----- ------ ----------- ------
@@ -98,9 +118,9 @@ par(mfrow=c(1,1))
 
 Veamos cómo lo haríamos en el entorno R de análisis de datos.
 
-#Partición de la muestra en k segmentos: el procedimiento k-means
+##Partición de la muestra en k segmentos: el procedimiento k-means
 
-Los algoritmos de clasificación del tipo k-means inician el proceso de
+Los algoritmos de clasificación del tipo *k-means* inician el proceso de
 selección especificando el número de clases que desea el analista, *k*,
 así como los centros iniciales para cada uno de los *k* clusters a
 formar. Después asigna cada individuo al grupo cuyo centro tenga más
@@ -232,15 +252,19 @@ Después de calcular las distancias, podemos iniciar el proceso de aglomeración
 
 ```{r, echo=FALSE}
 peces.hclust<-hclust(peces.dist, method="ward")
-par(mfrow=c(1,2))
+par(mfrow=c(1,1))
 plot(peces.hclust)
 par(mfrow=c(1,1))
 ```
+
 Después partimos la muestra en tres segmentos:
+
 ```{r, echo=FALSE}
 peces.kmeans<-kmeans(peces, 3, trace=T)
 ```
+
 Si queremos saber las opciones de lal función k-means, podemos utilizar la función ? seguida del nombre de la función
+
 ```{r, echo=TRUE}
 ?kmeans
 ```
@@ -248,7 +272,7 @@ Para saber los objetos incluidos en el resultado de clasificar la muestra, podem
 ```{r}
 names(peces.kmeans)
 ```
-Los centros de los segmentos se encuentran en el objeto `centers`. La classificación se encuentra en el objeto `cluster`, y en el objeto `iter`el número de iteraciones realizadas.
+Los centros de los segmentos se encuentran en el objeto `centers`. La classificación se encuentra en el objeto `cluster`, y en el objeto `iter` el número de iteraciones realizadas.
 
 ```{r}
 peces.kmeans$centers
@@ -257,10 +281,6 @@ peces.kmeans$iter
 ```
 El resultado lo podemos visualizar en el espacio de las bases de segmentación
 ```{r}
-
-plot(peces[1:2], col=peces.kmeans$cluster)
-points(peces[1:2])
-points(peces.kmeans$centers, col=1:2, pch=8,cex=2)
 
 plot(peces[1:3], col=peces.kmeans$cluster)
 points(peces[1:3])
@@ -272,7 +292,7 @@ points(peces.kmeans$centers, col=1:3, pch=8,cex=2)
 
 ##PAM
 
-El algoritmo pam tiene por objetivo encontrar los k consumidores
+El algoritmo pam tiene por objetivo encontrar los *k* consumidores
 representativos de la heterogeneidad del mercado alrededor de los cuales
 se clasifican los *n* consumidores medidos en *p* variables (una matriz
 de datos de tamaño *n*x*p*). Estos *k* consumidores representativos
@@ -281,7 +301,7 @@ mercado. Los *k* consumidores representativos se obtienen de minimizar
 la disimilitud entre todos los consumidores y su consumidor
 representativo más cercano. Es decir, el procedimiento busca encontrar
 conjunto de *k* segmentos de individuos pertenecientes a la muestra que
-minimiza la siguiente función objetivo: peces
+minimiza la siguiente función objetivo: 
 
 $$\sum_{i = 1\ \ \ \ }^{n}{\min_{\forall k}d\left( i,m_{k} \right)}$$
 
@@ -427,18 +447,28 @@ Ahora vamos a utilizar el paquete `cluster` y concretamente la función `clara`.
 ```{r}
 library(cluster)
 sim.clara<-clara(sim, 2)
+sim.clara3<-clara(sim, 3)
+sim.clara4<-clara(sim, 4)
 par(mfrow=c(2,2))
 plot(sim, type="n", xlab="x1", ylab="x2")
 text(sim, labels=sim.clara$clustering)
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.clara3$clustering)
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.clara4$clustering)
+par(mfrow=c(1,1))
+```
+También podemos utilitzar la función `clusplot` para visualizar el resultado:
+```{r}
+par(mfrow=c(2,2))
 clusplot(sim.clara, color=TRUE, shade=TRUE, labels=2, lines=0)
 #plot(sim.clara)
-sim.clara3<-clara(sim, 3)
 clusplot(sim.clara3, color=TRUE, shade=TRUE,labels=2, lines=0)
 #plot(sim.clara3)
-sim.clara4<-clara(sim, 4)
 clusplot(sim.clara4, color=TRUE, shade=TRUE,labels=2, lines=0)
 par(mfrow=c(1,1))
 #plot(sim.clara4)
+
 ```
 
 Ahora comparamos los resultados con `kmeans` utilizando la función `table`. Y podemos ver que los resultados difieren aunque ligeramente.
@@ -514,7 +544,6 @@ El análisis de los componentes principales es una técnica para la reducción d
 
 Vamos a ver un ejemplo. Tomemos los datos, `USAarrests` correspondientes a los delitos cometidos en las ciudades de los EEUU en 1973 que proporciona uno de los paquetes de **R**. Los datos corresponden a arrestos por cada 100.000 residentes. Si los delitos están correlacionados entonces es posible construir una nueva base de datos a partir  los datos originales sobre los delitos en los que las nuevas variables no estén correlacionadas. Estas propiedades de los componentes principales es de utilidad cuando utilizamos los medos de segmentación de mercados.
 
-
 ```{r}
 # Examinando la correlación entre los delitos cometidos en las ciudades de los EEUU
 cor(mydata)
@@ -572,9 +601,7 @@ fit.principal<- principal(mydata, nfactors=2, rotate="varimax")
 fit.principal 
 ```
 
-#Identificación de los individuos que forman los segmentos
-
-#Segmentación de muestras mixtas basada en un modelo estadístico
+#Segmentación basada en un modelo estadístico
 
 
 Los modelos de clases latentes suponen que la muestra que estamos
@@ -662,6 +689,151 @@ Paara obtener las medias en los segmenotos
 cmeans=aggregate(mydata.orig,by=list(classif),FUN=mean); cmeans
 ```
 
+#Identificación de los individuos que forman los segmentos
+
+Supongamos que la división de teléfonos celulares de Conglomerate Inc. ha llegado a un acuerdo con un fabricantes de microordenadores para desarrollar, producir y comercializar un producto híbrido entre un ayudante personal digital (PDA) y un teléfono ‘inteligente’. Provisionalmente lo han llamado ConneCtor que transmite y recibe tanto datos como voz (a diferencia de los PDAs actuales que únicamente transmiten datos.)
+
+ConneCtor es ligero y adopta la forma de un teléfono móvil con una pequeña pantalla de cristal líquido (LCD) sensible al tacto, a todo lo largo del teléfono. Su sistema operativo (abierto) desarrolla las funciones estándares de un teléfono móvil y las tareas habituales de una agenda electrónica (calendario, calculadora, libro de direcciones, etc.) Puede enviar y recibir faxes, mensajes orales y e-mail.
+
+Supongamos que han identificados unas bases de segmentación (Innovador, usuadio de busca, usuario de teléfono, usuario de agenda, accede a información pasiva, envía información, tiempo que trabaja fuera de la oficina, importancia de los móviles, importancia compartir información) así como un conjunto de variables descriptivas de los individuos (edad, eduación, ingresos, trabaja en construcción, en emergencias, en ventas, en servicios, es un profesional, tiene un pda, lee la revista Business Week, pc Magazine, Field & Stream, Modern Gourmet).
+
+Con las de segmentación han explorado la estructura de las preferencias y beneficios buscados por los consumidores y han identificado 4 segmentos.
 
 
+```{r, echo=FALSE}
+#leer fichero pdaBasDes2.txt
+pda<-read.table("pda/pdaBasDes2.txt",  header = TRUE)
+head(pda)
+names(pda)
+pda.bases<-pda[,-c(12:24)]
+head(pda.bases)
+```
+
+```{r, echo=FALSE}
+#Hacer la clasificación con las bases originales y las normalizadas
+pda.bases.hclust<-hclust(dist(pda.bases), method="ward")
+plot(pda.bases.hclust)
+#normalizar datos
+pda.bases.norm<-scale(pda.bases)
+pda.bases.norm.hclust<-hclust(dist(pda.bases.norm), method="ward")
+plot(pda.bases.norm.hclust)
+centros.pda.bases.norm<-tapply(pda.bases.norm, list(rep(cutree(pda.bases.norm.hclust, 4), ncol(pda.bases.norm)),col(pda.bases.norm)),mean)
+options(digits=2)
+centros.pda.bases.norm
+pda.bases.norm.kmeans4<-kmeans(pda.bases.norm, centros.pda.bases.norm)
+names(pda.bases.norm.kmeans4)
+pda.bases.norm.kmeans4$size
+```
+
+Una vez identificados los segmentos que estructuran el mercado, debemos identificar a los individuos que forman cada segmento. Esta información nos permite: 1) cuantificar el volumen de los segmentos y así analizar su rentabilidad, y 2) Conocer a qué medios de comunicación estan expuestos.
+
+Para ello podemos utilizar la función discriminante lineal, `lda` implementada en el paquete `MASS`.
+
+```{r, echo=FALSE}
+#La funciokn discriminante
+names(pda)
+pda.des<-pda[,-c(1:11)]
+names(pda.des)
+#cargamos el packete MASS que nos ofrece la función disciminante, lda()
+library(MASS)
+#Como argumentos tenemos que dar las bases de segmentación y la clasificacion que hemos realizado
+pda.des.lda<-lda(pda.des, pda.bases.norm.kmeans4$cluster)
+#summary(pda.des.lda)
+pda.des.lda
+```
+
+Una vez estimada la función discriminante podemos ver las medias de las variables descriptivas en los segmentos:
+
+```{r}
+
+t(pda.des.lda$means)
+#Ahora vamos a calcular los valores medios de las variables en los grupos
+#Observemos primero los valores medios. Con esta información ya sería suficiente 
+#para caracterizar a los grupos. Su representación en el espacio de las funciones 
+#discriminante nos permiten visualizar la tabla de medias y ver su asociación con los grupos.
+```
+
+También podemos visualizar el resultado
+
+```{r}
+plot(pda.des.lda, dimen=2)
+?lda
+lda.arrows <- function(x, myscale = 1, tex = 0.75, choices = c(1,2), ...){
+  ## adds `biplot` arrows to an lda using the discriminant function values
+  heads <- coef(x)
+  arrows(x0 = 0, y0 = 0, 
+         x1 = myscale * heads[,choices[1]], 
+         y1 = myscale * heads[,choices[2]], ...)
+  text(myscale * heads[,choices], labels = row.names(heads), 
+       cex = tex)
+}
+lda.arrows(pda.des.lda)
+```
+También podemos construir un gráfico sintético:
+
+```{r}
+#para interpretar el significado de las funciones discriminantes
+#estimamos su correlación con los descriptores
+pda.des.puntos<-predict(pda.des.lda, pda.des)$x
+cor(pda.des, pda.des.puntos)
+#Para visualizar los segmentos
+#También podemos representar gráficamente los centros de los grupos en el espacio de las funciones discriminantes. 
+#Para ello tenemos, primero, la función predict que toma como argumento un objeto de la clase lda y utilizar 
+#las funciones discriminantes obtenidas para predecir los valores de un conjunto de valores, 
+#concretamente nos interesa conocer la puntuación de las medias en el espacio de las funciones discriminantes.
+predict(pda.des.lda, pda.des.lda$means)$x
+#Vamos ya podemos representar visualmente la caracterización de los grupos. 
+#Para ello utilizamos la función biplot con dos grupos de datos, 
+#la puntuación de los centros de los grupos en las funciones discriminantes 
+#y la correlación de las variables discriminantes con las funciones discriminantes.
+pda.des.cor<-cor(pda.des, pda.des.puntos)
+biplot(predict(pda.des.lda, pda.des.lda$means)$x, pda.des.cor)
+```
+
+
+También podemos comprobar la calidad de la predicción realizada por la función discriminante:
+
+```{r}
+#Comprobamos la calidad dela prediccion realizada por la función discriminante
+
+options(digits=4)
+pda.des.predict<-predict(pda.des.lda, pda.des)$class
+table(segmento=pda.bases.norm.kmeans4$cluster, lda=pda.des.predict)
+
+```
+
+#Referencias
+
+
+Fraley, C., Raftery, A. E., Murphy, T. B., & Scrucca, L. (2012). Mclust Version 4 for R: Normal Mixture Modeling for Model-Based Clustering, Classification, and Density Estimation. Technical Report No. 597, Department of Statistics, University of Washington.
+
+Fraley, C., & Raftery, A. E. (1998). How many clusters? Which clustering Method? Answers via model-based cluster analysis. Computer Journal, 41, 578–588.
+
+Helsen, K., & Green, P. E. (1991). A Computational Study of Replicated Clustering with an Application to Market Segmentation. Decision Sciences, 22, 1124–1141.
+
+Wishart, D. (1998). Efficient hierarchical cluster analysis for data mining and knowledge discovery. Computing Science and Statistics, 30.
+
+Wishart, D. (1999). Clustering Methods for Large Data Problems. In International Statistical Institute (pp. 437–440). Helsinki.
+
+Celeux, G., Biernacki, C., & Govaert, G. (2006). Choosing models in model-based clustering and discriminant analysis.
+
+Wedel, M., & Kamakura, W. A. (1998). Market Segmentation: Conceptual and Methodological Foundations. Boston: Kluwer Academic.
+
+
+Bartholomew, D. J., Knott, M., & Moustaki, I. (2011). Latent Variable Models and Factor Analysis: A Unified Approach (3 edition.). Chichester, West Sussex: Wiley.
+
+Hoek, J., Gendall, P., & Esslemont, D. (1996). Market Segmentation. A Search for the Holy Grail? Journal of Marketing Practice, 2(1), 25–34.
+
+Johnson, R. M. (1971). Market Segmentation: A Strategic Management Tool. Journal of Marketing Research, 8(February), 13–18.
+
+Winter, F. W. (1979). A Cost-Benefit Approach to Market Segmentation. Journal of Marketing, 43(Fall), 103–111.
+
+
+Mahajan, V., & Jain, A. K. (1978). An Approach to Normative Segmentation. Journal of Marketing Research, 15(August), 338–345.
+
+Klastorin, T. D. (1983). Assesing Cluster Analysis Results. Journal of Marketing Research, 20(February), 92–98.
+
+Funkhouser, G. R. (1983). A Note on the Reliability of Certain Clustering Algorithms. JMR, Journal of Marketing Research, 20(1), 99.
+
+Kaufman, L., & Rousseeuw, P. J. (1990). Finding Groups in Data–An Introduction to Cluster Analysis. New York: John Wiley & Sons.
 
