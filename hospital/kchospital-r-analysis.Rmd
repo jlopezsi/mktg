@@ -243,5 +243,201 @@ points(bases.puntos.kmeans4.c$centers,col=1:2, pch=8)
 
 #Procedimientos más robustos: el paquete `cluster`
 
+##Partición con las variables originales
+
+Realizamos la primera segmentación con los datos originales. Veamos ahora los resultados del programa `cluster`. Para ello empleamos el procedimiento de partición denominado `clara`: cuyo significado es  *clustering large applications*. La ventaja del paquete de procedimiento resarrollado por Kaufman y Rouseeuw (1990) reside en que es menos sensible que *Kmeans* cuando los segmentos no tienen una forma esférica y, además, nos proporciona un índice de la calidad de la partición obtenida. Veámoslo:
+
+```{r}
+bases.cluster<-clara(bases, 2, metric="euclidean")
+bases.cluster3<-clara(bases, 3, metric="euclidean")
+bases.cluster4<-clara(bases, 4, metric="euclidean")
+bases.cluster5<-clara(bases, 5, metric="euclidean")
+clusplot(bases.cluster)
+clusplot(bases.cluster3)
+clusplot(bases.cluster4)
+clusplot(bases.cluster5)
+```
+
+Repetimos la operación con 3, 4 y 5 particiones obteniendo los siguientes índices de calidad de: 0,53, 0,63, y 0,42, respectivamente para 2, 3, 4 y 5 particiones. Los resultados nos indican que la mejor clasificación se obtiene con 3 particiones como se observa también la representación gráfica en un espacio reducido mostrada por la función `clusplot`.  `Clara` con 3 clusters sólo tiene un error al fusionar los clusters 3 y 4.
+
+
+```{r}
+names(bases.cluster)
+bases.cluster$silinfo$avg.width
+bases.cluster3$silinfo$avg.width
+bases.cluster4$silinfo$avg.width
+bases.cluster5$silinfo$avg.width
+```
+
+Si le padimos los atributos del objeto de la clase cluster que acabamos de obtener (con la función `names(bases.cluster))` nos indica cómo podemos acceder de forma individual a cada uno de los apartador que contiene el resumen, los argumentos disponibles son los siguientes: *sample*, *medoids*, *clustering*, *objective*, *clusinfo*, *silinfo*, *diss* y *data*. Para acceder directamente al resultado de la clasificación podemos utilizar la misma estructura que utilizamos en una tabla de datos, el nombre de objeto, `bases.cluster`, seguido del nombre del argumento al cual deseamos acceder, `clustering`, ambos conectados con el símbolo del dólar, *bases.cluster$clustering*.
+
+Si queremos obtener ayuda sobre alguna función o biblioteca de programas incorporada a nuestra lenguaje **R**, podemos utilizar la función `help.start()` y sin argumento, paréntesis vacíos.
+
+##¿Podemos confiar en el resultado obtenido? ¿Existe correlación entre las variables?
+
+Veamos ahora el resultado de la clasificación utilizando el algoritmo `clara` con los  tres componente principales estimados. Creamos un nuevo objeto, bases.puntos.cluste, con 2, 3, 4 y 5 grupos, de forma sucesiva. El índice de calidad obtenido es de: 0,69, 0,77, 0,81 y 0,68; con lo que los resultados sugieren que cuatro grupos es la mejor solución. Evidentemente, la representación gráfica de los grupos obtenidos (función `clusplot(bases.puntos.cluster)`) únicamente en la partición en cuatro grupos éstos se muestran totalmente separados sin solapamiento alguno. En cambio, en el resto de las soluciones obtenidas algunos grupo se encuentran solapados, reduciendo el índice de calidad de la estructura obtenida.
+
+```{r}
+#con componentes principales
+
+bases.puntos.cluster<-clara(bases.puntos[,1:3],2,metric="euclidean")
+bases.puntos.cluster3<-clara(bases.puntos[,1:3],3,metric="euclidean")
+bases.puntos.cluster4<-clara(bases.puntos[,1:3],4,metric="euclidean")
+bases.puntos.cluster5<-clara(bases.puntos[,1:3],5,metric="euclidean")
+
+clusplot(bases.puntos.cluster)
+clusplot(bases.puntos.cluster3)
+clusplot(bases.puntos.cluster4)
+clusplot(bases.puntos.cluster5)
+
+bases.puntos.cluster$silinfo$avg.width
+bases.puntos.cluster3$silinfo$avg.width
+bases.puntos.cluster4$silinfo$avg.width
+bases.puntos.cluster5$silinfo$avg.width
+```
+
+Guardamos el resultado de la clasificación con 4 segmentos y realizamos una representación gráfica en el espacio de los primeros componentes principales del resultado obtenido con las variabels originales y después con los componentes principales (comparar con el resultado obtenido con 3 segmentos.
+
+```{r}
+kchospital$clusterpca<-bases.puntos.cluster4$clustering
+plot(bases.puntos[,1:2], col=bases.cluster4$clustering)
+plot(bases.puntos[,1:2], col=bases.puntos.cluster4$clustering)
+
+```
+
+¿Hay diferencias? Veamos, ahora, el resultado de la clasificación realizada por Kmeans con las variables originales (sin sustituirlas por los componentes principales) y el obtenido con clara. ¿Existen diferencias?
+
+Si queremos exportar los  resultados, podemos utilizar las siguientes funciones:
+
+```{r}
+#write.table(kchospital, "kcclas.dat", quote = FALSE, sep = ",", row.names=F)
+```
+
+#Identificación de los consumidores asignados a cada segmento
+
+Las variables despriptoras suelen ser variables nomnales con diferentes niveles. Si la base de datos no contiene las etiquetas de los niveles, primero deberemos preparar la base de datos como sigue, por ejemplo.
+
+```{r}
+names(kchospital)
+
+library(plyr)
+library(dplyr)
+descriptores<-kchospital[,c(43:47)]
+head(descriptores) 
+
+class(descriptores$SEXO)
+descriptores$SEXO<-as.factor(descriptores$SEXO)
+summary(descriptores$SEXO)
+
+class(descriptores$ESTADOMA)
+descriptores$ESTADOMA<-as.factor(descriptores$ESTADOMA)
+summary(descriptores$ESTADOMA)
+
+class(descriptores$EDAD)
+descriptores$EDAD<-as.factor(descriptores$EDAD)
+summary(descriptores$EDAD)
+
+class(descriptores$NIVELEDU)
+descriptores$NIVELEDU<-as.factor(descriptores$NIVELEDU)
+summary(descriptores$NIVELEDU)
+
+class(descriptores$INGRESOS)
+descriptores$INGRESOS<-as.factor(descriptores$INGRESOS)
+summary(descriptores$INGRESOS)
+
+descriptores$SEXO <- revalue(descriptores$SEXO, c("0" ="Mujer", "1" = "Hombre"))
+descriptores$ESTADOMA <- revalue(descriptores$ESTADOMA, c("0" ="Casado", "10"="Soltero", "1" = "Otro"))
+descriptores$EDAD <- revalue(descriptores$EDAD, c("0" ="<=25 años", "1"="55+", "10"="41-55", "100" = "26-40"))
+descriptores$NIVELEDU <- revalue(descriptores$NIVELEDU, c("0" ="ESO", "1"="Graduado Univ.", "10"="Bachillerato +", "100" = "Bachillerato"))
+descriptores$INGRESOS <- revalue(descriptores$INGRESOS, c("0" ="<=$100000", "1"="$60000+", "10"="$40001-60000", "100" = "$30001-40000", "1000"="$20001-30000", "10000"= "$10001-20000"))
+
+
+```
+
+Despues elaboramos las tablas que nos describen los segmentos
+
+```{r}
+options(digits=3)
+descriptores.tabla<- list( 
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$SEXO))),
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$ESTADOMA))),
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$EDAD))),
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$NIVELEDU))),
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$INGRESOS)))
+)
+do.call(rbind, descriptores.tabla)
+```
+
+#Informe 
+
+Problema de marketing: ¿Debería el hopital comercializar un servici especializado en maternidad para incrementar la tasa de ocupación?
+
+
+En términos comerciales:
+Determinar la facilidad con la que los consumidores identifican los hospitales, sus preferencias e intenciones de compra para el servicio de maternidad.
+
+Componentes específicos del problema comercial
+
+1. ¿Qué criterios utilizan los consumidores cuando seleccionan un hospital? 
+2. ¿Cuál e sla posicón relativa de Kc en comparación con la competencia? 
+3. ¿Qué competidores tienen el mejor servicio de maternidad según sus percepciones? 
+4. ¿Cuál es el mercado potencial del servicio de maternidad? ¿Quienes son en términos demográficos y psicológicos? 
+5. ¿Y el mercado potencial de KC? 
+6. ¿Podemos incrementar la tasa de reconocimienot del hospital con la introducción del servicio de maternidad u otro servicio especializado? 
+
+
+```{r}
+#library(DiagrammeR)
+#diagrama.causalidad <-DiagrammeR("
+#  graph BT;
+#    Cuidado.especializado --> Ventaja.competitiva;
+#    Ventaja.competitiva --> Reconocimiento;
+#    Reconocimiento -->Preferencia;
+#    Preferencia --> Tasa.de.ocupacion;
+#    Tasa.de.ocupacion--> Beneficio;
+#")
+#diagrama.causalidad
+```
+
+Componentes principales (Q2A-J)
+Reducir componentes principales y ver si existe heterogeneidad respecto a los últimos hospitales visitados (Q1).
+Explicar solución PCA
+
+PCA 1 "fundamentos del cuidado". En un extremo variables relacionadas con la reputación, y en el otro, los aspectos sociales del cuidado.
+
+PCA 2  "aspectos comerciales", correlaciones positcias para "advertising," y "acceptance of maternity insurance." 
+
+PCA 3 "proximidad" dimensión correlacionada con "distance from home."
+
+Cluster: Una solución con 4 segmentos:
+
+Cluster 
+1 96 
+2 13
+3 133 
+4 28
+
+Según la dimensión de los segmentos se podrían agrupar en tres segmentos.  
+
+Describir segmentos según su importancia en los factores de elección del hospital.
+
+Cluster 1 precoupado por los fundamentos del cuidado
+
+Cluster 2 preocupado por la proximidad. 
+
+Cluster 3 este grupo se deja aconsejar por los conocidos y no le importan los aspectos comerciales. 
+
+cluster 4 is high on factor 2, meaning this group is responsive to business decisions related to maternity care.
+
+Si tabulamos la clasificación en segmentos con los resultados de la primera pregunta, tenemos que una correspondencia clara  entre el uso previo y la asginación a los clusters:  cluster 1 corresponde a los hospitales  B, C, F; cluster 2 a KC hospital; cluster 3 ...
+
+EXECUTIVE SUMMARY
+
+Los resultados muestran que la experiencia previa en hosptales es el criterio más importante para los consumidors cuando deciden a qué hospital ir. Otros criterios importantes son: la calidad del servicio, las promociones que incrementan el valor, y la proximidad geográfica. Por ello ofrecer  un servicio de matenidad para conseguir que los consumidores repitan en su elección de hospital parece una bena idea.
+
+Las características que el servicio debe son varias. Primero la atención personal fue un criterio importante para los consumidores con mayor nivel educativo e ingresos superiores. Segundo estos consumidores tambien perciben que deben tener libertad para escoger hospital, mientras que los consumidores con bajos ingresos y educación inferior creen que no tienen elección. Adicionalmente, los grupos más privilegiados socialmente tambien ven la publiciadad como algo positivio, indicando que la publicidad puede influir en su elección.
+
+Además, los consumidores familiares con los servicios de matenidad creen que la comodidad es una caracteritica deseable un un servicio de matenidad. Por ello, la atención personal junto con los fundamentos del cuidado profesional y la comodidad deberían resaltar en la publicidad que intenta ganar clientes para el servicio de maternidad de KC. Esa publicia, junto con el servicio de maternidad, incrementaría el nivel de reconocimiento de la marca e incrementaria el valor de su imagen (en ambos está por detras de sus competidores)
+
 
 

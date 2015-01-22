@@ -1,4 +1,213 @@
+#clasificación jerárquica
 
+ejemplo<-c(2,5,9,10,15)
+ejemplo
+ejemplo.dist<-dist(ejemplo)
+ejemplo.dist
+ejemplo.hclust<-hclust(ejemplo.dist, method="ward")
+ejemplo.hclust
+par(mfrow=c(1,2))
+plot(ejemplo.hclust)
+labels<-c("A", "B", "C", "D", "E")
+ejemplo.hclust$labels<-labels
+plot(ejemplo.hclust)
+par(mfrow=c(1,1))
+
+#Partición con kmeans
+
+peces<-read.csv("peces.csv", row.names=1, header=T)
+peces
+peces.dist<-dist(peces)
+peces.dist
+
+#############
+peces.hclust<-hclust(peces.dist, method="ward")
+par(mfrow=c(1,1))
+plot(peces.hclust)
+par(mfrow=c(1,1))
+
+peces.kmeans<-kmeans(peces, 3, trace=T)
+?kmeans
+names(peces.kmeans)
+peces.kmeans$centers
+peces.kmeans$cluster
+peces.kmeans$iter
+
+plot(peces[1:3], col=peces.kmeans$cluster)
+points(peces[1:3])
+points(peces.kmeans$centers, col=1:3, pch=8,cex=2)
+
+#datos simulados
+sim<-rbind(cbind(rnorm(100,0,0.5), rnorm(100,2,1.5)), 
+           cbind(rnorm(150,3.5,0.5), rnorm(15,4,2.5)))
+head(sim)
+par(mfrow=c(1,2))
+plot(sim)
+
+
+#Partición de lal muestra con kmeans
+#library(MASS)
+sim.kmeans<-kmeans(sim, 2)
+#eqscplot(sim, type="n", xlab="x1", ylab="x2")
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.kmeans$cluster)
+par(mfrow=c(1,1))
+
+par(mfrow=c(1,2))
+sim.kmeans3<-kmeans(sim, 3)
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.kmeans3$cluster)
+
+sim.kmeans4<-kmeans(sim, 4)
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.kmeans4$cluster)
+par(mfrow=c(1,1))
+
+#ahora utilizaremos los centros para partir el mercado
+
+sim.hclust<-hclust(dist(sim), method = "ward")
+plot(sim.hclust)
+centros.h<-tapply(sim, list(rep(cutree(sim.hclust, 2),ncol(sim)), col(sim)),mean)
+centros.h
+sim.kmeans.centros<-kmeans(sim, centros.h)
+
+centros.h3<-tapply(sim, list(rep(cutree(sim.hclust, 3), ncol(sim)), col(sim)), mean)
+centros.h3 
+sim.kmeans.centros3<-kmeans(sim, centros.h3)
+centros.h4<-tapply(sim, list(rep(cutree(sim.hclust, 4), ncol(sim)), col(sim)), mean)
+centros.h4
+sim.kmeans.centros4<-kmeans(sim, centros.h4)
+table(sim.kmeans$cluster, sim.kmeans.centros$cluster)
+table(sim.kmeans3$cluster, sim.kmeans.centros3$cluster)
+table(sim.kmeans4$cluster, sim.kmeans.centros4$cluster)
+
+#repetimos el análisis con el paquete cluster
+
+library(cluster)
+sim.clara<-clara(sim, 2)
+sim.clara3<-clara(sim, 3)
+sim.clara4<-clara(sim, 4)
+par(mfrow=c(2,2))
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.clara$clustering)
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.clara3$clustering)
+plot(sim, type="n", xlab="x1", ylab="x2")
+text(sim, labels=sim.clara4$clustering)
+par(mfrow=c(1,1))
+#Alternativa para visualizar el resultado
+par(mfrow=c(2,2))
+clusplot(sim.clara, color=TRUE, shade=TRUE, labels=2, lines=0)
+#plot(sim.clara)
+clusplot(sim.clara3, color=TRUE, shade=TRUE,labels=2, lines=0)
+#plot(sim.clara3)
+clusplot(sim.clara4, color=TRUE, shade=TRUE,labels=2, lines=0)
+par(mfrow=c(1,1))
+#plot(sim.clara4)
+
+#Comparamos los resultados
+
+table(clara=sim.clara$clustering, kmeans=sim.kmeans.centros$cluster)
+table(clara=sim.clara3$clustering, kmeans=sim.kmeans.centros3$cluster)
+table(clara=sim.clara4$clustering, Kmeans=sim.kmeans.centros4$cluster)
+
+#Ejemplos con arrestos
+
+mydata = USArrests
+mydata<- na.omit(mydata) # listwise deletion of missing
+mydata.orig = mydata #save original data copy
+mydata <- scale(mydata) # standardize variables
+
+d <- dist(mydata, method = "euclidean") # distance matrix
+fit<- hclust(d, method="ward")
+
+plot(fit) # display dendogram
+k1 = 2 
+# eyeball the no. of clusters
+# cut tree into k1 clusters
+groups = cutree(fit, k=k1)
+rect.hclust(fit, k=2, border="red")
+
+# Determina el número de segmentos
+#Calcula la variación dentro de los segmentos
+wss<- (nrow(mydata)-1)*sum(apply(mydata,2,var))
+#Calcula la variación dentro de los segmentos para 14 particiones, 
+#de 2 hasta 15
+for (i in 2:15) wss[i] <- sum(kmeans(mydata,centers=i) $withinss) 
+plot(1:15, wss, type="b", xlab="Número de segmentos", ylab="wss")
+# Busca un 'codo' en la distribución de la wss
+# Ese 'codo' nos indicará el número adecuado de segmentos a formar, en este caso
+k1=2
+
+fit <- kmeans(mydata, k1) # k1 es el número de segmentos a formar
+fit$centers 
+#Obtenemos los centros
+aggregate(mydata.orig,by=list(fit$cluster),FUN=mean)
+# Añadimos el resultado de la partición a la base de datos
+mydata0<- data.frame(mydata.orig, fit$cluster)
+# Mostramso el resultado
+library(cluster)
+clusplot(mydata0, fit$cluster, color=TRUE, shade=TRUE,labels=2,
+         lines=0)
+##Componentes principales
+# Examinando la correlación entre los delitos cometidos en las ciudades de los EEUU
+cor(mydata)
+
+# Principal Components Analysis
+# from the correlation matrix
+#fit.princomp<- princomp(mydata, cor=TRUE)
+fit.prcomp <-prcomp(mydata, scale=T, retx=T)
+summary(fit.prcomp)
+
+# print variance accounted for
+# pc loadings
+#loadings(fit.princomp) 
+fit.prcomp$rotation
+
+# scree plot
+par(mfrow=c(1,2))
+plot(fit.prcomp,type="lines") 
+biplot(fit.prcomp)
+par(mfrow=c(1,1))
+
+head(fit.prcomp$x[, c(1,2)])
+tail(fit.prcomp$x[, c(1,2)])
+cor(fit.prcomp$x[, c(1,2)])
+cor(scale(mydata), fit.prcomp$x[, c(1,2)])
+
+library(psych)
+library(GPArotation)
+fit.principal<- principal(mydata, nfactors=2, rotate="varimax")
+fit.principal 
+
+#Model bases clustering
+
+library(mclust)
+fit.Mclust<- Mclust(mydata)
+fit.Mclust 
+names(fit.Mclust)
+# view solution summary
+fit.Mclust$BIC 
+# lookup all the options attempted
+classif <- fit.Mclust$classification 
+# classifiation vector
+mydata1 <- cbind(mydata.orig, classif) 
+# append to dataset
+# draw dendrogram with red borders around the k1 clusters
+mydata1[1:10,] 
+#view top 10 rows
+table(fit$cluster, classif)
+
+#write.table(mydata1,file.choose()) 
+#save output
+fit1=cbind(classif)
+rownames(fit1)=rownames(mydata)
+library(cluster)
+clusplot(mydata, fit1, color=TRUE, shade=TRUE,labels=2, lines=0)
+
+cmeans=aggregate(mydata.orig,by=list(classif),FUN=mean); cmeans
+
+############Identificación
 getwd()
 #Identificación de los individuos que forman los segmentos
 #leer fichero pdaBasDes2.txt
@@ -75,4 +284,8 @@ predict(pda.des.lda, pda.des.lda$means)$x
 #y la correlación de las variables discriminantes con las funciones discriminantes.
 
 biplot(predict(pda.des.lda, pda.des.lda$means)$x, pda.des.cor)
+
+#Anexo: fichero simulado
+
+
 
