@@ -802,6 +802,9 @@ table(segmento=pda.bases.norm.kmeans4$cluster, lda=pda.des.predict)
 
 ```
 
+#Anexo
+
+
 #Referencias
 
 

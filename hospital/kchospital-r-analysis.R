@@ -89,8 +89,137 @@ bases.puntos.kmeans4.c<-kmeans(bases.puntos3, centros.puntos4)
 plot(bases.puntos[,1:2], col=bases.puntos.kmeans4.c$cluster)
 points(bases.puntos.kmeans4.c$centers,col=1:2, pch=8)
 
+#Procedimiento paquete cluster
+library(cluster)
+bases.cluster<-clara(bases, 2, metric="euclidean")
+plot(bases.cluster)
+clusplot(bases.cluster)
+
+bases.cluster3<-clara(bases, 3, metric="euclidean")
+bases.cluster4<-clara(bases, 4, metric="euclidean")
+bases.cluster5<-clara(bases, 5, metric="euclidean")
+
+names(bases.cluster)
+bases.cluster$silinfo$avg.width
+bases.cluster3$silinfo$avg.width
+bases.cluster4$silinfo$avg.width
+bases.cluster5$silinfo$avg.width
+
+#con componentes principales
+
+bases.puntos.cluster<-clara(bases.puntos[,1:3],2,metric="euclidean")
+
+bases.puntos.cluster3<-clara(bases.puntos[,1:3],3,metric="euclidean")
+
+bases.puntos.cluster4<-clara(bases.puntos[,1:3],4,metric="euclidean")
+
+bases.puntos.cluster5<-clara(bases.puntos[,1:3],5,metric="euclidean")
+
+clusplot(bases.puntos.cluster)
+clusplot(bases.puntos.cluster3)
+clusplot(bases.puntos.cluster4)
+clusplot(bases.puntos.cluster5)
+
+bases.puntos.cluster$silinfo$avg.width
+bases.puntos.cluster3$silinfo$avg.width
+bases.puntos.cluster4$silinfo$avg.width
+bases.puntos.cluster5$silinfo$avg.width
+
+kchospital$clusterpca<-bases.puntos.cluster4$clustering
+
+plot(bases.puntos[,1:2], col=bases.cluster4$clustering)
+plot(bases.puntos[,1:2], col=bases.puntos.cluster4$clustering)
+
+plot(bases.puntos[,1:2], col=bases.cluster3$clustering)
+plot(bases.puntos[,1:2], col=bases.puntos.cluster3$clustering)
 
 
+write.table(kchospital, "kcclas.dat", quote = FALSE, sep = ",", row.names=F)
 
+#identificación  segmentos
 
+names(kchospital)
+
+library(plyr)
+library(dplyr)
+descriptores<-kchospital[,c(43:47)]
+head(descriptores) 
+
+class(descriptores$SEXO)
+descriptores$SEXO<-as.factor(descriptores$SEXO)
+summary(descriptores$SEXO)
+
+class(descriptores$ESTADOMA)
+descriptores$ESTADOMA<-as.factor(descriptores$ESTADOMA)
+summary(descriptores$ESTADOMA)
+
+class(descriptores$EDAD)
+descriptores$EDAD<-as.factor(descriptores$EDAD)
+summary(descriptores$EDAD)
+
+class(descriptores$NIVELEDU)
+descriptores$NIVELEDU<-as.factor(descriptores$NIVELEDU)
+summary(descriptores$NIVELEDU)
+
+class(descriptores$INGRESOS)
+descriptores$INGRESOS<-as.factor(descriptores$INGRESOS)
+summary(descriptores$INGRESOS)
+
+descriptores$SEXO <- revalue(descriptores$SEXO, c("0" ="Mujer", "1" = "Hombre"))
+descriptores$ESTADOMA <- revalue(descriptores$ESTADOMA, c("0" ="Casado", "10"="Soltero", "1" = "Otro"))
+descriptores$EDAD <- revalue(descriptores$EDAD, c("0" ="<=25 años", "1"="55+", "10"="41-55", "100" = "26-40"))
+descriptores$NIVELEDU <- revalue(descriptores$NIVELEDU, c("0" ="ESO", "1"="Graduado Univ.", "10"="Bachillerato +", "100" = "Bachillerato"))
+descriptores$INGRESOS <- revalue(descriptores$INGRESOS, c("0" ="<=$100000", "1"="$60000+", "10"="$40001-60000", "100" = "$30001-40000", "1000"="$20001-30000", "10000"= "$10001-20000"))
+
+#Mostrar datos según segmento
+#descriptores %>%
+#  group_by(bases.puntos.cluster4$clustering) %>% #no es necesario especificar los descriptores
+#  summarize(Sexo= mean(SEXO), Estado.Marital = mean(ESTADOMA), Edad = mean(EDAD), Nivel.Educativo = mean(NIVELEDU), N = length(descriptores))
+
+options(digits=3)
+descritores.tabla.sexo<-t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$SEXO)))
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$ESTADOMA)))
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$EDAD)))
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$NIVELEDU)))
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$INGRESOS)))
+library(xtable)
+xtabs(bases.puntos.cluster4$clustering, descriptores$ESTADOMA)
+
+# Revisar, no funciona
+descriptores.tabla <-rbind(c(
+  t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$SEXO))),
+  t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$ESTADOMA))),
+  t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$EDAD))),
+  t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$NIVELEDU))),
+  t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$INGRESOS)))
+  )
+  )
+descriptores.tabla
+
+descriptores.tabla<- list( 
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$SEXO))),
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$ESTADOMA))),
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$EDAD))),
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$NIVELEDU))),
+t(prop.table(table(bases.puntos.cluster4$clustering, descriptores$INGRESOS)))
+)
+descriptores.tabla[2]
+do.call(rbind, descriptores.tabla)
+
+library(DiagrammeR)
+diagrama.causalidad <-DiagrammeR("
+  graph BT;
+    Cuidado.especializado --> Ventaja.competitiva;
+    Ventaja.competitiva --> Reconocimiento;
+    Reconocimiento -->Preferencia;
+    Preferencia --> Tasa.de.ocupacion;
+    Tasa.de.ocupacion--> Beneficio;
+")
+diagrama.causalidad
+
+names(kchospital)
+hospital.utilizado <- kchospital[,c(2:10)]
+str(hospital.utilizado)
+hospital.utilizado %>%
+summarize(Kc= sum(KCMATER), B = sum(HB), C = sum(HC), D = sum(HD))
 
