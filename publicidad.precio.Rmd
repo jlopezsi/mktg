@@ -1,5 +1,5 @@
 ---
-title: "Análisis de datos para la toma de decisiones de precios en el entorno R"
+title: "Análisis de datos para la toma de decisiones de comerciales en el entorno R"
 author: "Jordi López Sintas"
 date: "20 de enero de 2015"
 output: pdf_document
