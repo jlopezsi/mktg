@@ -1,8 +1,4 @@
 {
-    "TabSet1" : 2,
-<<<<<<< HEAD
-    "TabSet2" : 4
-=======
-    "TabSet2" : 1
->>>>>>> 37047b6b4c1c224fa4f3e8d54ff00409c6563040
+    "TabSet1" : 0,
+    "TabSet2" : 3
 }

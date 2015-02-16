@@ -2,12 +2,13 @@
 title: "Análisis de datos para la toma de decisiones de comerciales en el entorno R"
 author: "Jordi López Sintas"
 date: "20 de enero de 2015"
-output: pdf_document
+output: word_document
 ---
+(Traducción the del texto origian de Jack Han, Data Analysis for Marketing Research with R Language, URL http://www.dataapple.net/?p=19)
 
 #Presentación
 Las tecnologías para el análisis de datos, tales como t-test, ANOVA, regresión, el análisis conjunto y análisis de los factores principales son ampliamente utilizadas en la toma de decisiones en marketing  (análisis de las preferencias del consumidor, segmentación del mercado, decisiones del precio del producto, análisis los atributos del producto que influyen en las ventas, y las ventas etc.) Tradicionalmente se utilizan herramientas comerciales genéricas, como  SPSS y SAS, o específicas, como ME|XL, sin embargo, el lenguaje de código abierto R está siendo utilizado cada vez más.
-En este artículo, vamos a presentar cómo utilizar R para llevar a cabo algunos análisis básicos para la toma de decisiones comercialización basadas en evidencia, y luego aplicaremos el análisis en Oracle R Enterprise que integra el R con la  base de datos Oracle.
+En este artículo, vamos a presentar cómo utilizar R para llevar a cabo algunos análisis básicos para la toma de decisiones de comercialización basadas en evidencia.
 
 #Introducción 
 
@@ -16,7 +17,7 @@ Una empresa, ABC store chain, vende un nuevo tipo de jugo de uva en algunas de s
 1. ¿Qué tipo de anuncio en la tienda es más eficaz? Se han colocado dos tipos de anuncios en las tiendas para las pruebas, un tema es la producción natural del jugo, el otro tema es el cuidado de la salud de la familia;
 2. La elasticidad-precio - las reacciones de los volúmenes de venta de zumo de uva a su cambio de precio;
 3. La Elasticidad-cruzada del precio - las reacciones de los volúmenes de venta de zumo de uva a los cambios en los precios de otros productos, como el jugo de manzana y galletas en la misma tienda;
-4. ¿Cómo encontrar el mejor precio unitario del jugo de uva que puede maximizar el beneficio y la previsión de ventas con ese precio.
+4. ¿Cómo encontrar el mejor precio unitario del jugo de uva que puede maximizar el beneficio¿ ¿Cuál sería la previsión de ventas con ese precio?
 
 El equipo de marketing ha tomado muestras al azar de 30 observaciones y construido el siguiente conjunto de datos para el análisis. Hay 5 variables (columnas de datos) en el conjunto de datos.
 
@@ -198,43 +199,43 @@ El valor de la prueba VIF para cada variable es cercano a 1, lo que significa qu
 
 Basándose en el análisis anterior, podemos aceptar el resultado de la regresión y construir el modelo de ventas siguiente:
 
-$Sales = 774,81 - 51.24*Price + 29.74*ad_{type} + 22,1*price_{apple} - 25.28*price_{cookies}$
+$Sales = 774,81 - 51,24*Price + 29,74*ad_{type} + 22,1*price_{apple} - 25,28*price_{cookies}$
 
 con el modelo establecido, podemos análisis de la elasticidad-precio (PE) y la elasticidad-precio cruzada (CPE) para predecir las reacciones de los volúmenes de venta frente a cambios en el precio. "La elasticidad precio se define como $\bigtriangleup Q / \bigtriangleup P$, lo que indica el cambio porcentual en la venas dividida por el cambio porcentual en el precio. La elasticidad-precio cruzada es el cambio porcentual en la cantidad dividida por la variación en el precio de otro producto".
 
-$PE = (\bigtriangleup Q/Q) / (\bigtriangleup P/P) = (\bigtriangleup Q/ \bigtriangleup P) * (P/Q) = -51.24 * 0.045 = -2.3$
+$PE = (\bigtriangleup Q/Q) / (\bigtriangleup P/P) = (\bigtriangleup Q/ \bigtriangleup P) * (P/Q) = -51,24 * 0,045 = -2,3$
 
-$\bigtriangleup Q/ \bigtriangleup P = -51.24$, el parámetro estimado para la variable  *price* 
-$P/Q = 9.738/216.7 = 0.045$, *P* es el precio, *Q* es la cantidad de ventas.
+$\bigtriangleup Q/ \bigtriangleup P = -51,24$, el parámetro estimado para la variable  *price* 
+$P/Q = 9,738/216,7 = 0,045$, *P* es el precio, *Q* es la cantidad de ventas.
 
 El PE señala que un 10% de disminución en el precio va a aumentar las ventas en un 23%, y viceversa.
 
-Calculemos ahorael CPE en el zumo de manzana y galletas para analizar la forma en que el cambio de manzana precio jugo y galletas influencia el precio de las ventas de jugo de uva.
+Calculemos ahora la elasticidd cruzada, CPE, entre el zumo de manzana y las galletas para analizar la forma en que el cambio en el precio del zumo de  manzana  y en el de las galletas influye en las ventas de zumo de uva.
 
-$CPE_{a} = (\bigtriangleup Q/ \bigtriangleup P_{a}) * (P_{a}/Q) = 22.1 * (7.659 / 216.7) = 0.78$
+$CPE_{a} = (\bigtriangleup Q/ \bigtriangleup P_{a}) * (P_{a}/Q) = 22,1 * (7,659 / 216,7) = 0,78$
 
-$CPE_{c} = (\bigtriangleup Q/ \bigtriangleup P_{c}) * (P_{c}/Q) = -25.28 * ( 9.622 / 216.7) = -1.12$
+$CPE_{c} = (\bigtriangleup Q/ \bigtriangleup P_{c}) * (P_{c}/Q) = -25,28 * ( 9,622 / 216,7) = -1,12$
 
-La CPEapple indica que 10% de disminución en los precios del  zumo de manzana disminuirá las ventas en un 7,8%, y viceversa. Así que el zumo de uva y zumo de manzana son sustitutos.
-Las CPEcookies indica que 10% de disminución en el precio de las cookies aumentará las ventas en un 11,2%, y viceversa. Así que el zumo de uva y las galletas son complementarios. Coloque los dos productos juntos y es probable que aumente las ventas de ambos.
-También podemos saber que las ventas aumentan 29.74 unidades cuando se utiliza el anuncio del tema cuidar la salud de la familia (*ad_type = 1*).
+La CPEa(pple) indica que el 10% de disminución en el precio del zumo de manzana disminuirá las ventas  de zumo de uva en un 7,8%, y viceversa. Así que el zumo de uva y zumo de manzana son sustitutos.
+Las CPEc(ookies) indica que 10% de disminución en el precio de las cookies aumentará las ventas en un 11,2%, y viceversa. Así que el zumo de uva y las galletas son productos complementarios. Coloque los dos productos juntos y es probable que aumente las ventas de ambos.
+También podemos saber que las ventas aumentan 29.74 unidades cuando se utiliza el anuncio del tema 'cuidar la salud de la familia' (*ad_type = 1*).
 
 #Precios óptimos y predicción de ventas
 
-En general, las empresas quieren alcanzar beneficios más altos y no sólo mayor cantidad de ventas. Así que, ¿cómo se establece el precio óptimo para el nuevo zumo de uva para obtener el máximo beneficio basado en el conjunto de datos recolectados en el periodo de prueba y el modelo de regresión anterior?
+En general, las empresas quieren alcanzar beneficios más altos y no sólo mayor cantidad de ventas. Así que, ¿cómo se establecer el precio óptimo para el nuevo zumo de uva que maximiza el beneficio basado en el conjunto de datos recolectados en el periodo de prueba y el modelo de regresión anterior?
 
-Para simplificar la cuestión, podemos fijar el valor del *ad_type = 1*, de *price_apple = 7.659* (valor medio), y el de *price_cookies = 9.738* (valor medio).
+Para simplificar la cuestión, podemos fijar el valor del *ad_type = 1*, de *price_apple = 7,659* (valor medio), y el de *price_cookies = 9,738* (valor medio).
 
 El modelo se simplifica de la siguiente manera:
 
-$$Sales = 774.81 – 51.24 * price + 29.74 * 1 + 22.1 * 7.659 – 25.28 * 9.738$$
+$$Sales = 774,81 – 51,24 * price + 29,74 * 1 + 22,1 * 7,659 – 25,28 * 9,738$$
 
 $$Sales = 772,64 - 51,24 * Precio$$
 
 Asuma que el costo marginal (C) por unidad de zumo de uva es de 5. Entonces podemos calcular la ganancia (Y) por la siguiente fórmula:
 
-$$Y = (price – C)*Sales=(price–5)*(772.64–51.24*price)$$
-$$Y = – 51.24 * price^2 + 1028.84 * price – 3863.2$$
+$$Y = (price – C)*Sales=(price–5)*(772,64–51,24*price)$$
+$$Y = – 51,24 * price^2 + 1028,84 * price – 3863,2$$
 
 Para obtener el precio óptimo que maximiza Y, podemos usar la siguiente función de R
 
@@ -245,8 +246,8 @@ f = function(x) -51.24*x^2 + 1028.84*x - 3863.2
 optimize(f,lower=0,upper=20,maximum=TRUE)
 ```
 
-El precio óptimo es 10.04; la ganancia máxima será de 1301 de acuerdo con el resultado anterior. En realidad, podemos establecer razonablemente el precio para ser 10 o 9.99<-..
-Además podemos utilizar el modelo para predecir las ventas, mientras el precio sea 10.
+El precio óptimo es 10.04; la ganancia máxima será de 1301 de acuerdo con el resultado anterior. En realidad, podemos establecer razonablemente el precio para ser 10 ó 9.99.
+Además podemos utilizar el modelo para predecir las ventas, dado un precio de 10.
 
 ```{r}
 # predicir ventas
