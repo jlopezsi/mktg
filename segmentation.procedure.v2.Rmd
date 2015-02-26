@@ -14,29 +14,31 @@ Suponiendo que las características que hemos medidos de los consumidores, $C_{i
 
 Supongamos que una estrategia comercial está compuesta de los elementos trdicionales del mix comercial, calidad del producto ofrecido, precio, distribución y promoción, E0(q,p,d,c). El problema de segmentación del mercado reside en entender su estructura: identificar qué es lo que los consumidores consideran importante, y medir cómo difieren en sus valoraciones de lo que es importante. Si conocemos esos dos grupos de datos podremos inferir la preferencia de los consumidors hacia los productos que la empresa ofrecerá a mercado (y hacia los de la competencia).
 
-Nuestro problema de segmentación, entonces, empieza identificando los beneficios importantes para los consumidores, midiendo cómo difieren en la importancia asignada a esos beneficios y finaliza seleccionandoun número *s* de segmentos, $S=S_{1}, ..., S_{s}$, y definiendo las estrategias diseñadas para cada segmento, $E=E_{1}, ..., E_{s}$ y, simultáneamente, asginando los recursos comerciales a las estrategias (Winter 1979). Encontrar *s* segmentos de consumidores y analziar las correspondientes estrategias comercial que proporcionan el másico valor a la empresa. El número óptimo de estrategias, $e \* <s$, y se obtendrà de la resolución del problema de maximización de benficios
+Nuestro problema de segmentación, entonces, empieza identificando los beneficios importantes para los consumidores, midiendo cómo difieren en la importancia asignada a esos beneficios y finaliza seleccionandoun número *s* de segmentos, $S=S_{1}, ..., S_{s}$, y definiendo las estrategias diseñadas para cada segmento, $E=E_{1}, ..., E_{s}$ y, simultáneamente, asginando los recursos comerciales a las estrategias (Winter 1979). Encontrar *s* segmentos de consumidores y analziar las correspondientes estrategias comerciales que proporcionan el máxico valor a la empresa. El número óptimo de estrategias, $e \* <s$, y se obtendrá de la resolución del problema de maximización de benficios:
 
 $$Max B(E)=I(E_{l})-C(Q(E_{l}), E_{l}) $$
-E_{l}
-sujeto a que los recursos aplicados no excedan a los dispones, $R(E_{l}) < R$.
+Con la estrategia $E_{l}$ sujeta a que los recursos aplicados no excedan a los dispones, $R(E_{l}) < R$.
 
-Muchos investigadores han levantado dudas acerca de la valide de los resultados obtenidos en los análisis de segmentación de mercados. Concretamente han señalado: 
+Muchos investigadores han levantado dudas acerca de la validez de los resultados obtenidos en los análisis de segmentación de mercados. Concretamente han señalado: 
+
 1. diferentes algoritmos de clasificación producen diferentes resultados e incluso el mismo algoritmo con diferntes condcioens iniciales o distintos niveles de precisión pueden llegar a producir diferentes rsultados (Hoek, Gendall and Esslemont 1996); Funkhouser 1983),
+
 2. los criteris para seleccionar el número de segmentos difierente en sus conclusiones (Hoek, Gendall and Esslemont 1996; Wedel & Kamakura 1998; Helsen and Green 1991; Weingessel, Dimitriadou, & Dolnical 1999).
 
-Afortunadamente en la actualidad disponemos, además del tradicinal algoritmo de partición convexa, *kmeans* ()(Hartigan & Wong 1978), de algoritmos robustos frente a la violación de la hipótesis de convexidad en la que se basa la solución proporcinada por *kmeans*, como son los aloritmos propuestos por Kauffman & Rouseeuw (1990), y de los procedmientos de clasificación basados en clases latentes, o clasificación basada en modelos estádisticos para segmentar poblaciones mixtas (Wedel & Kamakura 1998; Bartholomew & Knott 1999: Vermunt & Magidson 2000). 
+Afortunadamente en la actualidad disponemos, además del tradicinal algoritmo de partición convexa, *kmeans* (Hartigan & Wong 1978), de algoritmos robustos frente a la violación de la hipótesis de convexidad en la que se basa la solución proporcinada por *kmeans*, como son los aloritmos propuestos por Kauffman & Rouseeuw (1990), y de los procedmientos de clasificación basados en clases latentes, o clasificación basada en modelos estadísticos para segmentar poblaciones mixtas (Wedel & Kamakura 1998; Bartholomew & Knott 1999: Vermunt & Magidson 2000). 
 
-En la actualidad la tarea de seleccionar le número adecuado de segmentos que muestran la estructura de la demanda de los consumidores es una tarea más fácil gracias a la difusión que han tenido los algoritmos robustos de Kauffman y Rouseeuw (1990) y los basados en clases latentes, junto con las facilidades gráficas que ofrecen los computadores. Los procedimientos propuestos por Kauffman y Rouseeuw (1990) ya nos ofrecen un indicador de la calidad de la partición realizada del mercado, como veremos más adelante, pero también los métodos basados en clases latentes nos ofrecen diferentes estadísticos en los cuales basar nuestra decisión.
+En la actualidad la tarea de seleccionar le número adecuado de segmentos que muestran la estructura de la demanda de los consumidores es una tarea relativamente más fácil gracias a la difusión que han tenido los algoritmos robustos de Kauffman y Rouseeuw (1990) y los basados en clases latentes, junto con las facilidades gráficas que ofrecen los computadores. Los procedimientos propuestos por Kauffman y Rouseeuw (1990) ya nos ofrecen un indicador de la calidad de la partición realizada del mercado, como veremos más adelante, pero también los métodos basados en clases latentes nos ofrecen diferentes estadísticos en los cuales basar nuestra decisión.
+
 #Segmentación en dos etapas: El procedimiento estándar
 
 ##Fase exploratoria: la clasificación jerárquica
 
-La clasificación jerárquica con el procedimiento de Ward minimiza la suma de las distancias euclidianas al cuadrado entre el individuo i y el centro del segmento al que se asigna,$\sum_{\substack{k}}\sum_{\substack{i \in k}}\sum_{\substack{j}}=(x(i,j)-x(j',j))^2$. El primer sumatorio calcula el error de la observación *i* en el segmento *k* para todas las variables, el segundo realiza el cálculo para todos los individuos en el segmento *k* y, finalmente, el último sumatorio calcula la suma del error para todos los segmentos (Wishart 1998).
+La clasificación jerárquica con el procedimiento de Ward minimiza la suma de las distancias euclidianas al cuadrado entre el individuo i y el centro del segmento al que se asigna,$\sum_{\substack{k}}\sum_{\substack{i \in k}}\sum_{\substack{j}}=(x(i,j)-x(i',j))^2$. El primer sumatorio calcula el error de la observación *i* en el segmento *k* para todas las variables, el segundo realiza el cálculo para todos los individuos en el segmento *k* y, finalmente, el último sumatorio calcula la suma del error para todos los segmentos (Wishart 1998).
 
 **Funciona de la siguiente manera**
 
 1.  Computa la matriz de las distancias euclidianas al cuadrado para
-    todo par de observaciones, *i*, *i’*, $d^2$(*i*,*i’*)=$\sum_{\substack{k}}(x(i,j)-x(j',j))^2$.
+    todo par de observaciones, *i*, *i’*, $d^2$(*i*,*i’*)=$\sum_{\substack{k}}(x(i,j)-x(i',j))^2$.
 
 2.  Agrupa las dos observaciones o grupos *i* y *i’* más cercanos, es
     decir, cuya agrupación minimiza el incremento en el error, *E*.
@@ -75,9 +77,9 @@ Esto es:  d(A, B)=22+52-(1/2)(2+5)2=29-24,5=4,5
   --- --- ----- ------ ----------- ------
   A   0   4,5   24,5   32          98
   B       0     8      12,5        60,5
-  C             0      **0,5**    24,5
+  C             0      **0,5**     24,5
   D                    0           18
-  E                                0
+  E                                 0
 
 La agrupación C y D es la que minimiza el SQD.
 
