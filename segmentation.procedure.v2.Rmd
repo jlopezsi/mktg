@@ -33,7 +33,7 @@ En la actualidad la tarea de seleccionar le número adecuado de segmentos que mu
 
 ##Fase exploratoria: la clasificación jerárquica
 
-La clasificación jerárquica con el procedimiento de Ward minimiza la suma de las distancias euclidianas al cuadrado entre el individuo i y el centro del segmento al que se asigna,$\sum_{\substack{k}}\sum_{\substack{i \in k}}\sum_{\substack{j}}=(x(i,j)-x(i',j))^2$. El primer sumatorio calcula el error de la observación *i* en el segmento *k* para todas las variables, el segundo realiza el cálculo para todos los individuos en el segmento *k* y, finalmente, el último sumatorio calcula la suma del error para todos los segmentos (Wishart 1998).
+La clasificación jerárquica con el procedimiento de Ward minimiza la suma de las distancias euclidianas al cuadrado entre el individuo i y el centro del segmento al que se asigna,$\sqrt{\sum_{\substack{k}}\sum_{\substack{i \in k}}\sum_{\substack{j}}=(x(i,j)-x(i',j))^2}$. El primer sumatorio calcula el error de la observación *i* en el segmento *k* para todas las variables, el segundo realiza el cálculo para todos los individuos en el segmento *k* y, finalmente, el último sumatorio calcula la suma del error para todos los segmentos (Wishart 1998).
 
 **Funciona de la siguiente manera**
 
@@ -71,7 +71,7 @@ realizan las agrupaciones.
 
 Suponogamos que tenemos cinco individuos medidos en una única variable $\left\{A=2,B=5,C=9,D=10,E=15\right\}$.
 
-Esto es:  d(A, B)=22+52-(1/2)(2+5)2=29-24,5=4,5
+Esto es:  d(A, B)=4+25-(1/2)(2+5)2=29-24,5=4,5
 
       A   B     C      D           E
   --- --- ----- ------ ----------- ------
@@ -107,7 +107,6 @@ dendrograma, donde las letras identifican a los individuos.
 ejemplo<-c(2,5,9,10,15)
 ejemplo
 ejemplo.dist<-dist(ejemplo)
-ejemplo.dist
 ejemplo.hclust<-hclust(ejemplo.dist, method="ward")
 ejemplo.hclust
 par(mfrow=c(1,2))
@@ -348,7 +347,7 @@ y calcularemos la similitud media de *i* frente a todos los elementos de
 $d\left( i,C \right) = \frac{1}{\left| C \right|}\sum_{j \in c}^{}{d\left( i,j \right)}$.
 Después realizaremos el mismo cálculo para el resto de los segmentos
 formados y tomaremos el valor
-menor,$b\left( i \right) = \operatorname{}{d\left( i,C \right)}$.
+menor, $b\left( i \right) = \operatorname{}{d\left( i,C \right)}$.
 Llamaremos *B* al segmento cuya disimilitud media sea menor frente al
 consumidor *i*, d(i,B)=b(i), que llamaremos el segmento vecino del
 consumidor *i*. Esta es la segunda mejor la clasificación del consumidor
