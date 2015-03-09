@@ -64,7 +64,11 @@ plot(bases.hclust)
 
 Ahora calculamos los centros de los grupos formados durante el proceso de agrupación jerárquica y los mostramos.
 ```{r}
-centros.bases<-tapply(as.matrix(bases), list(rep(cutree(bases.hclust, 2), ncol(as.matrix(bases))),col(as.matrix(bases))),mean)
+centros.bases<-tapply(as.matrix(bases), 
+                      list(rep(cutree(bases.hclust, 2), 
+                               ncol(as.matrix(bases))),
+                           col(as.matrix(bases))),
+                      mean)
 #Visualizamos el resultado
 centros.bases
 ```
@@ -158,7 +162,11 @@ bases.puntos.hclust<-hclust(dist(bases.puntos), method="ward")
 #visualizamos la heterogeneidad y la comparamos con el la mostrada con los datos originales
 plot(bases.puntos.hclust)
 #Calculamos los centros de los grupos
-centros.bases.puntos<-tapply(bases.puntos, list(rep(cutree(bases.puntos.hclust, 2), ncol(bases.puntos)),col(bases.puntos)),mean)
+centros.bases.puntos<-tapply(bases.puntos, 
+                             list(rep(cutree(bases.puntos.hclust, 2), 
+                                      ncol(bases.puntos)),
+                                  col(bases.puntos)),
+                             mean)
 #isualizamos los centros
 centros.bases.puntos
 ```

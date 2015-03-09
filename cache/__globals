@@ -1,0 +1,23 @@
+unnamed-chunk-1	names	read.table
+unnamed-chunk-2	cor	data.frame	g20per	head	names	options	t
+unnamed-chunk-3	$	diag	dim	eigen	g20	options	scale	sqrt	t
+unnamed-chunk-4	$	g20	plot	prcomp	summary	T
+unnamed-chunk-5	$	g20.pca	head	tail
+unnamed-chunk-6	$	c	cor	g20	g20.pca	head	scale	tail
+unnamed-chunk-7	biplot	c	g20.pca	plot	T
+unnamed-chunk-8	require
+unnamed-chunk-9	head	loadWorkbook	readWorksheet
+unnamed-chunk-10	$	as.matrix	col	cutree	dist	g20.prefs	hclust	kmeans	list	mean	names	ncol	plot	rep	t	tapply
+unnamed-chunk-11	$	biplot	c	data.frame	g20.prefs.kmeans3	g20per	plot	prcomp	rbind	t	T	tail
+unnamed-chunk-12	biplot	c	data.frame	plot	prcomp	read.table	t	T	tail
+unnamed-chunk-13	require
+unnamed-chunk-14	colnames	dim	head	JSM	loadWorkbook	readWorksheet	rownames	rownames<-	source	t
+unnamed-chunk-15	read.table	str	summary	T
+unnamed-chunk-16	dist	kcpref	t
+unnamed-chunk-17	$	isoMDS	kcpref.dist	library	names
+unnamed-chunk-18	$	c	eqscplot	kcpref	kcpref.dist	kcpref.mds	lines	names	par	plot	Shepard	text
+unnamed-chunk-19	dist	kcpref	t
+unnamed-chunk-20	averagetable	data	head	library	names	PCA	sensochoc
+unnamed-chunk-21	names	read.table
+unnamed-chunk-22	data.frame	g20per	names	t
+unnamed-chunk-23	biplot	g20	library	principal

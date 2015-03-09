@@ -5,9 +5,10 @@ output: pdf_document
 
 #Lectura de los datos del caso
 
-La lectura de datos en el lenguage **R** es muy flexible. Aunque existen funciones para la lectura de dtos procedentes d eotros programas de análisi estadístico, una formaestándar es la lectura de dtos en formato ASCII separados con tabulador. Si tenemos los datos en otro programa de análisis de datos o en una hoja electrónica Excel, sólo tendremos que grabarlos en formato texto con separción de tabulaciones El fichero se grabará con la extensión .dat o .txt, como es el caso del ficheor de datos del hopsital KC ("hospital/hospital.txt") y las preferencias de los consumidores entrevistados ("hospital/hospital.prefs.txt"). Para su lectura en el entorno **R** utilizamos la función `read.table`. Como argumentos utilizamos el nombre y ubicación del fichero de datos, entrcomillado, y la indicación de que la primera fila del ficheor contiene los nombres de las varaibles (`header=T`).
+La lectura de datos en el lenguage **R** es muy flexible. Aunque existen funciones para la lectura de dtos procedentes d eotros programas de análisi estadístico, una formaestándar es la lectura de dtos en formato ASCII separados con tabulador. Si tenemos los datos en otro programa de análisis de datos o en una hoja electrónica Excel, sólo tendremos que grabarlos en formato texto con separción de tabulaciones El fichero se grabará con la extensión .dat o .txt, como es el caso del ficheor de datos del hopsital KC ("hospital/hospital.txt") y las preferencias de los consumidores entrevistados ("hospital/hospital.prefs.txt"). Para su lectura en el entorno **R** utilizamos la función `read.table`. Como argumentos utilizamos el nombre y ubicación del fichero de datos, entrcomillado, y la indicación de que la primera fila del ficheor contiene los nombres de las varaibles (`header=T`). En este ejemplo os muestro también como seleccionar la carpeta donde tengo los datos y los guiones que utilizo en el análisis (el camino (en inglés, path) hacia los documentos). La función `setwd()` utiliza como argumento la localización la carpeta en mi disco ("/Users/jlopezsi/Documents/github/mktg-models-projects"), localización que cambiará en vuetro caso. También he especificado la carpareta `hospital` donde está el fichero de datos `"hospital.txt"`. Podeís utilizar esta estrategia o bien utilizar la función `file.choose()`.
 
 ```{r}
+#utilizar file.choose() si no conocéis dónde se encuentra vuestro fichero
 setwd("/Users/jlopezsi/Documents/github/mktg-models-projects")
 kchospital <- read.table("hospital/hospital.txt", header = TRUE)
 kcprefs <- read.table("hospital/hospital.prefs.txt", header = TRUE)
@@ -20,30 +21,20 @@ names(kcprefs)
 ```
 Si queremos ver el contenido de cualquier variables debemos hacer referencia a la tabla de datos que lo contiene. Por ejemplo, `kchospital$FIREP` nos permite acceder al contenido de la variable `reputación` que está en la tabla de datos `kchospital`. Cuidado, en **R** se diferencia entre las mayúsculas y las minúsculas. Por ello deberemos introducir los nombre de los ficheros y variables en minúsculas o mayúsculas según sea el caso. Aquí el nombre de la tabla de datos está en minúsculas y las variables en mayúsculas; así debemos hacer referencia a ellas.
 
-Para facilitar el trabajo con la hoja de datos podemos adjuntarla al espacio de trabajo mediante la función `attach()`. De esa manera no tendremos que hacer referencia a la tabla de datos `kchospital`para acceder al contenido de las variables.
-
-```{r, echo=TRUE}
-attach(kchospital)
-```
-
 #Bases de segmentación
 
 para facilitar el análisis de segmentación primero vamos a seleccionar las bases de segmentación, las variables que los consumidores consideran importantes a la hora de seleccionar un hospital materno-infantil. Concretamente,
 
 ```{r}
-bases <- kchospital[,c(10:20)]
+bases <- kchospital[,c(11:20)]
 names(bases)
 ```
 
-Ahora debemos cargar en la memoria del ordenador la bibliteca de los paquetes que necesitamos para realizar el análisis de segmentación. Concretamente, necesitamos la bilbioteca `cluster`. Las otras funciones utilizadas en la segmentación están disponibles en el programa base de **R**. Para cargar los paquetes utilizamos la función `library()` y como argumento el nombre del paquete. El paque `cluster` contiene un conjunto de algoritmos de clasificación robustos propuestos pro Kauffman y Rouseeuw (1990). Los podemos agrupar en tres tipos: algoritmos para partir un conjunto de observaciones (`pam`, `clara`, y `fanny`), algoritmos de aglomeración jerárquica (`agnes`) y, finalmente, alforitmos para la división jerárquica de un conjunto de aobseraciones (`diana` y `mona`).  
 
-```{r}
-library(cluster)
-```
 
 #Proceso de segmentación en dos etapas: aglomeración jerárquica y partición
 
-Vamos a utilizar, en primer lugar, los algoritmos clásicos implementados en los programas de análisis de datos más habituales: el jerárquico aglomerativo, hclust, y el de partición de una muestra, kmeans. Si queremos saber algo más sobre el algoritmo implementado podemos utilizar la ayuda, help, y como argumento en nombre de la función de la que queremos saber algo, hclust,como argumento. Por ejemplo, `help(hclust)`.  Con la función `scale(fi)`podemos normalizar los datos si es preciso.
+Vamos a utilizar, en primer lugar, los algoritmos clásicos implementados en los programas de análisis de datos más habituales: el jerárquico aglomerativo, hclust, y el de partición de una muestra, kmeans. Si queremos saber algo más sobre el algoritmo implementado podemos utilizar la ayuda, help, y como argumento en nombre de la función de la que queremos saber algo, hclust,como argumento. Por ejemplo, `help(hclust)`.  Con la función `scale(bases)`podemos normalizar los datos si es preciso.
 
 ##clasificación con los datos originales
 
@@ -107,7 +98,12 @@ Visualmente podemos ver que el algoritmo nos ha dividido un grupo que parece hom
 En ciertas ocasiones podemos mejorar la clasificación facilitando al algoritmo `kmeans` los centros iniciales a partir de los cuales iniciar la partición. Para ello tendremos que calcular la media de cada variable en cada uno de los grupos formados con el procedimiento jerárquico de aglomeración. Veamos cómo obtener las medias:
 
 ```{r}
-centros4<-tapply(as.matrix(bases), list(rep(cutree(bases.hclust, 4), ncol(as.matrix(bases))),col(as.matrix(bases))),mean)
+centros4<-tapply(as.matrix(bases), 
+                 list(rep(cutree(bases.hclust, 4), 
+                          ncol(as.matrix(bases))),
+                      col(as.matrix(bases))
+                      ),
+                 mean)
 options(digits=3)
 centros4
 ```
@@ -188,7 +184,13 @@ Para tener que escribir menos podemos almacenar los tres componentes en una nuev
 bases.puntos3<-bases.puntos[,1:3]
 head(bases.puntos3)
 
-plot(bases.puntos.hclust, main="Dendrograma PCA",labels=FALSE,ylab="distancia",xlab="objetos clasificados",frame.plot=TRUE)
+plot(bases.puntos.hclust, 
+     main="Dendrograma PCA",
+     labels=FALSE,
+     ylab="distancia",
+     xlab="objetos clasificados",
+     frame.plot=TRUE
+     )
 rect.hclust(bases.puntos.hclust, k=4, border=2)
 ```
 
@@ -220,7 +222,11 @@ Además, podemos añadir al gráfico los centros de cada segmento
 Veamos, ahora, el resultado de la partición si les damos como centros los obtenidos en la clasificación con el método de Ward. Para su cálculo utilizamos el procedimiento propuesto por Venables y Ripley (1999: 338). 
 
 ```{r}
-centros.puntos4<-tapply(bases.puntos3, list(rep(cutree(bases.puntos.hclust, 4),ncol(bases.puntos3)),col(bases.puntos3)),mean)
+centros.puntos4<-tapply(bases.puntos3, 
+                        list(rep(cutree(bases.puntos.hclust, 4),
+                                 ncol(bases.puntos3)),
+                             col(bases.puntos3)),
+                        mean)
 centros.puntos4
 ```
 
@@ -242,6 +248,12 @@ points(bases.puntos.kmeans4.c$centers,col=1:2, pch=8)
 ```
 
 #Procedimientos más robustos: el paquete `cluster`
+
+Ahora debemos cargar en la memoria del ordenador la bibliteca de los paquetes que necesitamos para realizar el análisis de segmentación. Concretamente, necesitamos la bilbioteca `cluster`. Las otras funciones utilizadas en la segmentación están disponibles en el programa base de **R**. Para cargar los paquetes utilizamos la función `library()` y como argumento el nombre del paquete. El paque `cluster` contiene un conjunto de algoritmos de clasificación robustos propuestos pro Kauffman y Rouseeuw (1990). Los podemos agrupar en tres tipos: algoritmos para partir un conjunto de observaciones (`pam`, `clara`, y `fanny`), algoritmos de aglomeración jerárquica (`agnes`) y, finalmente, algoritmos para la división jerárquica de un conjunto de aobseraciones (`diana` y `mona`).  
+
+```{r}
+library(cluster)
+```
 
 ##Partición con las variables originales
 
@@ -269,7 +281,7 @@ bases.cluster4$silinfo$avg.width
 bases.cluster5$silinfo$avg.width
 ```
 
-Si le padimos los atributos del objeto de la clase cluster que acabamos de obtener (con la función `names(bases.cluster))` nos indica cómo podemos acceder de forma individual a cada uno de los apartador que contiene el resumen, los argumentos disponibles son los siguientes: *sample*, *medoids*, *clustering*, *objective*, *clusinfo*, *silinfo*, *diss* y *data*. Para acceder directamente al resultado de la clasificación podemos utilizar la misma estructura que utilizamos en una tabla de datos, el nombre de objeto, `bases.cluster`, seguido del nombre del argumento al cual deseamos acceder, `clustering`, ambos conectados con el símbolo del dólar, *bases.cluster$clustering*.
+Si le padimos los atributos del objeto de la clase cluster que acabamos de obtener (con la función `names(bases.cluster)`) nos indica cómo podemos acceder de forma individual a cada uno de los apartador que contiene el resumen, los argumentos disponibles son los siguientes: *sample*, *medoids*, *clustering*, *objective*, *clusinfo*, *silinfo*, *diss* y *data*. Para acceder directamente al resultado de la clasificación podemos utilizar la misma estructura que utilizamos en una tabla de datos, el nombre de objeto, `bases.cluster`, seguido del nombre del argumento al cual deseamos acceder, `clustering`, ambos conectados con el símbolo del dólar, *bases.cluster$clustering*.
 
 Si queremos obtener ayuda sobre alguna función o biblioteca de programas incorporada a nuestra lenguaje **R**, podemos utilizar la función `help.start()` y sin argumento, paréntesis vacíos.
 
@@ -346,10 +358,31 @@ descriptores$INGRESOS<-as.factor(descriptores$INGRESOS)
 summary(descriptores$INGRESOS)
 
 descriptores$SEXO <- revalue(descriptores$SEXO, c("0" ="Mujer", "1" = "Hombre"))
-descriptores$ESTADOMA <- revalue(descriptores$ESTADOMA, c("0" ="Casado", "10"="Soltero", "1" = "Otro"))
-descriptores$EDAD <- revalue(descriptores$EDAD, c("0" ="<=25 años", "1"="55+", "10"="41-55", "100" = "26-40"))
-descriptores$NIVELEDU <- revalue(descriptores$NIVELEDU, c("0" ="ESO", "1"="Graduado Univ.", "10"="Bachillerato +", "100" = "Bachillerato"))
-descriptores$INGRESOS <- revalue(descriptores$INGRESOS, c("0" ="<=$100000", "1"="$60000+", "10"="$40001-60000", "100" = "$30001-40000", "1000"="$20001-30000", "10000"= "$10001-20000"))
+descriptores$ESTADOMA <- revalue(descriptores$ESTADOMA, 
+                                 c("0" ="Casado", 
+                                   "10"="Soltero", 
+                                   "1" = "Otro")
+                                 )
+descriptores$EDAD <- revalue(descriptores$EDAD, 
+                             c("0" ="<=25 años", 
+                               "1"="55+", 
+                               "10"="41-55", 
+                               "100" = "26-40")
+                             )
+descriptores$NIVELEDU <- revalue(descriptores$NIVELEDU, 
+                                 c("0" ="ESO", 
+                                   "1"="Graduado Univ.", 
+                                   "10"="Bachillerato +", 
+                                   "100" = "Bachillerato")
+                                 )
+descriptores$INGRESOS <- revalue(descriptores$INGRESOS, 
+                                 c("0" ="<=$100000", 
+                                   "1"="$60000+", 
+                                   "10"="$40001-60000", 
+                                   "100" = "$30001-40000", 
+                                   "1000"="$20001-30000", 
+                                   "10000"= "$10001-20000")
+                                 )
 
 
 ```
@@ -379,10 +412,10 @@ Determinar la facilidad con la que los consumidores identifican los hospitales, 
 Componentes específicos del problema comercial
 
 1. ¿Qué criterios utilizan los consumidores cuando seleccionan un hospital? 
-2. ¿Cuál e sla posicón relativa de Kc en comparación con la competencia? 
+2. ¿Cuál es la posicón relativa del hospital Kc en comparación con la competencia? 
 3. ¿Qué competidores tienen el mejor servicio de maternidad según sus percepciones? 
-4. ¿Cuál es el mercado potencial del servicio de maternidad? ¿Quienes son en términos demográficos y psicológicos? 
-5. ¿Y el mercado potencial de KC? 
+4. ¿Cuál es el mercado potencial del servicio de maternidad? ¿Quienes son los pacientes en términos demográficos y psicológicos? 
+5. ¿Y el mercado potencial del hospital KC? 
 6. ¿Podemos incrementar la tasa de reconocimienot del hospital con la introducción del servicio de maternidad u otro servicio especializado? 
 
 
