@@ -9,11 +9,11 @@ names(kchospital)
 head(kchospital)
 names(kcprefs)
 #Selección bases
-bases <- kchospital[,c(10:20)]
+bases <- kchospital[,c(11:20)]
 names(bases)
 
 #Aglomeración jerárquica
-library(cluster)
+#library(cluster)
 bases.hclust<-hclust(dist(bases), method="ward")
 plot(bases.hclust)
 
@@ -64,7 +64,7 @@ kchospital$PC3<-bases.puntos[,3]
 bases.puntos.hclust<-hclust(dist(bases.puntos[,1:3]), method="ward")
 plot(bases.puntos.hclust)
 
-cutree(bases.puntos.hclust, 4)
+head(cutree(bases.puntos.hclust, 4))
 
 bases.puntos3<-bases.puntos[,1:3]
 head(bases.puntos3)

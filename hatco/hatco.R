@@ -1,11 +1,11 @@
 #leer hatco.completo.csv
-hatco.completo <- read.csv(file.choose(), sep=";", dec=",")
+hatco <- read.csv(file.choose(), sep=";", dec=",")
 
 #Mostramos las 6 primeras líneas del fichero de datos
-head(hatco.completo)
+head(hatco)
 
 #De todo el fichero, separamos las variables que utilizaremos como bases de segmentación
-bases<-data.frame(hatco.completo[1:7])
+bases<-data.frame(hatco[1:7])
 
 #Mostramos las 6 primeras líneas del fichero de datos
 head(bases)
@@ -26,13 +26,14 @@ centros.bases
 #Dividimos la muestra con kmeans
 bases.kmeans2<-kmeans(bases, centros.bases)
 
+
 #Para caracterizar a los segmentos utilizamos las medias de las variables
 #originales en los segmentos formados
 names(bases.kmeans2)
 #[1] "cluster"      "centers"      "totss"        "withinss"    
 #[5] "tot.withinss" "betweenss"    "size"         "iter"        
 #[9] "ifault" 
-#el objeto centers contiene la información que buscamos si hemos segmetnado con las variables originales
+#el objeto centers contiene la información que buscamos si hemos segmentado con las variables originales
 bases.kmeans2$centers
 #  DELSPEED PRICELEV PRICEFLE MANUFIMA  SERVICE SALESFOR PRODUCTQ
 #1 4.382692 1.580769 8.900000 4.925000 2.957692 2.525000 5.903846
@@ -41,18 +42,18 @@ bases.kmeans2$centers
 #Identificamos a los componentes de los grupos
 #Para ello utilizamos las variables descriptoras de los segmentos
 
-table(hatco.completo$TAMEMP, bases.kmeans2$cluster)
+table(hatco$TAMEMP, bases.kmeans2$cluster)
 #Como USAGELEV es una variable metrica podemos calcular las medias 
 #con la función t.test() o con la función lm()
-t.test(hatco.completo$USAGELEV ~ bases.kmeans2$cluster)
-summary(lm(hatco.completo$USAGELEV ~ bases.kmeans2$cluster))
+t.test(hatco$USAGELEV ~ bases.kmeans2$cluster)
+summary(lm(hatco$USAGELEV ~ bases.kmeans2$cluster))
 #Y ver las medias en un gráfico
-boxplot(hatco.completo$USAGELEV ~ bases.puntos.kmeans2$cluster)
+boxplot(hatco$USAGELEV ~ bases.kmeans2$cluster)
 #para las variables categóricas utilizamos la función table()
-table(hatco.completo$ESPCOMPR, bases.kmeans2$cluster)
-table(hatco.completo$ESTRCOMP, bases.kmeans2$cluster)
-table(hatco.completo$INDUSTRI, bases.kmeans2$cluster)
-table(hatco.completo$SITCOMP, bases.kmeans2$cluster)
+table(hatco$ESPCOMPR, bases.kmeans2$cluster)
+table(hatco$ESTRCOMP, bases.kmeans2$cluster)
+table(hatco$INDUSTRI, bases.kmeans2$cluster)
+table(hatco$SITCOMP, bases.kmeans2$cluster)
 
 #Ahora compropbariamos si el resultado obtenido con las bases de segmetnacion
 #originales varia cuando las transformamos en sus componentes principales
@@ -63,7 +64,7 @@ table(hatco.completo$SITCOMP, bases.kmeans2$cluster)
 cor(bases)
 #Si la correlación es elevada, transformamos las bases de segmentación
 #en unas nuevas variables 
-#Ahora vamos a calcular los componentes principales para comprobar si el resutlado cambia
+#Ahora vamos a calcular los componentes principales para comprobar si el resultado cambia
 bases.acp<-princomp(bases, cor=T)
 #Podemos visualizar la varianza explicada por cada componente principal
 #al utilizar las correlación (acotadas entre -1 y 1) la variacion explicada  por
@@ -82,13 +83,13 @@ bases.puntos<-bases.acp$scores
 
 plot(bases.puntos[,1:2], col=bases.kmeans2$cluster)
 
-#Volvemos a realizar la agrupacion jerárquica
+#Volvemos a realizar la agrupación jerárquica
 bases.puntos.hclust<-hclust(dist(bases.puntos), method="ward")
 #visualizamos la heterogeneidad y la comparamos con el la mostrada con los datos originales
 plot(bases.puntos.hclust)
 #Calculamos los centros de los grupos
 centros.bases.puntos<-tapply(bases.puntos, list(rep(cutree(bases.puntos.hclust, 2), ncol(bases.puntos)),col(bases.puntos)),mean)
-#isualizamos los centros
+#visualizamos los centros
 centros.bases.puntos
 #De nuevo partimos la muestra con kmeans
 bases.puntos.kmeans2<-kmeans(bases.puntos, centros.bases.puntos)
