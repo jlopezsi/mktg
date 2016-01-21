@@ -1,4 +1,4 @@
-getwd()
+oldwd<-getwd()
 setwd("../eurostatAtlas")
 getwd()
 install.packages(c("rgdal", "RColorBrewer", "sp", "GISTools", "classInt", "maptools","SmarterPoland"))

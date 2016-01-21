@@ -1,8 +1,5 @@
 #read data
-#el paquete repis contiene funciunes para acceder a datos de dropbox
-#library(repmis)
-#?repmis
-#abb2<-source_DropboxData("https://www.dropbox.com/s/rc7jxtsm3ia71te/abb.txt",  key="rc7jxtsm3ia71te",header=T)
+
 #la opción file.chose() en la función read.table nos permite escoger un fichero de datos guardado en el ordenador local)
 #read abb-R.txt
 abb<-read.table(file.choose(), header=T)
@@ -20,6 +17,10 @@ abb.clogit<-clogit(choice~price+energy_loss+maintenance+warranty
                    +spare_parts+ease_install+problem_solving+quality+DA+DB+DC+strata(id), data=abb)
 #La funcion summary()  muestra los resultados de la estimacion del modelo
 summary(abb.clogit)
+
+library(stargazer)
+stargazer(abb.clogit, no.space = TRUE, type='text',  title="Regression")
+
 #La función predict() nos predice la utilidad que cada inidividuo obtiene
 abb.predict<-predict(abb.clogit)
 

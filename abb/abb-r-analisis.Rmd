@@ -2,7 +2,7 @@
 title: "Análisis caso ABB"
 author: "Jordi López Sintas"
 date: "3 de septiembre de 2014"
-output: pdf_document
+output: word_document
 ---
 
 #Lectura de datos
@@ -77,7 +77,12 @@ abb$choice <- as.numeric(abb$choice)
 abb.clogit <- clogit(choice ~ price + energy_loss + maintenance + warranty + spare_parts + ease_install + problem_solving + quality + DA + DB + DC + strata(id), data = abb)
 summary(abb.clogit)
 ```
+También podemos elaborar unas tablas de resultados más profesionales con la función stargazer()
+```{r, echo=FALSE}
 
+library(stargazer)
+stargazer(abb.clogit, no.space = TRUE, type='text',  title="Regression")
+```
 Ahora calculamos la predicción de la utilidad de cada elección según el modelo estimado
 
 ```{r}

@@ -44,7 +44,7 @@ par(mfrow = c(1,3))
 hist(df$Recency)
 hist(df$Frequency)
 hist(df$Monetary)
-
+par(mfrow = c(1,1))
 # set the Recency ranges as 0-120 days, 120-240 days, 240-450 days, 450-500days, and more than 500days.
 r <-c(120,240,450,500)
 # set the Frequency ranges as 0 – 2times, 2-5 times,5-8 times, 8-10 times, and more than 10 times.
