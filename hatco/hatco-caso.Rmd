@@ -5,6 +5,13 @@ date: "8 de enero de 2015"
 output: pdf_document
 ---
 
+#El problema comercial de la empresa
+La dirección de Hatco se propone averiguar si existen grupos de clientes con diferentes percepciones de su oferta con el objeto de diseñar una estrategia comercial específica para cada uno. De esta manera espera obtener un mayor rendimiento de sus gastos en marketing, mayores beneficios e incrementar su ventaja diferencial frente a sus competidores (suponiendo que estos tarden en reaccionar y la ventaja sea defendible)
+
+Para poder interpretar mejor el resultado del análisis de clasificación de sus clientes, les ha pedido, también, que le den una valoración global de su satisfacción con la oferta de la empresa (variable X10="SATISFLE".) y del nivel de compras realizadas a Hatco durante un año, que se ha codificado en porcentaje: así un valor de 50 indica que del 50% de sus compras las realizan a nuestra empresa Hatco. Por ello la variable puede tomar valores entre 1, el menor volumen, y 100, máximo consumo, (variable X9="USAGELEV"). 
+
+En el Anexo tenéis una guía de análisis con el programa de análisis de datos R. Es  tan sólo una guía que os ayudará a obtener una información significativa en la que, una vez valorada su calidad, podréis basar vuestras decisiones. No incluye el análisis discriminante, aunque quien lo desee puede utilizarlo si lo cree conveniente. (Para ello ya disponéis de dos guías de análisis para utilizarlo, una con dos segmentos y otra con cuatro.) Debéis decidir acerca de las bases de segmentación adecuadas: si éstas poseen las propiedades deseables para ser utilizadas en un trabajo de segmentación, y en caso de no poseerlas tenéis que realizar las transformación pertinentes de las bases de segmentación antes de utilizar los procedimientos de aglomeración (para analizar la heterogeneidad) y de partición (para asignar a cada individuo a un segmento determinado). Durante los procesos de clasificación utiliza una distancia euclidiana como medida de proximidad entre dos clientes, $d_{A,B}=\sqrt{(x_{1A}-x_{1B})^2+...+ (x_{pA}-x_{pB})^2}$ , y el algoritmo de Ward (o incremento mínimo en la variación total) en el proceso de aglomeración jerárquica. Para la partición utiliza el procedimiento kmeans.
+
 #Los datos
 La empresa Hatco ha pedido a un grupo sus clientes que valoren el producto que les ofrece. Para ello les ha preguntado su percepción acerca de siete atributos en los que ha descompuesto su oferta (numerados de 1 a 7 en la tabla siguiente); estos atributos son los que utilizan los clientes industriales a la hora de escoger a sus proveedores según la mayoría de estudios de marketing industrial realizados. Además, también ha recogido información acerca de la empresa encuestada que puede ser de utilidad para identificarlos, comprender sus percepciones y ayudarnos a preparar una estrategia comercial. La tabla 1 muestra la codificación de las variables  realizada de las respuestas a los cuestionarios de la muestra junto con su descripción y escala en la cual se han medido.
 
@@ -12,11 +19,13 @@ La empresa Hatco ha pedido a un grupo sus clientes que valoren el producto que l
 
 **Bases de segmentación**
 
-1. X1="DELSPEED". Rapidez de entrega: Tiempo se tarda en servir un pedido una vez ha sido aceptado. Las siete primeras variables fueron medidas en una escala entre 0 (una valoración pobre) y 10 (una valoración excelente).
+Las siete primeras variables fueron medidas en una escala entre 0 (una valoración pobre) y 10 (una valoración excelente).
 
-2. X2="PRICELEV". Nivel de precios: nivel de los precios cargados por los proveedores.
+1. X1="DELSPEED". Rapidez de entrega: Percepción del tiempo que se tarda en servir un pedido una vez ha sido aceptado. 
 
-3. X3="PRICEFLE". Flexibilidad del nivel de precios: predisposición percibida de que los responsables comerciales de Hatco negocian el nivel del precio de todas las compras.
+2. X2="PRICELEV". Nivel de precios: percepión del nivel de los precios cargados por los proveedores.
+
+3. X3="PRICEFLE". Flexibilidad del nivel de precios: percepción de la predisposición  de  los responsables comerciales de Hatco a negociar el nivel del precio de todas las compras.
 
 4. X4="MANUFIMA". Imagen que los clientes tienen del proveedor: Imagen global del proveedor.
 
@@ -24,9 +33,10 @@ La empresa Hatco ha pedido a un grupo sus clientes que valoren el producto que l
 
 6. X6="SALESFOR". Imagen de la fuerza de ventas: Imagen global de la fuerza de ventas de Hatco, a mayor valoración, mayor puntuación.
 
-7. X7="PRODUCTQ". Calidad de los productos: Nivel percibido de calidad de los productos.
+7. X7="PRODUCTQ". Calidad de los productos: Percepción del nivel  de calidad de los productos.
 
 **Variables descriptoras**
+
 8. X8="TAMEMP". Tamaño de la empresa.
 
 9. X9="USAGELEV". Nivel de uso: Qué porcentaje de las compras totales representan las realizadas a Hatco, su valor va desde 0 a 100%.
@@ -42,13 +52,6 @@ La empresa Hatco ha pedido a un grupo sus clientes que valoren el producto que l
 14. X14= "SITCOMP".Tipo de situación de compra: Tipo de compra a la que se enfrenta el comprador. Esta variable puede tomar 3 valores, “new task” (compra de un nuevo producto), “modified rebuy” (compra anterior modificada) o  “straight rebuy” (compra rutinaria de anteriores productos).
 
 **Nota**: las percepciones se han medido en una escala que oscila entre 0(una percepción mala) y10 (valoración excelente).
-
-#El problema comercial de la empresa
-La dirección de Hatco se propone averiguar si existen grupos de clientes con diferentes percepciones de su oferta con el objeto de diseñar una estrategia comercial específica para cada uno. De esta manera espera obtener un mayor rendimiento de sus gastos en marketing, mayores beneficios e incrementar su ventaja diferencial frente a sus competidores (suponiendo que estos tarden en reaccionar y la ventaja sea defendible)
-
-Para poder interpretar mejor el resultado del análisis de clasificación de sus clientes, les ha pedido, también, que le den una valoración global de su satisfacción con la oferta de la empresa (variable X10="SATISFLE".) y del nivel de compras realizadas a Hatco durante un año, que se ha codificado en porcentaje: así un valor de 50 indica que del 50% de sus compras las realizan a nuestra empresa Hatco. Por ello la variable puede tomar valores entre 1, el menor volumen, y 100, máximo consumo, (variable X9="USAGELEV"). 
-
-En el Anexo tenéis una guía de análisis con el programa de análisis de datos R. Es  tan sólo una guía que os ayudará a obtener una información significativa en la que, una vez valorada su calidad, podréis basar vuestras decisiones. No incluye el análisis discriminante, aunque quien lo desee puede utilizarlo si lo cree conveniente. (Para ello ya disponéis de dos guías de análisis para utilizarlo, una con dos segmentos y otra con cuatro.) Debéis decidir acerca de las bases de segmentación adecuadas: si éstas poseen las propiedades deseables para ser utilizadas en un trabajo de segmentación, y en caso de no poseerlas tenéis que realizar las transformación pertinentes de las bases de segmentación antes de utilizar los procedimientos de aglomeración (para analizar la heterogeneidad) y de partición (para asignar a cada individuo a un segmento determinado). Durante los procesos de clasificación utiliza una distancia euclidiana como medida de proximidad entre dos clientes, $d_{A,B}=\sqrt{(x_{1A}-x_{1B})^2+...+ (x_{pA}-x_{pB})^2}$ , y el algoritmo de Ward (o incremento mínimo en la variación total) en el proceso de aglomeración jerárquica. Para la partición utiliza el procedimiento kmeans.
 
 #Preguntas para guiar el análisis
 

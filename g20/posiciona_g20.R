@@ -1,5 +1,6 @@
 #lectura de datos g20per.txt con análisis interno
 library(MASS)
+# leer fichero g20.per.txt
 g20<-read.table(file.choose(), header=T)
 g20t<-data.frame(t(g20))
 head(g20t)
