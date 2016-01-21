@@ -1,27 +1,27 @@
 ---
-title: 'Segmentación de mercados'
+title: "Segmentación de mercados"
 author: "Jordi López Sintas"
 date: "9 de enero de 2015"
-output: pdf_document
+output: word_document
 ---
 # Fundamentos de la segmentación de mercados
 
 La segmentación de los mercados (*market segmentation analysis*) se refiere al análisis de la estructura de la demanda de un mercado (los beneficios buscados por los consumidores, sus preferencias, etc.) y a la estimación de la intensidad de la demanda para un potencial producto que aspira a una determinada posición en la estructura estimada del mercado (Johnson 1971). La segmentación de los mercados es una decisión estratégica puesto que  que la elección de las bases para realizarla determinará las características que suponemos importan a los consumidores.
 
-Una selección incorrecta de las bases de segmentación supondrá partir de unas hipótesis erróneas acerca del comportamiento de los consumidors. Por ello, su reacción frente a nuestra decisines comerciales será inferir, o contraria, a la prevista, con el consiguiente incremento en costes debido a la ineficacia de las decisines comerciales realizadas. Los costes de manufactura y financieros asociados a la estrategia comercial también se resentirán como ocurrió en 1984 cuando Apple comercializó su primer Macintosh (REF). También debemos tener prsente que los problemas de consumo de los individuos cambian a lo largo del tiempo, por lo que las bases de segmentación también deberán cambiar para poder describir y entender adecuadamente la estructura de las preferencias de los consumidores.
+Una selección incorrecta de las bases de segmentación supondrá partir de unas hipótesis erróneas acerca del comportamiento de los consumidors. Por ello, su reacción frente a nuestra decisiones comerciales será inferior, o contraria, a la prevista, con el consiguiente incremento en costes debido a la ineficacia de las decisi0nes comerciales realizadas. Los costes de manufactura y financieros asociados a la estrategia comercial también se resentirán como ocurrió en 1984 cuando Apple comercializó su primer Macintosh (REF). También debemos tener presente que los problemas de consumo de los individuos cambian a lo largo del tiempo, por lo que las bases de segmentación también deberán cambiar para poder describir y entender adecuadamente la estructura de las preferencias de los consumidores.
 
-Suponiendo que las características que hemos medidos de los consumidores, $C_{i}=x_{i1},...,x_{ip}$ desciben adecuadamente la estructura de las preferencias de los consumidores en un determiando mercado, el proceso de segmentación está interesado en proporcionar respuestas a dos tipos de problemas de la dirección comercial: 1) cómo debería segmentarse un mercado en función de las propiedades estructurales de las preferencias de los consumidores, y 2) cómo debería asignarse los recursos comerciales entre los segmentos (Mahajan & Jain 1978).
+Suponiendo que las características que hemos medido de los consumidores, $C_{i}=x_{i1},...,x_{ip}$ desciben adecuadamente la estructura de las preferencias de los consumidores en un determiando mercado, el proceso de segmentación está interesado en proporcionar respuestas a dos tipos de problemas de la dirección comercial: 1) cómo debería segmentarse un mercado en función de las propiedades estructurales de las preferencias de los consumidores, y 2) cómo debería asignarse los recursos comerciales entre los segmentos (Mahajan & Jain 1978).
 
-Supongamos que una estrategia comercial está compuesta de los elementos trdicionales del mix comercial, calidad del producto ofrecido, precio, distribución y promoción, E0(q,p,d,c). El problema de segmentación del mercado reside en entender su estructura: identificar qué es lo que los consumidores consideran importante, y medir cómo difieren en sus valoraciones de lo que es importante. Si conocemos esos dos grupos de datos podremos inferir la preferencia de los consumidors hacia los productos que la empresa ofrecerá a mercado (y hacia los de la competencia).
+Supongamos que una estrategia comercial está compuesta de los elementos tradicionales del mix comercial, calidad del producto ofrecido, precio, distribución y promoción, E(q,p,d,c). El problema de segmentación del mercado reside en entender su estructura: identificar qué es lo que los consumidores consideran importante, y medir cómo difieren en sus valoraciones de lo que es importante. Si conocemos esos dos grupos de datos podremos inferir la preferencia de los consumidors hacia los productos que la empresa ofrecerá al mercado (y hacia los de la competencia).
 
-Nuestro problema de segmentación, entonces, empieza identificando los beneficios importantes para los consumidores, midiendo cómo difieren en la importancia asignada a esos beneficios y finaliza seleccionandoun número *s* de segmentos, $S=S_{1}, ..., S_{s}$, y definiendo las estrategias diseñadas para cada segmento, $E=E_{1}, ..., E_{s}$ y, simultáneamente, asginando los recursos comerciales a las estrategias (Winter 1979). Encontrar *s* segmentos de consumidores y analziar las correspondientes estrategias comerciales que proporcionan el máxico valor a la empresa. El número óptimo de estrategias, $e \* <s$, y se obtendrá de la resolución del problema de maximización de benficios:
+Nuestro problema de segmentación, entonces, empieza identificando los beneficios importantes para los consumidores, midiendo cómo difieren en la importancia asignada a esos beneficios y finaliza seleccionando un número *s* de segmentos, $S=S_{1}, ..., S_{s}$, y definiendo las estrategias diseñadas para cada segmento, $E=E_{1}, ..., E_{s}$ y, simultáneamente, asginando los recursos comerciales a las estrategias (Winter 1979). Encontrar *s* segmentos de consumidores y analziar las correspondientes estrategias comerciales que proporcionan el máxico valor a la empresa. El número óptimo de estrategias, $e \* <s$, y se obtendrá de la resolución del problema de maximización de benficios:
 
 $$Max B(E)=I(E_{l})-C(Q(E_{l}), E_{l}) $$
 Con la estrategia $E_{l}$ sujeta a que los recursos aplicados no excedan a los dispones, $R(E_{l}) < R$.
 
 Muchos investigadores han levantado dudas acerca de la validez de los resultados obtenidos en los análisis de segmentación de mercados. Concretamente han señalado: 
 
-1. diferentes algoritmos de clasificación producen diferentes resultados e incluso el mismo algoritmo con diferntes condcioens iniciales o distintos niveles de precisión pueden llegar a producir diferentes rsultados (Hoek, Gendall and Esslemont 1996); Funkhouser 1983),
+1. diferentes algoritmos de clasificación producen diferentes resultados e incluso e con diferentes condiciones iniciales o distintos niveles de precisión pueden llegar a producir diferentes resultados (Hoek, Gendall and Esslemont 1996); Funkhouser 1983),
 
 2. los criteris para seleccionar el número de segmentos difierente en sus conclusiones (Hoek, Gendall and Esslemont 1996; Wedel & Kamakura 1998; Helsen and Green 1991; Weingessel, Dimitriadou, & Dolnical 1999).
 
@@ -626,7 +626,7 @@ latentes, *k*:
 
 $$L\left( M,K \right) = \sum_{i = 1}^{n}{\log\left\lbrack f\left( y_{i}|\theta \right) = \sum_{k = 1}^{k}\pi_{k}f_{k}\left( y_{i}|\theta_{k} \right) \right\rbrack}\backslash n$$
 
-Clasificación a posteriori
+##Clasificación a posteriori
 
 Los modelos de clases latentes utilizados en los problemas de
 segmentación no solamente están interesados en estima rlos parámetros
@@ -639,7 +639,7 @@ características medidas del sujeto *i*, **y***~i~*,
 
 $$\pi_{k|y_{i} =}\frac{{\acute{\pi}}_{k}f_{k}\left( \mathbf{y}_{i}|{\acute{\theta}}_{k} \right)}{\sum_{k = 1}^{k}{\acute{\pi}}_{k}f_{k}\left( \mathbf{y}_{i}|{\acute{\theta}}_{k} \right)}$$
 
-Selección del modelo
+##Selección del modelo
 
 Los modelos estimados con un número diferente de clases latentes o
 grupos no son modelos anidados, el modelo con k-1 segmentos o grupos no
@@ -802,6 +802,8 @@ pda.des.predict<-predict(pda.des.lda, pda.des)$class
 table(segmento=pda.bases.norm.kmeans4$cluster, lda=pda.des.predict)
 
 ```
+##predicción de la pertenencia a un segmento con un conjunto nuevo de datos
+
 
 #Anexo
 

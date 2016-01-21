@@ -42,9 +42,24 @@ head(BBBClub.holdout)
 
 BBBClub.glm<-glm(choice~gender+amount+freq+last+first+child+youth+cook+diy+art, family=binomial(), data=BBBClub.choice)
 stargazer(BBBClub.glm, type="text")
+print(anova(BBBClub.glm, test="Chisq"))
+
+#Plot predicted probabilities
+
 
 BBBClub.holdout$pglm <- predict(BBBClub.glm, BBBClub.holdout, type="response")
 head(BBBClub.holdout)
+
+pdf(file = "bbbclub/bbbclub-fig_predicting_choice_density_evaluation.pdf", 
+    width = 8.5, height = 8.5)
+plotting_object <- densityplot( ~ pglm | choice, 
+                                data = BBBClub.holdout, 
+                                layout = c(1,2), aspect=1, col = "darkblue", 
+                                plot.points = "rug",
+                                strip=function(...) strip.default(..., style=1),
+                                xlab="Predicted Probability of buying book") 
+print(plotting_object) 
+dev.off()
 
 quantile(BBBClub.holdout$RFM, probs=seq(.1,1,.1))
 quantile(BBBClub.holdout$plm, probs=seq(.1,1,.1))
