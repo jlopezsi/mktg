@@ -5,8 +5,11 @@ hatco <- read.csv(file.choose(), sep=";", dec=",")
 head(hatco)
 
 #De todo el fichero, separamos las variables que utilizaremos como bases de segmentación
-bases<-data.frame(hatco[1:7])
 
+bases<-data.frame(hatco[1:7])
+library(dplyr)
+bases.d<-select(hatco, DELSPEED:PRODUCTQ)
+names(bases.d)
 #Mostramos las 6 primeras líneas del fichero de datos
 head(bases)
 
@@ -17,12 +20,34 @@ head(bases)
 
 #Agrupamos a los clientes
 bases.hclust<-hclust(dist(bases, method="euclidean"), method="ward")
+
 #Mostramos el resultado de la agrupación
 plot(bases.hclust)
+install.packages("ggdendro")
+library(ggdendro)
+ggdendrogram(bases.hclust, rotate = FALSE, size = 2)
+
 #Ahora calculamos los centros de los grupos formados durante elproceso de agrupación jerárquica.
 centros.bases<-tapply(as.matrix(bases), list(rep(cutree(bases.hclust, 2), ncol(as.matrix(bases))),col(as.matrix(bases))),mean)
 #Visualizamos el resultado
 centros.bases
+
+#Alternativamente con dplyr
+names(bases)
+head(rep(cutree(bases.hclust, 2)))
+centros.bases.d<- bases %>%
+  group_by(rep(cutree(bases.hclust, 2))) %>%
+  summarise(
+    n=n(),
+    DELSPEED=mean(DELSPEED),
+    PRICELEV=mean(PRICELEV),
+    PRICEFLE=mean(PRICELEV),
+    MANUFIMA=mean(MANUFIMA),
+    SERVICE=mean(SERVICE),
+    SALESFOR=mean(SALESFOR),
+    PRODUCTQ=mean(PRODUCTQ)
+  )
+
 #Dividimos la muestra con kmeans
 bases.kmeans2<-kmeans(bases, centros.bases)
 
@@ -55,6 +80,25 @@ table(hatco$ESTRCOMP, bases.kmeans2$cluster)
 table(hatco$INDUSTRI, bases.kmeans2$cluster)
 table(hatco$SITCOMP, bases.kmeans2$cluster)
 
+#The TableOne package is created by Kazuki Yoshida and Justin Bohn and is used to create the Table 1 in R. The ReporteRs package is created by David Gohel and in this post I use for exporting Table from R to Microsoft Word
+names(hatco)
+library(tableone)
+listVars <- c("TAMPEMP", "USAGELEV", "SATISFLE", "ESPCOMPR", "ESTRCOMP", "INDUSTRI", "SITCOMP")
+catVars<- c("TAMPEMP", "ESPCOMPR", "ESTRCOMP", "INDUSTRI", "SITCOMP")
+hatco$segmento<-bases.kmeans2$cluster
+hatco.descriptores <- CreateTableOne(vars = listVars, data = hatco, factorVars = catVars, strata = "segmento")
+hatco.descriptores <- print(hatco.descriptores)
+# Load the packages 
+library(ReporteRs) 
+library(magrittr)
+docx( ) %>% addFlexTable(hatco.descriptores %>% FlexTable(header.cell.props = cellProperties( background.color = "#003366"), header.text.props = textBold( color = "white" ), add.rownames = TRUE ) %>% setZebraStyle( odd = "#DDDDDD", even = "#FFFFFF" ) ) %>% writeDoc(file = "table1.docx")
+
+#Sin el package tableone podríamos utilizar el package dplyr
+hatco.seg1<-filter(hatco, segmento==1) 
+CreateTableOne(vars = listVars, data = hatco.seg1, factorVars = catVars)
+hatco.seg2<-filter(hatco, segmento==2) 
+CreateTableOne(vars = listVars, data = hatco.seg2, factorVars = catVars)
+
 #Ahora compropbariamos si el resultado obtenido con las bases de segmetnacion
 #originales varia cuando las transformamos en sus componentes principales
 
@@ -62,8 +106,19 @@ table(hatco$SITCOMP, bases.kmeans2$cluster)
 #no suponga un problema para la segmentacion
 #Visualizamos las correlaciones entre las bases de segmentación
 cor(bases)
+#Bartlett’s sphericity test
+#The Bartlett’s test checks if the observed correlation matrix R diverges significantly from the identity matrix (theoretical matrix under H0: the variables are orthogonal).
+bartlett.test(bases)
+#KMO Measure of Sampling Adequacy (MSA)
+#The KMO index has the same goal. It checks if we can factorize efficiently the original variables. But it is based on another idea.
+#We know that the variables are more or less correlated, but the correlation between two variables can be influenced by the others. So, we use the partial correlation in order to measure the relation between two variables by removing the effect of the remaining variables
+#The KMO index compares the values of correlations between variables and those of the partial correlations. If the KMO index is high ( 1), the PCA can act efficiently; if KMO is low ( 0), the PCA is not relevant.
+library(psych)
+KMO(bases)
+
 #Si la correlación es elevada, transformamos las bases de segmentación
 #en unas nuevas variables 
+
 #Ahora vamos a calcular los componentes principales para comprobar si el resultado cambia
 bases.acp<-princomp(bases, cor=T)
 #Podemos visualizar la varianza explicada por cada componente principal
@@ -72,6 +127,7 @@ bases.acp<-princomp(bases, cor=T)
 #y la varianza explicada por cada componentes estará entre 0 y 7
 plot(bases.acp)
 summary(bases.acp)
+
 #vemos que con cuatro cuatro componentes explicamos el 90% de la variación
 #Utilizamos la puntuación de los clientes en los nuevos componentes principales
 #Esa puntuación está recogida en el objeto scores de la lista bases.acp
@@ -81,6 +137,7 @@ bases.puntos<-bases.acp$scores
 #si queremos visualizar el resultado de la clasificacion que hemos realizado antes
 #podemos utilizar los componentes de esta forma:
 
+cor(bases.puntos[,1:3], bases)
 plot(bases.puntos[,1:2], col=bases.kmeans2$cluster)
 
 #Volvemos a realizar la agrupación jerárquica
@@ -99,7 +156,23 @@ table(bases.kmeans2$cluster, bases.puntos.kmeans2$cluster)
 bases.puntos.kmeans2
 options(digits=3)
 #Mostramos el valor medio de las bases de segmentación en los grupos
+names(bases.puntos.kmeans2)
+bases.puntos.kmeans2$centers
 t(aggregate(bases, list(Segmento = bases.puntos.kmeans2$cluster), mean))
+names(hatco.descriptores)
+hatco$cluster <- bases.puntos.kmeans2$cluster
+table(hatco$segmento, hatco$cluster)
+#Descriptores de los segmentos
+
+library(tableone)
+listVars <- c("TAMEMP", "USAGELEV", "SATISFLE", "ESPCOMPR", "ESTRCOMP", "INDUSTRI", "SITCOMP")
+catVars<- c("TAMEMP", "ESPCOMPR", "ESTRCOMP", "INDUSTRI", "SITCOMP")
+hatco.descriptores <- CreateTableOne(vars = listVars, data = hatco, factorVars = catVars, strata = "cluster")
+hatco.descriptores <- print(hatco.descriptores)
+# Load the packages 
+library(ReporteRs) 
+library(magrittr)
+docx( ) %>% addFlexTable(hatco.descriptores %>% FlexTable(header.cell.props = cellProperties( background.color = "#003366"), header.text.props = textBold( color = "white" ), add.rownames = TRUE ) %>% setZebraStyle( odd = "#DDDDDD", even = "#FFFFFF" ) ) %>% writeDoc(file = "table1.docx")
 
 #finite mixture regression
 head(bases)
@@ -123,3 +196,4 @@ BIC(fittedModel4)
 fittedModel5 <- stepFlexmix(y ~ 1, model = Model, nrep = 5, k = 5, data = hatco)
 summary(refit(fittedModel5))
 BIC(fittedModel4)
+?`BIC`
