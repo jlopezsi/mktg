@@ -1,10 +1,10 @@
-##Reading data
+##Reading data officeStar_per.txt
 os_per <- read.table(file.choose(), sep = "\t", dec = "," , row.names=1, header=T)
 head(os_per)
 perceptions<-t(os_per) #view the table read
 head(perceptions)
 
-#read prferences
+#read prferences officeStar_prefs
 preferences.segments <- read.table(file.choose(), sep = "\t", dec = "," , row.names=1, header=T)
 head(preferences.segments)
 preferences<-preferences.segments[,-5]
@@ -33,6 +33,7 @@ abline(h=0); abline(v=0) # draw horiz and vertical axes
 #we use the correlation between the preferences data frame and the pc plotted
 dim(t(preferences))
 dim(perceptions.puntos)
+
 preferences.puntos<-cor(t(preferences), perceptions.puntos)
 #add preferences as arrows to the biplot
 arrows(0, 0, preferences.puntos[,1], preferences.puntos[,2]) 
@@ -75,6 +76,7 @@ preferences.puntos<-cor(t(preferences), perceptions.puntos)
 arrows(0, 0, preferences.puntos[,1], preferences.puntos[,2]) 
 #add the indentity of consumers
 text (preferences.puntos[,1:2], labels = row.names(preferences))
+
 
 ########add preferences from a verctor model##########
 biplot(perceptions.pca, pc.biplot=T)
@@ -130,5 +132,23 @@ os.ggbiplot + geom_segment(data = preferences.puntos,
                                    color = pref.kmeans2$cluster) + 
   geom_text(data=preferences.puntos, aes(PC1, PC2, label = row.names(preferences)), size=4)
 
+
+######################Ideal preferences
+#read prferences officeStar_ideal
+preferences.ideal <- read.table(file.choose(), sep = "\t", dec = "," , row.names=1, header=T)
+head(preferences.ideal)
+head(perceptions)
+names(preferences.ideal) <- c("Large choice", "Low prices", "Service quality", "Product quality", "Convenience")
+head(preferences.ideal)
+#add preferences as arrows to the biplot
+biplot(perceptions.pca, pc.biplot=T)
+?biplot #seach for help
+# draw horitzontal and vertical lines
+abline(h=0); abline(v=0) # draw horiz and vertical axes 
+
+preferences.ideal.puntos<-predict(perceptions.pca, preferences.ideal)
+points(preferences.ideal.puntos[,1], preferences.ideal.puntos[,2]) 
+#add the indentity of consumers
+text (preferences.ideal.puntos[,1:2], labels = row.names(preferences.ideal))
 
 
