@@ -1,7 +1,8 @@
 #read CDNOW_sample.txt
 CDNOW_sample <- read.table(file.choose(), quote="\"")
+CDNOW_sample <- read.table("CDNOW_sample.txt", quote="\"")
 getwd()
-source("bbbclub/rfm-CDNOW.R")
+source("rfm-CDNOW.R")
 
 # construct a data frame with the necessary columns of customer ID, 
 #transaction date, and money amount paid by a customer per transaction
