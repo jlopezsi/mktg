@@ -119,14 +119,14 @@ probalidad.segmentos
 
 dim(perceptions.puntos)
 dim(preferences.puntos)
-utilidad.ind<-perceptions.puntos %*% t(preferences.puntos)
-head(utilidad.ind)
+utilidad.ind<-perceptions.puntos %*% t(preferences.puntos) #brand projection on individuals' prefererences
+head(utilidad.ind) #shows preferences of individuals about brands
 utilidad.ind.exp <- exp(utilidad.ind)
 head(utilidad.ind.exp)
 suma.utilidad.ind.exp<-colSums(utilidad.ind.exp)
 probalidad.ind<-utilidad.ind.exp/suma.utilidad.ind.exp
 head(probalidad.ind)
-rowMeans(probalidad.ind)
+rowMeans(probalidad.ind) #market share of brands
 sum(rowMeans(probalidad.ind))
 
 ###########some extra code to plot clusters into de pc
@@ -188,17 +188,36 @@ suma.utilidad.exp<-colSums(utilidad.exp)
 probalidad.segmentos<-utilidad.exp/suma.utilidad.exp
 probalidad.segmentos
 
-#market.share in individuals
-#######Falta desarrollar
+#market.share ideal preferences in individuals
+#######completed
 dim(perceptions.puntos)
 dim(preferences.ideal.puntos)
 install.packages("pdist")
 library(pdist)
-utilidad.ideal.ind<-pdist(perceptions.puntos,  preferences.ideal.puntos)
-utilidad.ideal.ind <- as.matrix(utilidad.ideal.ind)
+utilidad.ideal.ind<-pdist(perceptions.puntos,  preferences.ideal.puntos) #distances among brnads and individuals
+rownames(perceptions.puntos)
+rownames(preferences.ideal.puntos)
+utilidad.ideal.ind <- as.matrix(utilidad.ideal.ind) #transform the data type
+rownames(utilidad.ideal.ind) <- rownames(perceptions.puntos)
+colnames(utilidad.ideal.ind) <- rownames(preferences.ideal.puntos)
 utilidad.ideal.ind
-pmin(utilidad.ideal.ind)
-by(utilidad.ideal.ind[,], utilidad.ideal.ind["OfficeStar",], pmin)
+individualElections <- apply(utilidad.ideal.ind, 2, which.min) # cols
+individualElections
+length(individualElections[individualElections==1])
+length(individualElections[individualElections==2])
+length(individualElections[individualElections==3])
+length(individualElections[individualElections==4])
+utilidad.ideal.ind <- as.data.frame(utilidad.ideal.ind)
+utilidad.ideal.ind
+ms<-vector()
+ms[1]<-length(individualElections[individualElections==1])/length(individualElections)
+ms[2]<-length(individualElections[individualElections==2])/length(individualElections)
+ms[3]<-length(individualElections[individualElections==3])/length(individualElections)
+ms[4]<-length(individualElections[individualElections==4])/length(individualElections)
+ms
+utilidad.ideal.ind$ms<-ms
+utilidad.ideal.ind
+#market share repetitive buy
 utilidad.ind.exp <- exp(utilidad.ind)
 head(utilidad.ind.exp)
 suma.utilidad.ind.exp<-colSums(utilidad.ind.exp)
@@ -206,4 +225,6 @@ probalidad.ind<-utilidad.ind.exp/suma.utilidad.ind.exp
 head(probalidad.ind)
 rowMeans(probalidad.ind)
 sum(rowMeans(probalidad.ind))
+
+
 
