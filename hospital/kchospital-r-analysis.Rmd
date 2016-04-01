@@ -73,7 +73,7 @@ Durante la segunda fase, después de decidir cuántos grupos formaremos, utiliza
 bases.kmeans3<-kmeans(bases, 3)
 ```
 
-Ayudas visuales para analizar la estructura de los datos. Sólo si las bases de segmentación están muy correlacionadas. En caso contrario tendremos que basarnos en el dendrograma que ya hemos obtenido.
+Ayudas visuales para analizar la estructura de los datos. Sólo si las bases de segmentación están muy correlacionadas. En caso contrario tendremos que basarnos en el dendograma que ya hemos obtenido.
 
 Si, además, hemos obtenido los componentes principales, podemos visualizar el resultado de la clasificación. Primero obtenemos los componentes principales y después utilizamos éstos para visualizar la segmentación realizada
 
@@ -194,7 +194,7 @@ plot(bases.puntos.hclust,
 rect.hclust(bases.puntos.hclust, k=4, border=2)
 ```
 
-¿Cuántos grupos formar? Vemos que al utilizar los componentes principales el dendrograma nos sugiere que es mayor la heterogeneidad entre los dos segmentos más pequeños (la longitud de la línea que los une es mayor). Por ello tentativamente formaremos 4 grupos.
+¿Cuántos grupos formar? Vemos que al utilizar los componentes principales el dendograma nos sugiere que es mayor la heterogeneidad entre los dos segmentos más pequeños (la longitud de la línea que los une es mayor). Por ello tentativamente formaremos 4 grupos.
 
 Ahora realizaremos la clasificación con el algoritmo `kmeans`. El resultado de este algoritmo es muy sensible a los centros iniciales a partir de los cuales inicia la partición. Veámoslo, en este caso es así. 
 
@@ -412,7 +412,7 @@ Determinar la facilidad con la que los consumidores identifican los hospitales, 
 Componentes específicos del problema comercial
 
 1. ¿Qué criterios utilizan los consumidores cuando seleccionan un hospital? 
-2. ¿Cuál es la posición relativa del hospital Kc en comparación con la competencia? 
+2. ¿Cuál es la posicón relativa del hospital Kc en comparación con la competencia? 
 3. ¿Qué competidores tienen el mejor servicio de maternidad según sus percepciones? 
 4. ¿Cuál es el mercado potencial del servicio de maternidad? ¿Quienes son los pacientes en términos demográficos y psicológicos? 
 5. ¿Y el mercado potencial del hospital KC? 
@@ -454,7 +454,7 @@ Según la dimensión de los segmentos se podrían agrupar en tres segmentos.
 
 Describir segmentos según su importancia en los factores de elección del hospital.
 
-Cluster 1 preocupado por los fundamentos del cuidado
+Cluster 1 precoupado por los fundamentos del cuidado
 
 Cluster 2 preocupado por la proximidad. 
 
@@ -464,9 +464,9 @@ cluster 4 is high on factor 2, meaning this group is responsive to business deci
 
 Si tabulamos la clasificación en segmentos con los resultados de la primera pregunta, tenemos que una correspondencia clara  entre el uso previo y la asginación a los clusters:  cluster 1 corresponde a los hospitales  B, C, F; cluster 2 a KC hospital; cluster 3 ...
 
-RESUMEN
+EXECUTIVE SUMMARY
 
-Los resultados muestran que la experiencia previa en hospitales es el criterio más importante para los consumidors cuando deciden a qué hospital ir. Otros criterios importantes son: la calidad del servicio, las promociones que incrementan el valor, y la proximidad geográfica. Por ello ofrecer  un servicio de matenidad para conseguir que los consumidores repitan en su elección de hospital parece una bena idea.
+Los resultados muestran que la experiencia previa en hosptales es el criterio más importante para los consumidors cuando deciden a qué hospital ir. Otros criterios importantes son: la calidad del servicio, las promociones que incrementan el valor, y la proximidad geográfica. Por ello ofrecer  un servicio de matenidad para conseguir que los consumidores repitan en su elección de hospital parece una bena idea.
 
 Las características que el servicio debe son varias. Primero la atención personal fue un criterio importante para los consumidores con mayor nivel educativo e ingresos superiores. Segundo estos consumidores tambien perciben que deben tener libertad para escoger hospital, mientras que los consumidores con bajos ingresos y educación inferior creen que no tienen elección. Adicionalmente, los grupos más privilegiados socialmente tambien ven la publiciadad como algo positivio, indicando que la publicidad puede influir en su elección.
 
