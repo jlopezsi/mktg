@@ -1,3 +1,22 @@
+# extract existing variables-> select()
+#####contains() select columns whose name contains a character string
+#####ends_with() ...ends with a string
+#####everything() select every column
+#####matches() select columns whose name matches a regular experession
+#####num_range() Select columns named x1, ..., x5
+#####one_of() selects comumns whose nmaes are in a group of names
+#####starts_with() select columns whose name starts with a character string
+# extract existing observations -> filter()
+#Derive new variables (from existing variables)-> mutate()
+#Change de unit of analysis -> summarize()
+#####group_by() + summarize()
+#order a data table -> arrange()
+######joining data##############
+# fusiona dos bases de datos añadiendo columnas ->>> bind_cols(y, z)
+# fusiona dos bases de datos añadiendo filas ->>>bind_rows(y, z)
+### las diferencias entre dos bases de datos ->>  setdiff(y, z)
+### fusiona según una determinada variables ->>> left_joins(songs, artists, by="name")
+#### inner_joion(songs, artists, by =" name")
 
 require(ggplot2)
 require(dplyr)
