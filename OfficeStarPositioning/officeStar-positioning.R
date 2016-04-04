@@ -207,3 +207,4 @@ head(probalidad.ind)
 rowMeans(probalidad.ind)
 sum(rowMeans(probalidad.ind))
 
+
