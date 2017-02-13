@@ -1,0 +1,196 @@
+---
+title: "Informe segmentación"
+author: "Jordi López Sintas"
+date: "23/2/2017"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Introducción
+
+```{r data}
+#leer hatco.completo.csv
+hatco <- read.csv2("hatco.completo.csv")
+#De todo el fichero, separamos las variables que utilizaremos como bases de segmentación
+bases<-data.frame(hatco[1:7])
+knitr::kable(head(bases), digits=2, caption = "Descripción de las 6 primeras empresas y sus bases")
+#Ahora separamos las variables descriptoras
+l<-length(hatco)
+descriptores<-data.frame(hatco[8:l])
+knitr::kable(head(descriptores), digits=2, caption = "Descripicón de las 6 primeras empreas")
+seg<-2
+
+listVars <- c("TAMEMP", "USAGELEV", "SATISFLE", "ESPCOMPR", "ESTRCOMP", "INDUSTRI", "SITCOMP")
+catVars<- c("TAMEMP", "ESPCOMPR", "ESTRCOMP", "INDUSTRI", "SITCOMP")
+
+```
+
+# Descripción de Las bases
+
+
+```{r bases-plot, echo=FALSE}
+plot(bases)
+```
+
+
+# Exploración de la heterogeneidad
+
+```{r hclust, echo=FALSE}
+#Exploramos la heterogeneidad
+bases.hclust<-hclust(dist(bases, method="euclidean"), method="ward")
+#Mostramos el resultado de la agrupación
+plot(bases.hclust)
+rect.hclust(bases.hclust, k=seg, border="red") 
+```
+
+```{r hclust-mean, echo=FALSE}
+#Ahora calculamos los centros de los grupos formados durante elproceso de agrupación jerárquica.
+source("marketing-models.R")
+
+#centros-hclust, calcula las medias en los segmentos obtenidos con hclust
+centros.bases<-centros.hclust(bases.hclust, bases, seg)
+knitr::kable(t(centros.bases), digits=2, caption = "Medias de la agrupación jerárquica")
+
+```
+
+#Partición de la muestra y clasificación
+
+```{r kmeans}
+#Dividimos la muestra con kmeans
+bases.kmeans<-kmeans(bases, centros.bases)
+#Para caracterizar a los segmentos utilizamos las medias de las variables
+#originales en los segmentos formados
+#names(bases.kmeans2)
+
+```
+
+## Percepciones de las empresas en los segmentos
+
+```{r percepciones}
+knitr::kable(t(bases.kmeans$centers), digits=2)
+```
+
+# Descripción de las empresas que forman cada segmento
+
+```{r echo=FALSE}
+library(tableone)
+hatco$segmento <-bases.kmeans$cluster
+hatco.descriptores <- CreateTableOne(vars = listVars, data = hatco, factorVars = catVars, strata = "segmento")
+hatco.descriptores <- print(hatco.descriptores)
+knitr::kable(hatco.descriptores)
+```
+
+#Interpretación de los segmentos según percepciones y empresas
+
+#Estrategia
+
+
+#Anexo
+
+Ahora comprobaríamos si el resultado obtenido con las bases de segmetnacion
+originales varía cuando las transformamos en sus componentes principales. Esta transformación nos permite comprobar que la correlación entre las bases de segmentación no suponga un problema para identificar los segmentos que queremos identificar.
+
+Para ello primero inspeccionamos las correlaciones ente las bases.
+
+```{r correlaciones}
+######COMPROBAR LA ADECUACIÓN DE LAS BASES PARA LA SEGMENTACIÓN#######
+#Visualizamos las correlaciones entre las bases de segmentación
+
+cor(bases)
+#install.packages("corrplot")
+library(corrplot)
+corrplot(cor(bases), method="ellipse")
+corrplot(cor(bases), method="color")
+```
+Después realizamos algunas pruebas para ver si vale la pena estimar los componentes principales de las bases. El primero es el test de Barlett. Si podemos rechazar la hipótesis nula, entonces no es necesario estimar los componentes.
+
+```{r barlett}
+#Bartlett’s sphericity test
+#The Bartlett’s test checks if the observed correlation matrix R diverges significantly from the identity matrix (theoretical matrix under H0: the variables are orthogonal).
+
+bartlett.test(bases)
+```
+El resultado del test de Barlett nos indica que podemos rechazar la hipótesis nula. Ahora comprobamos el test de adecuación de la muestra, `KMO`. Si su valor está cercano a 1, entonces es necesario estimar los componentes principales de las bases de segmentación.
+
+```{r}
+#KMO Measure of Sampling Adequacy (MSA)
+#The KMO index has the same goal. It checks if we can factorize efficiently the original variables. But it is based on another idea.
+#We know that the variables are more or less correlated, but the correlation between two variables can be influenced by the others. So, we use the partial correlation in order to measure the relation between two variables by removing the effect of the remaining variables
+#The KMO index compares the values of correlations between variables and those of the partial correlations. If the KMO index is high ( 1), the PCA can act efficiently; if KMO is low ( 0), the PCA is not relevant.
+
+#install.packages("psych")
+library(psych)
+KMO(bases)
+```
+Como vemos el valor está pro debajo de 0,5, lo que nos indica que no es neceario continuar. No obstante continuaremos para mostrar que el resultado no cambia como sugieren los tests realizados.
+
+##Estimamos los componentes principales
+Para ello utilizamos la función `princomp()`con las bases originales.
+
+```{r}
+#Si la correlación es elevada, transformamos las bases de segmentación
+#en unas nuevas variables 
+#Ahora vamos a calcular los componentes principales para comprobar si el resultado cambia
+bases.acp<-princomp(bases, cor=T)
+```
+
+Podemos visualizar facilmente la varianza explicada por cada componente principal al utilizar las correlaciones (están acotadas entre -1 y 1). La variación explicada  por los componentes principales es igual al número de variables originales y la varianza explicada por cada componentes estará entre 0 y 7.
+Vemos que con cuatro cuatro componentes explicamos el 90% de la variación. Ahora utilizamos la puntuación de los clientes en los nuevos componentes principales. Esa puntuación está recogida en el objeto scores de la lista `bases.acp`. La asignamos al objeto `bases.puntos`.
+
+```{r}
+bases.puntos<-bases.acp$scores
+```
+
+Si queremos visualizar el resultado de la clasificacion que hemos realizado antes, podemos utilizar la función `plot()` de esta forma:
+
+```{r}
+cor(bases.puntos[,1:3], bases)
+plot(bases.puntos[,1:2], col=bases.kmeans$cluster)
+```
+
+Y si queremos visualizar el resultado de la segmentación, podemos utilizar la función `plotcluster()` del paquete `fpc`.
+```{r}
+library(fpc)
+plotcluster(bases, bases.kmeans$cluster) 
+```
+
+Ahora repetimos el proceso de exploración
+
+```{r}
+#Volvemos a realizar la agrupación jerárquica
+bases.puntos.hclust<-hclust(dist(bases.puntos), method="ward")
+```
+
+```{r}
+#visualizamos la heterogeneidad y la comparamos con el la mostrada con los datos originales
+plot(bases.puntos.hclust)
+#Calculamos los centros de los grupos
+centros.bases.puntos<- centros.hclust(bases.puntos.hclust, bases.puntos, seg)
+#visualizamos los centros
+centros.bases.puntos
+```
+
+##De nuevo partimos la muestra con kmeans
+
+```{r}
+bases.puntos.kmeans<-kmeans(bases.puntos, centros.bases.puntos)
+#Visualizamos
+plot(bases.puntos[,1:2], col=bases.puntos.kmeans$cluster)
+```
+
+#Ahora vamos a comprar el resultado actual con el obtenido con las bases originales.
+```{r}
+#Comparamos el resultado
+table(bases.kmeans$cluster, bases.puntos.kmeans$cluster)
+bases.puntos.kmeans
+options(digits=3)
+```
+
+
+
+

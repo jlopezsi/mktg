@@ -8,7 +8,8 @@ abb<-read.table("abb-r.txt", header=T)
 head(abb)
 #la funcion names() muestra los nombres de las variables 
 names(abb)
-install.packages("dplyr")
+#install.packages("dplyr")
+library(dplyr)
 #El paquete survival continene la función clogit para estimar el moledo de elección discreta
 install.packages("survival")
 library(survival)
@@ -20,28 +21,16 @@ abb.clogit<-clogit(choice~price+energy_loss+maintenance+warranty
 #La funcion summary()  muestra los resultados de la estimacion del modelo
 summary(abb.clogit)
 
-install.packages("stargazer")
+#install.packages("stargazer")
 library(stargazer)
 stargazer(abb.clogit, no.space = TRUE, type='text',  title="Regression")
 
 source("marketing-models.R")
-#La función predict() nos predice la utilidad que cada inidividuo obtiene
 
-abb.predict<-predict(abb.clogit)
-head(abb.predict)
-abb.predict.exp<-exp(abb.predict)
-head(abb.predict.exp)
-#sumamos el exp() de la utilidad para cada individuo
-sum.exp<-by(abb.predict.exp, abb$id, sum)
 
-head(sum.exp)
-#Calculamos la probabilidad de elección de cada marca. Para ello definimos una función
-#que llamaremos prob.eleccion()
-
-#calculamos la probalidad de elección
-#eleccion<-prob.of.choice(sum.exp,abb.predict.exp, 88)
 eleccion<-prob.of.choice(abb.clogit, 88)
-head(eleccion)
+
+round(head(eleccion), digits=2)
 
 #Guardamos el resultado en fichero de datos abb
 abb$eleccion<-eleccion
@@ -74,4 +63,6 @@ group_by(abb.ordenado.volumen, segment) %>%
     volume=sum(volume),
     volumenExprected=sum(volumeExpected)
   )
+
+########Recortes introducidos en la funcion prob.of.choice.()
 

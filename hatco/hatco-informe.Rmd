@@ -1,0 +1,90 @@
+---
+title: "Informe segmentación"
+author: "Jordi López Sintas"
+date: "23/2/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introducción
+
+
+```{r data}
+#leer hatco.completo.csv
+hatco <- read.csv2("hatco.completo.csv")
+head(hatco)
+#De todo el fichero, separamos las variables que utilizaremos como bases de segmentación
+bases<-data.frame(hatco[1:7])
+#Ahora separamos las variables descriptoras
+l<-length(hatco)
+descriptores<-data.frame(hatco[8:l])
+seg<-2
+
+listVars <- c("TAMEMP", "USAGELEV", "SATISFLE", "ESPCOMPR", "ESTRCOMP", "INDUSTRI", "SITCOMP")
+catVars<- c("TAMEMP", "ESPCOMPR", "ESTRCOMP", "INDUSTRI", "SITCOMP")
+
+```
+
+# Descripción de Las bases
+
+
+```{r bases-plot, echo=FALSE}
+plot(bases)
+```
+
+
+# Exploración de la heterogeneidad
+
+```{r hclust, echo=FALSE}
+#Exploramos la heterogeneidad
+bases.hclust<-hclust(dist(bases, method="euclidean"), method="ward")
+#Mostramos el resultado de la agrupación
+plot(bases.hclust)
+rect.hclust(bases.hclust, k=seg, border="red") 
+```
+
+```{r hclust-mean, echo=FALSE}
+#Ahora calculamos los centros de los grupos formados durante elproceso de agrupación jerárquica.
+source("marketing-models.R")
+
+#centros-hclust, calcula las medias en los segmentos obtenidos con hclust
+centros.bases<-centros.hclust(bases.hclust, bases, 2)
+centros.bases
+
+```
+
+#Partición de la muestra y clasificación
+
+```{r kmeans}
+#Dividimos la muestra con kmeans
+bases.kmeans2<-kmeans(bases, centros.bases)
+#Para caracterizar a los segmentos utilizamos las medias de las variables
+#originales en los segmentos formados
+names(bases.kmeans2)
+
+```
+
+## Percepciones de las empresas en los segmentos
+
+```{r percepciones}
+bases.kmeans2$centers
+```
+
+# Descripción de las empresas que forman cada segmento
+
+```{r}
+library(tableone)
+hatco$segmento <-bases.kmeans2$cluster
+hatco.descriptores <- CreateTableOne(vars = listVars, data = hatco, factorVars = catVars, strata = "segmento")
+hatco.descriptores <- print(hatco.descriptores)
+
+```
+
+#Interpretación de los segmentos según percepciones y empresas
+
+#Estrategia
+
+

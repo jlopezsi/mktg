@@ -2,7 +2,9 @@
 title: "Análisis de datos para la toma de decisiones de comerciales en el entorno R"
 author: "Jordi López Sintas"
 date: "20 de enero de 2015"
-output: word_document
+output:
+  html_document: default
+  word_document: default
 ---
 (Traducción the del texto origian de Jack Han, Data Analysis for Marketing Research with R Language, URL http://www.dataapple.net/?p=19)
 

@@ -1,0 +1,2 @@
+load("/Users/jlopezsi/Documents/github/mktg-models-projects/pacificBrands/pacificBrands.RData")
+ls()

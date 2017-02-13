@@ -30,7 +30,7 @@ hist(BBBClub.holdout$RFM)
 
 BBBClub.lm <- lm(choice~gender+amount+freq+last+first+child+youth+cook+diy+art, data=BBBClub.choice)
 
-install.packages("stargazer")
+#install.packages("stargazer")
 library(stargazer)
 stargazer(BBBClub.lm, type="text")
 

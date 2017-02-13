@@ -2,7 +2,7 @@
 title: 'Caso Hatco: Análisis y toma de decisiones en el entorno R'
 author: "Jordi López Sintas"
 date: "5 de septiembre de 2014"
-output: word_document
+output: html_document
 ---
 
 #Acceso a los datos
@@ -36,6 +36,13 @@ names(hatco)
 str(hatco)
 ```
 En estas líneas de código mostramos también cómo leer los datos en el formato `csv` de intercambio de hojas electrónicas, donde las columnas están separadas por `;` y el símbolo de los decimales es la coma, `,` en lugar del punto decimal anglosajón.
+#Exploración de los datos
+
+```{r}
+library(ggplot2)
+qplot(hatco$PRODUCTQ, hatco$DELSPEED)
+qplot(hatco$PRODUCTQ, hatco$PRICELEV)
+```
 
 #Selección de las bases de segmentación
 Ahora deberás seleccionar las bases de segmentación que utilizarás con los programas de aglomeración jerárquica y partición. En el ejemplo se han seleccionado las primeras 7. Puedes seleccionar éstas o cualesquiera otras, pero deberás, en cualquier caso, argumentar por qué razón escoges esas variables como bases de segmentación.
