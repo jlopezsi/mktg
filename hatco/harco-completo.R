@@ -86,10 +86,16 @@ corrplot(cor(bases), method="color")
 #The Bartlett’s test checks if the observed correlation matrix R diverges significantly from the identity matrix (theoretical matrix under H0: the variables are orthogonal).
 
 bartlett.test(bases)
+#Kaiser-Meyer-Olkin (KMO) Test
 #KMO Measure of Sampling Adequacy (MSA)
 #The KMO index has the same goal. It checks if we can factorize efficiently the original variables. But it is based on another idea.
 #We know that the variables are more or less correlated, but the correlation between two variables can be influenced by the others. So, we use the partial correlation in order to measure the relation between two variables by removing the effect of the remaining variables
 #The KMO index compares the values of correlations between variables and those of the partial correlations. If the KMO index is high ( 1), the PCA can act efficiently; if KMO is low ( 0), the PCA is not relevant.
+#KMO returns values between 0 and 1. A rule of thumb for interpreting the statistic:
+
+#KMO values between 0.8 and 1 indicate the sampling is adequate.
+#KMO values less than 0.6 indicate the sampling is not adequate and that remedial action should be taken. Some authors put this value at 0.5, so use your own judgment for values between 0.5 and 0.6.
+#KMO Values close to zero means that there are large partial correlations compared to the sum of correlations. In other words, there are widespread correlations which are a large problem for factor analysis.
 
 install.packages("psych")
 library(psych)
